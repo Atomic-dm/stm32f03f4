@@ -1,0 +1,796 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"stm32f0xx_syscfg.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SYSCFG_DeInit,"ax",%progbits
+  18              		.align	2
+  19              		.global	SYSCFG_DeInit
+  20              		.code	16
+  21              		.thumb_func
+  23              	SYSCFG_DeInit:
+  24              	.LFB33:
+  25              		.file 1 ".\\StdPeriphLib\\src/stm32f0xx_syscfg.c"
+   1:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+   2:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   ******************************************************************************
+   3:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @file    stm32f0xx_syscfg.c
+   4:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @author  MCD Application Team
+   5:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @version V1.5.0
+   6:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @date    05-December-2014
+   7:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          functionalities of the SYSCFG peripheral:
+   9:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *           + Remapping the memory mapped at 0x00000000  
+  10:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *           + Remapping the DMA channels
+  11:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *           + Enabling I2C fast mode plus driving capability for I2C pins   
+  12:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *           + Configuring the EXTI lines connection to the GPIO port
+  13:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *           + Configuring the CFGR2 features (Connecting some internal signal
+  14:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *             to the break input of TIM1)
+  15:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *   
+  16:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *  @verbatim
+  17:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****  ===============================================================================
+  18:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****                      ##### How to use this driver #####
+  19:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****  ===============================================================================
+  20:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     [..] 
+  21:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****                The SYSCFG registers can be accessed only when the SYSCFG 
+  22:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****                interface APB clock is enabled.
+  23:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****                To enable SYSCFG APB clock use:
+  24:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****                RCC_APBPeriphClockCmd(RCC_APBPeriph_SYSCFG, ENABLE).
+  25:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *  @endverbatim
+  26:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *
+  27:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   ******************************************************************************
+  28:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @attention
+  29:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *
+  30:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  31:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *
+  32:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  33:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * You may not use this file except in compliance with the License.
+  34:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * You may obtain a copy of the License at:
+  35:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *
+  36:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  37:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *
+  38:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * Unless required by applicable law or agreed to in writing, software 
+  39:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  40:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  41:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * See the License for the specific language governing permissions and
+  42:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * limitations under the License.
+  43:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *
+  44:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   ******************************************************************************
+  45:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+  46:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  47:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Includes ------------------------------------------------------------------*/
+  48:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** #include "stm32f0xx_syscfg.h"
+  49:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  50:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /** @addtogroup STM32F0xx_StdPeriph_Driver
+  51:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @{
+  52:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+  53:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  54:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /** @defgroup SYSCFG 
+  55:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief SYSCFG driver modules
+  56:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @{
+  57:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */ 
+  58:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  59:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Private typedef -----------------------------------------------------------*/
+  60:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Private define ------------------------------------------------------------*/
+  61:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Private macro -------------------------------------------------------------*/
+  62:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Private variables ---------------------------------------------------------*/
+  63:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Private function prototypes -----------------------------------------------*/
+  64:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /* Private functions ---------------------------------------------------------*/
+  65:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  66:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /** @defgroup SYSCFG_Private_Functions
+  67:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @{
+  68:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */ 
+  69:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  70:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /** @defgroup SYSCFG_Group1 SYSCFG Initialization and Configuration functions
+  71:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****  *  @brief   SYSCFG Initialization and Configuration functions 
+  72:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****  *
+  73:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** @verbatim
+  74:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****  ===============================================================================
+  75:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****         ##### SYSCFG Initialization and Configuration functions #####
+  76:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****  ===============================================================================
+  77:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  78:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** @endverbatim
+  79:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @{
+  80:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+  81:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+  82:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+  83:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Deinitializes the SYSCFG registers to their default reset values.
+  84:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  None
+  85:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+  86:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   MEM_MODE bits are not affected by APB reset.
+  87:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   MEM_MODE bits took the value from the user option bytes.
+  88:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   CFGR2 register is not affected by APB reset.
+  89:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   CLABBB configuration bits are locked when set.
+  90:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   To unlock the configuration, perform a system reset.
+  91:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+  92:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_DeInit(void)
+  93:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+  26              		.loc 1 93 0
+  27              		.cfi_startproc
+  94:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Set SYSCFG_CFGR1 register to reset value without affecting MEM_MODE bits */
+  95:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR1 &= SYSCFG_CFGR1_MEM_MODE;
+  28              		.loc 1 95 0
+  29 0000 074B     		ldr	r3, .L2
+  30 0002 1A68     		ldr	r2, [r3]
+  31 0004 0321     		mov	r1, #3
+  32 0006 0A40     		and	r2, r1
+  33 0008 1A60     		str	r2, [r3]
+  96:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Set EXTICRx registers to reset value */
+  97:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[0] = 0;
+  34              		.loc 1 97 0
+  35 000a 0022     		mov	r2, #0
+  36 000c 9A60     		str	r2, [r3, #8]
+  98:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[1] = 0;
+  37              		.loc 1 98 0
+  38 000e DA60     		str	r2, [r3, #12]
+  99:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[2] = 0;
+  39              		.loc 1 99 0
+  40 0010 1A61     		str	r2, [r3, #16]
+ 100:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[3] = 0;
+  41              		.loc 1 100 0
+  42 0012 5A61     		str	r2, [r3, #20]
+ 101:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Set CFGR2 register to reset value: clear SRAM parity error flag */
+ 102:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR2 |= (uint32_t) SYSCFG_CFGR2_SRAM_PE;
+  43              		.loc 1 102 0
+  44 0014 9A69     		ldr	r2, [r3, #24]
+  45 0016 FD31     		add	r1, r1, #253
+  46 0018 0A43     		orr	r2, r1
+  47 001a 9A61     		str	r2, [r3, #24]
+ 103:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+  48              		.loc 1 103 0
+  49              		@ sp needed
+  50 001c 7047     		bx	lr
+  51              	.L3:
+  52 001e C046     		.align	2
+  53              	.L2:
+  54 0020 00000140 		.word	1073807360
+  55              		.cfi_endproc
+  56              	.LFE33:
+  58              		.section	.text.SYSCFG_MemoryRemapConfig,"ax",%progbits
+  59              		.align	2
+  60              		.global	SYSCFG_MemoryRemapConfig
+  61              		.code	16
+  62              		.thumb_func
+  64              	SYSCFG_MemoryRemapConfig:
+  65              	.LFB34:
+ 104:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 105:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 106:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Configures the memory mapping at address 0x00000000.
+ 107:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  SYSCFG_MemoryRemap: selects the memory remapping.
+ 108:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 109:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_Flash: Main Flash memory mapped at 0x00000000  
+ 110:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_SystemMemory: System Flash memory mapped at 0x00000000
+ 111:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_MemoryRemap_SRAM: Embedded SRAM mapped at 0x00000000
+ 112:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+ 113:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 114:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_MemoryRemapConfig(uint32_t SYSCFG_MemoryRemap)
+ 115:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+  66              		.loc 1 115 0
+  67              		.cfi_startproc
+  68              	.LVL0:
+ 116:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   uint32_t tmpctrl = 0;
+ 117:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 118:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameter */
+ 119:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_MEMORY_REMAP(SYSCFG_MemoryRemap));
+ 120:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 121:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Get CFGR1 register value */
+ 122:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   tmpctrl = SYSCFG->CFGR1;
+  69              		.loc 1 122 0
+  70 0000 034A     		ldr	r2, .L5
+  71 0002 1368     		ldr	r3, [r2]
+  72              	.LVL1:
+ 123:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 124:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Clear MEM_MODE bits */
+ 125:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   tmpctrl &= (uint32_t) (~SYSCFG_CFGR1_MEM_MODE);
+  73              		.loc 1 125 0
+  74 0004 0321     		mov	r1, #3
+  75 0006 8B43     		bic	r3, r1
+  76              	.LVL2:
+ 126:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 127:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Set the new MEM_MODE bits value */
+ 128:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   tmpctrl |= (uint32_t) SYSCFG_MemoryRemap;
+  77              		.loc 1 128 0
+  78 0008 1843     		orr	r0, r3
+  79              	.LVL3:
+ 129:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 130:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Set CFGR1 register with the new memory remap configuration */
+ 131:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR1 = tmpctrl;
+  80              		.loc 1 131 0
+  81 000a 1060     		str	r0, [r2]
+ 132:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+  82              		.loc 1 132 0
+  83              		@ sp needed
+  84 000c 7047     		bx	lr
+  85              	.L6:
+  86 000e C046     		.align	2
+  87              	.L5:
+  88 0010 00000140 		.word	1073807360
+  89              		.cfi_endproc
+  90              	.LFE34:
+  92              		.section	.text.SYSCFG_DMAChannelRemapConfig,"ax",%progbits
+  93              		.align	2
+  94              		.global	SYSCFG_DMAChannelRemapConfig
+  95              		.code	16
+  96              		.thumb_func
+  98              	SYSCFG_DMAChannelRemapConfig:
+  99              	.LFB35:
+ 133:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 134:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 135:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Configure the DMA channels remapping.
+ 136:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  SYSCFG_DMARemap: selects the DMA channels remap.
+ 137:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 138:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_DMARemap_TIM17: Remap TIM17 DMA requests from channel1 to channel2
+ 139:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_DMARemap_TIM16: Remap TIM16 DMA requests from channel3 to channel4
+ 140:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_DMARemap_USART1Rx: Remap USART1 Rx DMA requests from channel3 to channel
+ 141:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_DMARemap_USART1Tx: Remap USART1 Tx DMA requests from channel2 to channel
+ 142:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_DMARemap_ADC1: Remap ADC1 DMA requests from channel1 to channel2
+ 143:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  NewState: new state of the DMA channel remapping. 
+ 144:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         This parameter can be: ENABLE or DISABLE.
+ 145:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   When enabled, DMA channel of the selected peripheral is remapped
+ 146:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   When disabled, Default DMA channel is mapped to the selected peripheral
+ 147:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   By default TIM17 DMA requests is mapped to channel 1, 
+ 148:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         use SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_TIM17, Enable) to remap
+ 149:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         TIM17 DMA requests to channel 2 and use
+ 150:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         SYSCFG_DMAChannelRemapConfig(SYSCFG_DMARemap_TIM17, Disable) to map
+ 151:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         TIM17 DMA requests to channel 1 (default mapping)
+ 152:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   This function is only used for STM32F030, STM32F031, STM32F042, STM32F072 and STM32F051
+ 153:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+ 154:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 155:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_DMAChannelRemapConfig(uint32_t SYSCFG_DMARemap, FunctionalState NewState)
+ 156:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 100              		.loc 1 156 0
+ 101              		.cfi_startproc
+ 102              	.LVL4:
+ 157:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameters */
+ 158:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_DMA_REMAP(SYSCFG_DMARemap));
+ 159:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 160:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 161:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   if (NewState != DISABLE)
+ 103              		.loc 1 161 0
+ 104 0000 0029     		cmp	r1, #0
+ 105 0002 04D0     		beq	.L8
+ 162:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   {
+ 163:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     /* Remap the DMA channel */
+ 164:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     SYSCFG->CFGR1 |= (uint32_t)SYSCFG_DMARemap;
+ 106              		.loc 1 164 0
+ 107 0004 044A     		ldr	r2, .L10
+ 108 0006 1368     		ldr	r3, [r2]
+ 109 0008 1843     		orr	r0, r3
+ 110              	.LVL5:
+ 111 000a 1060     		str	r0, [r2]
+ 112 000c 03E0     		b	.L7
+ 113              	.LVL6:
+ 114              	.L8:
+ 165:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   }
+ 166:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   else
+ 167:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   {
+ 168:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     /* use the default DMA channel mapping */
+ 169:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     SYSCFG->CFGR1 &= (uint32_t)(~SYSCFG_DMARemap);
+ 115              		.loc 1 169 0
+ 116 000e 024A     		ldr	r2, .L10
+ 117 0010 1368     		ldr	r3, [r2]
+ 118 0012 8343     		bic	r3, r0
+ 119 0014 1360     		str	r3, [r2]
+ 120              	.LVL7:
+ 121              	.L7:
+ 170:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   }
+ 171:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 122              		.loc 1 171 0
+ 123              		@ sp needed
+ 124 0016 7047     		bx	lr
+ 125              	.L11:
+ 126              		.align	2
+ 127              	.L10:
+ 128 0018 00000140 		.word	1073807360
+ 129              		.cfi_endproc
+ 130              	.LFE35:
+ 132              		.section	.text.SYSCFG_I2CFastModePlusConfig,"ax",%progbits
+ 133              		.align	2
+ 134              		.global	SYSCFG_I2CFastModePlusConfig
+ 135              		.code	16
+ 136              		.thumb_func
+ 138              	SYSCFG_I2CFastModePlusConfig:
+ 139              	.LFB36:
+ 172:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 173:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 174:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Configure the I2C fast mode plus driving capability.
+ 175:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  SYSCFG_I2CFastModePlus: selects the pin.
+ 176:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 177:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_PB6: Configure fast mode plus driving capability for PB6
+ 178:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_PB7: Configure fast mode plus driving capability for PB7
+ 179:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_PB8: Configure fast mode plus driving capability for PB8
+ 180:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_PB9: Configure fast mode plus driving capability for PB9
+ 181:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_PA9: Configure fast mode plus driving capability for PA9
+ 182:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_PA10: Configure fast mode plus driving capability for PA
+ 183:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_I2C1: Configure fast mode plus driving capability for PB
+ 184:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_I2CFastModePlus_I2C2: Configure fast mode plus driving capability for I2
+ 185:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *                
+ 186:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  NewState: new state of the DMA channel remapping. 
+ 187:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         This parameter can be:  ENABLE or DISABLE.
+ 188:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   ENABLE: Enable fast mode plus driving capability for selected I2C pin
+ 189:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   DISABLE: Disable fast mode plus driving capability for selected I2C pin
+ 190:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note  For I2C1, fast mode plus driving capability can be enabled on all selected
+ 191:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *        I2C1 pins using SYSCFG_I2CFastModePlus_I2C1 parameter or independently
+ 192:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *        on each one of the following pins PB6, PB7, PB8 and PB9.
+ 193:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note  For remaining I2C1 pins (PA14, PA15...) fast mode plus driving capability
+ 194:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *        can be enabled only by using SYSCFG_I2CFastModePlus_I2C1 parameter.
+ 195:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note  For all I2C2 pins fast mode plus driving capability can be enabled
+ 196:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *        only by using SYSCFG_I2CFastModePlus_I2C2 parameter.
+ 197:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+ 198:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 199:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_I2CFastModePlusConfig(uint32_t SYSCFG_I2CFastModePlus, FunctionalState NewState)
+ 200:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 140              		.loc 1 200 0
+ 141              		.cfi_startproc
+ 142              	.LVL8:
+ 201:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameters */
+ 202:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_I2C_FMP(SYSCFG_I2CFastModePlus));
+ 203:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 204:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 205:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   if (NewState != DISABLE)
+ 143              		.loc 1 205 0
+ 144 0000 0029     		cmp	r1, #0
+ 145 0002 04D0     		beq	.L13
+ 206:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   {
+ 207:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     /* Enable fast mode plus driving capability for selected pin */
+ 208:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     SYSCFG->CFGR1 |= (uint32_t)SYSCFG_I2CFastModePlus;
+ 146              		.loc 1 208 0
+ 147 0004 044A     		ldr	r2, .L15
+ 148 0006 1368     		ldr	r3, [r2]
+ 149 0008 1843     		orr	r0, r3
+ 150              	.LVL9:
+ 151 000a 1060     		str	r0, [r2]
+ 152 000c 03E0     		b	.L12
+ 153              	.LVL10:
+ 154              	.L13:
+ 209:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   }
+ 210:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   else
+ 211:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   {
+ 212:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     /* Disable fast mode plus driving capability for selected pin */
+ 213:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     SYSCFG->CFGR1 &= (uint32_t)(~SYSCFG_I2CFastModePlus);
+ 155              		.loc 1 213 0
+ 156 000e 024A     		ldr	r2, .L15
+ 157 0010 1368     		ldr	r3, [r2]
+ 158 0012 8343     		bic	r3, r0
+ 159 0014 1360     		str	r3, [r2]
+ 160              	.LVL11:
+ 161              	.L12:
+ 214:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   }
+ 215:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 162              		.loc 1 215 0
+ 163              		@ sp needed
+ 164 0016 7047     		bx	lr
+ 165              	.L16:
+ 166              		.align	2
+ 167              	.L15:
+ 168 0018 00000140 		.word	1073807360
+ 169              		.cfi_endproc
+ 170              	.LFE36:
+ 172              		.section	.text.SYSCFG_IRDAEnvSelection,"ax",%progbits
+ 173              		.align	2
+ 174              		.global	SYSCFG_IRDAEnvSelection
+ 175              		.code	16
+ 176              		.thumb_func
+ 178              	SYSCFG_IRDAEnvSelection:
+ 179              	.LFB37:
+ 216:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 217:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /** @brief  select the modulation envelope source 
+ 218:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param SYSCFG_IRDAEnv: select the envelope source. 
+ 219:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *        This parameter can be a value 
+ 220:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_IRDA_ENV_SEL_TIM16
+ 221:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_IRDA_ENV_SEL_USART1
+ 222:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_IRDA_ENV_SEL_USART4
+ 223:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None      
+ 224:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 225:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_IRDAEnvSelection(uint32_t SYSCFG_IRDAEnv)
+ 226:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 180              		.loc 1 226 0
+ 181              		.cfi_startproc
+ 182              	.LVL12:
+ 227:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameters */
+ 228:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_IRDA_ENV(SYSCFG_IRDAEnv));
+ 229:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   
+ 230:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR1 &= ~(SYSCFG_CFGR1_IRDA_ENV_SEL);
+ 183              		.loc 1 230 0
+ 184 0000 044B     		ldr	r3, .L18
+ 185 0002 1A68     		ldr	r2, [r3]
+ 186 0004 C021     		mov	r1, #192
+ 187 0006 8A43     		bic	r2, r1
+ 188 0008 1A60     		str	r2, [r3]
+ 231:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR1 |= (SYSCFG_IRDAEnv);
+ 189              		.loc 1 231 0
+ 190 000a 1A68     		ldr	r2, [r3]
+ 191 000c 1043     		orr	r0, r2
+ 192              	.LVL13:
+ 193 000e 1860     		str	r0, [r3]
+ 232:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 194              		.loc 1 232 0
+ 195              		@ sp needed
+ 196 0010 7047     		bx	lr
+ 197              	.L19:
+ 198 0012 C046     		.align	2
+ 199              	.L18:
+ 200 0014 00000140 		.word	1073807360
+ 201              		.cfi_endproc
+ 202              	.LFE37:
+ 204              		.section	.text.SYSCFG_EXTILineConfig,"ax",%progbits
+ 205              		.align	2
+ 206              		.global	SYSCFG_EXTILineConfig
+ 207              		.code	16
+ 208              		.thumb_func
+ 210              	SYSCFG_EXTILineConfig:
+ 211              	.LFB38:
+ 233:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 234:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 235:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Selects the GPIO pin used as EXTI Line.
+ 236:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  EXTI_PortSourceGPIOx: selects the GPIO port to be used as source 
+ 237:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *                               for EXTI lines where x can be (A, B, C, D, E or F).
+ 238:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   GPIOE is available only for STM32F072.
+ 239:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   GPIOD is not available for STM32F031.    
+ 240:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  EXTI_PinSourcex: specifies the EXTI line to be configured.
+ 241:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   This parameter can be EXTI_PinSourcex where x can be:
+ 242:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         For STM32F051 and STM32F030: (0..15) for GPIOA, GPIOB, GPIOC, (2) for GPIOD and (0..1, 
+ 243:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         For STM32F072: (0..15) for GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, (0..10) for GPIOF.
+ 244:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         For STM32F031: (0..15) for GPIOA, GPIOB, (13..15) for GPIOC and (0..1, 6..7) for GPIOF.
+ 245:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+ 246:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 247:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_EXTILineConfig(uint8_t EXTI_PortSourceGPIOx, uint8_t EXTI_PinSourcex)
+ 248:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 212              		.loc 1 248 0
+ 213              		.cfi_startproc
+ 214              	.LVL14:
+ 215 0000 10B5     		push	{r4, lr}
+ 216              	.LCFI0:
+ 217              		.cfi_def_cfa_offset 8
+ 218              		.cfi_offset 4, -8
+ 219              		.cfi_offset 14, -4
+ 220              	.LVL15:
+ 249:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   uint32_t tmp = 0x00;
+ 250:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 251:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameters */
+ 252:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_EXTI_PORT_SOURCE(EXTI_PortSourceGPIOx));
+ 253:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_EXTI_PIN_SOURCE(EXTI_PinSourcex));
+ 254:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   
+ 255:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   tmp = ((uint32_t)0x0F) << (0x04 * (EXTI_PinSourcex & (uint8_t)0x03));
+ 221              		.loc 1 255 0
+ 222 0002 0323     		mov	r3, #3
+ 223 0004 0B40     		and	r3, r1
+ 224 0006 9B00     		lsl	r3, r3, #2
+ 225              	.LVL16:
+ 226 0008 8908     		lsr	r1, r1, #2
+ 227              	.LVL17:
+ 228 000a 8900     		lsl	r1, r1, #2
+ 229 000c 064A     		ldr	r2, .L21
+ 230 000e 9446     		mov	ip, r2
+ 231 0010 6144     		add	r1, r1, ip
+ 256:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+ 232              		.loc 1 256 0
+ 233 0012 8A68     		ldr	r2, [r1, #8]
+ 255:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] &= ~tmp;
+ 234              		.loc 1 255 0
+ 235 0014 0F24     		mov	r4, #15
+ 236 0016 9C40     		lsl	r4, r4, r3
+ 237              	.LVL18:
+ 238              		.loc 1 256 0
+ 239 0018 A243     		bic	r2, r4
+ 240 001a 8A60     		str	r2, [r1, #8]
+ 257:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->EXTICR[EXTI_PinSourcex >> 0x02] |= (((uint32_t)EXTI_PortSourceGPIOx) << (0x04 * (EXTI_Pin
+ 241              		.loc 1 257 0
+ 242 001c 8A68     		ldr	r2, [r1, #8]
+ 243 001e 9840     		lsl	r0, r0, r3
+ 244              	.LVL19:
+ 245 0020 031C     		mov	r3, r0
+ 246 0022 1343     		orr	r3, r2
+ 247 0024 8B60     		str	r3, [r1, #8]
+ 258:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 248              		.loc 1 258 0
+ 249              		@ sp needed
+ 250              	.LVL20:
+ 251 0026 10BD     		pop	{r4, pc}
+ 252              	.L22:
+ 253              		.align	2
+ 254              	.L21:
+ 255 0028 00000140 		.word	1073807360
+ 256              		.cfi_endproc
+ 257              	.LFE38:
+ 259              		.section	.text.SYSCFG_GetPendingIT,"ax",%progbits
+ 260              		.align	2
+ 261              		.global	SYSCFG_GetPendingIT
+ 262              		.code	16
+ 263              		.thumb_func
+ 265              	SYSCFG_GetPendingIT:
+ 266              	.LFB39:
+ 259:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 260:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 261:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  check ISR wrapper: Allow to determine interrupt source per line .
+ 262:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  IT_Source: specifies the interrupt source to check.
+ 263:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 264:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EWDG                       EWDG has expired 
+ 265:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_PVDOUT                     Power voltage detection Interrupt 
+ 266:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_VDDIO2                     VDDIO2 Interrupt
+ 267:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_RTC_WAKEUP                 RTC WAKEUP -> exti[20] Interrupt 
+ 268:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_RTC_TSTAMP                 RTC Time Stamp -> exti[19] interrupt 
+ 269:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_RTC_ALRA                   RTC Alarm -> exti[17] interrupt
+ 270:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_FLASH_ITF                  Flash ITF Interrupt
+ 271:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_CRS                        CRS Interrupt 
+ 272:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_CLK_CTRL                   CLK Control Interrupt 
+ 273:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI0                      External Interrupt 0 
+ 274:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI1                      External Interrupt 1 
+ 275:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI2                      External Interrupt 2 
+ 276:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI3                      External Interrupt 3 
+ 277:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI4                      External Interrupt 4 
+ 278:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI5                      External Interrupt 5 
+ 279:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI6                      External Interrupt 6 
+ 280:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI7                      External Interrupt 7 
+ 281:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI8                      External Interrupt 8 
+ 282:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI9                      External Interrupt 9 
+ 283:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI10                     External Interrupt 10 
+ 284:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI11                     External Interrupt 11 
+ 285:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI12                     External Interrupt 12 
+ 286:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI13                     External Interrupt 13 
+ 287:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI14                     External Interrupt 14 
+ 288:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_EXTI15                     External Interrupt 15 
+ 289:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TSC_EOA                    Touch control EOA Interrupt 
+ 290:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TSC_MCE                    Touch control MCE Interrupt 
+ 291:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH1                   DMA1 Channel 1 Interrupt 
+ 292:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH2                   DMA1 Channel 2 Interrupt 
+ 293:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH3                   DMA1 Channel 3 Interrupt 
+ 294:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA2_CH1                   DMA2 Channel 1 Interrupt 
+ 295:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA2_CH2                   DMA2 Channel 2 Interrupt 
+ 296:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH4                   DMA1 Channel 4 Interrupt  
+ 297:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH5                   DMA1 Channel 5 Interrupt 
+ 298:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH6                   DMA1 Channel 6 Interrupt 
+ 299:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA1_CH7                   DMA1 Channel 7 Interrupt 
+ 300:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA2_CH3                   DMA2 Channel 3 Interrupt 
+ 301:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA2_CH4                   DMA2 Channel 4 Interrupt 
+ 302:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DMA2_CH5                   DMA2 Channel 5 Interrupt 
+ 303:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_ADC                        ADC Interrupt 
+ 304:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_COMP1                      COMP1 Interrupt -> exti[21] 
+ 305:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_COMP2                      COMP2 Interrupt -> exti[21] 
+ 306:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM1_BRK                   TIM1 BRK Interrupt 
+ 307:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM1_UPD                   TIM1 UPD Interrupt 
+ 308:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM1_TRG                   TIM1 TRG Interrupt 
+ 309:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM1_CCU                   TIM1 CCU Interrupt 
+ 310:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM1_CC                    TIM1 CC Interrupt 
+ 311:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM2                       TIM2 Interrupt 
+ 312:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM3                       TIM3 Interrupt 
+ 313:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_DAC                        DAC Interrupt 
+ 314:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM6                       TIM6 Interrupt 
+ 315:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM7                       TIM7 Interrupt 
+ 316:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM14                      TIM14 Interrupt 
+ 317:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM15                      TIM15 Interrupt 
+ 318:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM16                      TIM16 Interrupt 
+ 319:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_TIM17                      TIM17 Interrupt 
+ 320:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_I2C1                       I2C1 Interrupt -> exti[23] 
+ 321:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_I2C2                       I2C2 Interrupt 
+ 322:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_SPI1                       I2C1 Interrupt -> exti[23] 
+ 323:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_SPI2                       SPI1 Interrupt 
+ 324:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART1                     USART1 GLB Interrupt -> exti[25] 
+ 325:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART2                     USART2 GLB Interrupt -> exti[26] 
+ 326:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART3                     USART3 Interrupt 
+ 327:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART4                     USART4 Interrupt 
+ 328:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART5                     USART5 Interrupt 
+ 329:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART6                     USART6 Interrupt 
+ 330:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART7                     USART7 Interrupt 
+ 331:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_USART8                     USART8 Interrupt 
+ 332:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_CAN                        CAN Interrupt 
+ 333:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg ITLINE_CEC                        CEC Interrupt 
+ 334:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval The new state of IT_LINE_SR.
+ 335:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 336:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** uint32_t  SYSCFG_GetPendingIT(uint32_t ITSourceLine)
+ 337:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 267              		.loc 1 337 0
+ 268              		.cfi_startproc
+ 269              	.LVL21:
+ 338:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****    assert_param(IS_SYSCFG_ITLINE(ITSourceLine));
+ 339:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****    return(SYSCFG->IT_LINE_SR[(ITSourceLine >> 0x18)] & (ITSourceLine & 0x00FFFFFF));
+ 270              		.loc 1 339 0
+ 271 0000 030E     		lsr	r3, r0, #24
+ 272 0002 2033     		add	r3, r3, #32
+ 273 0004 9B00     		lsl	r3, r3, #2
+ 274 0006 034A     		ldr	r2, .L24
+ 275 0008 9B58     		ldr	r3, [r3, r2]
+ 276 000a 0002     		lsl	r0, r0, #8
+ 277              	.LVL22:
+ 278 000c 000A     		lsr	r0, r0, #8
+ 279 000e 1840     		and	r0, r3
+ 340:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 280              		.loc 1 340 0
+ 281              		@ sp needed
+ 282 0010 7047     		bx	lr
+ 283              	.L25:
+ 284 0012 C046     		.align	2
+ 285              	.L24:
+ 286 0014 00000140 		.word	1073807360
+ 287              		.cfi_endproc
+ 288              	.LFE39:
+ 290              		.section	.text.SYSCFG_BreakConfig,"ax",%progbits
+ 291              		.align	2
+ 292              		.global	SYSCFG_BreakConfig
+ 293              		.code	16
+ 294              		.thumb_func
+ 296              	SYSCFG_BreakConfig:
+ 297              	.LFB40:
+ 341:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 342:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 343:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Connect the selected parameter to the break input of TIM1.
+ 344:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @note   The selected configuration is locked and can be unlocked by system reset
+ 345:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  SYSCFG_Break: selects the configuration to be connected to break
+ 346:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *         input of TIM1
+ 347:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be any combination of the following values:
+ 348:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_Break_PVD: Connects the PVD event to the Break Input of TIM1,, not avail
+ 349:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_Break_SRAMParity: Connects the SRAM_PARITY error signal to the Break Inp
+ 350:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_Break_Lockup: Connects Lockup output of CortexM0 to the break input of T
+ 351:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+ 352:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 353:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
+ 354:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 298              		.loc 1 354 0
+ 299              		.cfi_startproc
+ 300              	.LVL23:
+ 355:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameter */
+ 356:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_LOCK_CONFIG(SYSCFG_Break));
+ 357:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 358:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Break;
+ 301              		.loc 1 358 0
+ 302 0000 024A     		ldr	r2, .L27
+ 303 0002 9369     		ldr	r3, [r2, #24]
+ 304 0004 1843     		orr	r0, r3
+ 305              	.LVL24:
+ 306 0006 9061     		str	r0, [r2, #24]
+ 359:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 307              		.loc 1 359 0
+ 308              		@ sp needed
+ 309 0008 7047     		bx	lr
+ 310              	.L28:
+ 311 000a C046     		.align	2
+ 312              	.L27:
+ 313 000c 00000140 		.word	1073807360
+ 314              		.cfi_endproc
+ 315              	.LFE40:
+ 317              		.section	.text.SYSCFG_GetFlagStatus,"ax",%progbits
+ 318              		.align	2
+ 319              		.global	SYSCFG_GetFlagStatus
+ 320              		.code	16
+ 321              		.thumb_func
+ 323              	SYSCFG_GetFlagStatus:
+ 324              	.LFB41:
+ 360:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 361:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 362:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Checks whether the specified SYSCFG flag is set or not.
+ 363:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  SYSCFG_Flag: specifies the SYSCFG flag to check. 
+ 364:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be one of the following values:
+ 365:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_FLAG_PE: SRAM parity error flag.
+ 366:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval The new state of SYSCFG_Flag (SET or RESET).
+ 367:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 368:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** FlagStatus SYSCFG_GetFlagStatus(uint32_t SYSCFG_Flag)
+ 369:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 325              		.loc 1 369 0
+ 326              		.cfi_startproc
+ 327              	.LVL25:
+ 370:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   FlagStatus bitstatus = RESET;
+ 371:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 372:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameter */
+ 373:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
+ 374:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 375:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the status of the specified SPI flag */
+ 376:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   if ((SYSCFG->CFGR2 & SYSCFG_CFGR2_SRAM_PE) != (uint32_t)RESET)
+ 328              		.loc 1 376 0
+ 329 0000 024B     		ldr	r3, .L30
+ 330 0002 9869     		ldr	r0, [r3, #24]
+ 331              	.LVL26:
+ 332 0004 C005     		lsl	r0, r0, #23
+ 333              	.LVL27:
+ 377:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   {
+ 378:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     /* SYSCFG_Flag is set */
+ 379:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     bitstatus = SET;
+ 380:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   }
+ 381:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   else
+ 382:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   {
+ 383:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     /* SYSCFG_Flag is reset */
+ 384:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****     bitstatus = RESET;
+ 385:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   }
+ 386:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Return the SYSCFG_Flag status */
+ 387:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   return  bitstatus;
+ 334              		.loc 1 387 0
+ 335 0006 C00F     		lsr	r0, r0, #31
+ 388:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 336              		.loc 1 388 0
+ 337              		@ sp needed
+ 338 0008 7047     		bx	lr
+ 339              	.L31:
+ 340 000a C046     		.align	2
+ 341              	.L30:
+ 342 000c 00000140 		.word	1073807360
+ 343              		.cfi_endproc
+ 344              	.LFE41:
+ 346              		.section	.text.SYSCFG_ClearFlag,"ax",%progbits
+ 347              		.align	2
+ 348              		.global	SYSCFG_ClearFlag
+ 349              		.code	16
+ 350              		.thumb_func
+ 352              	SYSCFG_ClearFlag:
+ 353              	.LFB42:
+ 389:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 390:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** /**
+ 391:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @brief  Clear the selected SYSCFG flag.
+ 392:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @param  SYSCFG_Flag: selects the flag to be cleared.
+ 393:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *          This parameter can be any combination of the following values:
+ 394:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   *            @arg SYSCFG_FLAG_PE: SRAM parity error flag.
+ 395:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   * @retval None
+ 396:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   */
+ 397:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** void SYSCFG_ClearFlag(uint32_t SYSCFG_Flag)
+ 398:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** {
+ 354              		.loc 1 398 0
+ 355              		.cfi_startproc
+ 356              	.LVL28:
+ 399:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   /* Check the parameter */
+ 400:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   assert_param(IS_SYSCFG_FLAG(SYSCFG_Flag));
+ 401:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** 
+ 402:.\StdPeriphLib\src/stm32f0xx_syscfg.c ****   SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Flag;
+ 357              		.loc 1 402 0
+ 358 0000 024A     		ldr	r2, .L33
+ 359 0002 9369     		ldr	r3, [r2, #24]
+ 360 0004 1843     		orr	r0, r3
+ 361              	.LVL29:
+ 362 0006 9061     		str	r0, [r2, #24]
+ 403:.\StdPeriphLib\src/stm32f0xx_syscfg.c **** }
+ 363              		.loc 1 403 0
+ 364              		@ sp needed
+ 365 0008 7047     		bx	lr
+ 366              	.L34:
+ 367 000a C046     		.align	2
+ 368              	.L33:
+ 369 000c 00000140 		.word	1073807360
+ 370              		.cfi_endproc
+ 371              	.LFE42:
+ 373              		.text
+ 374              	.Letext0:
+ 375              		.file 2 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 376              		.file 3 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 377              		.file 4 ".\\CMSIS/stm32f0xx.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f0xx_syscfg.c
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:18     .text.SYSCFG_DeInit:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:23     .text.SYSCFG_DeInit:00000000 SYSCFG_DeInit
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:54     .text.SYSCFG_DeInit:00000020 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:59     .text.SYSCFG_MemoryRemapConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:64     .text.SYSCFG_MemoryRemapConfig:00000000 SYSCFG_MemoryRemapConfig
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:88     .text.SYSCFG_MemoryRemapConfig:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:93     .text.SYSCFG_DMAChannelRemapConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:98     .text.SYSCFG_DMAChannelRemapConfig:00000000 SYSCFG_DMAChannelRemapConfig
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:128    .text.SYSCFG_DMAChannelRemapConfig:00000018 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:133    .text.SYSCFG_I2CFastModePlusConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:138    .text.SYSCFG_I2CFastModePlusConfig:00000000 SYSCFG_I2CFastModePlusConfig
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:168    .text.SYSCFG_I2CFastModePlusConfig:00000018 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:173    .text.SYSCFG_IRDAEnvSelection:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:178    .text.SYSCFG_IRDAEnvSelection:00000000 SYSCFG_IRDAEnvSelection
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:200    .text.SYSCFG_IRDAEnvSelection:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:205    .text.SYSCFG_EXTILineConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:210    .text.SYSCFG_EXTILineConfig:00000000 SYSCFG_EXTILineConfig
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:255    .text.SYSCFG_EXTILineConfig:00000028 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:260    .text.SYSCFG_GetPendingIT:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:265    .text.SYSCFG_GetPendingIT:00000000 SYSCFG_GetPendingIT
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:286    .text.SYSCFG_GetPendingIT:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:291    .text.SYSCFG_BreakConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:296    .text.SYSCFG_BreakConfig:00000000 SYSCFG_BreakConfig
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:313    .text.SYSCFG_BreakConfig:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:318    .text.SYSCFG_GetFlagStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:323    .text.SYSCFG_GetFlagStatus:00000000 SYSCFG_GetFlagStatus
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:342    .text.SYSCFG_GetFlagStatus:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:347    .text.SYSCFG_ClearFlag:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:352    .text.SYSCFG_ClearFlag:00000000 SYSCFG_ClearFlag
+C:\Users\Dima\AppData\Local\Temp\ccoNSlsa.s:369    .text.SYSCFG_ClearFlag:0000000c $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

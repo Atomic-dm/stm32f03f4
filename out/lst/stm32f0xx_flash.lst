@@ -1,0 +1,3178 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"stm32f0xx_flash.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.FLASH_SetLatency,"ax",%progbits
+  18              		.align	2
+  19              		.global	FLASH_SetLatency
+  20              		.code	16
+  21              		.thumb_func
+  23              	FLASH_SetLatency:
+  24              	.LFB33:
+  25              		.file 1 ".\\StdPeriphLib\\src/stm32f0xx_flash.c"
+   1:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+   2:.\StdPeriphLib\src/stm32f0xx_flash.c ****   ******************************************************************************
+   3:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @file    stm32f0xx_flash.c
+   4:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @author  MCD Application Team
+   5:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @version V1.5.0
+   6:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @date    05-December-2014
+   7:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          functionalities of the FLASH peripheral:
+   9:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *            - FLASH Interface configuration
+  10:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *            - FLASH Memory Programming
+  11:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *            - Option Bytes Programming
+  12:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *            - Interrupts and flags management
+  13:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *
+  14:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *  @verbatim
+  15:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+  16:.\StdPeriphLib\src/stm32f0xx_flash.c ****                     ##### How to use this driver #####
+  17:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+  18:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] This driver provides functions to configure and program the Flash 
+  19:.\StdPeriphLib\src/stm32f0xx_flash.c ****          memory of all STM32F0xx devices. These functions are split in 4 groups
+  20:.\StdPeriphLib\src/stm32f0xx_flash.c ****          (#) FLASH Interface configuration functions: this group includes the 
+  21:.\StdPeriphLib\src/stm32f0xx_flash.c ****              management of following features:
+  22:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Set the latency
+  23:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Enable/Disable the prefetch buffer
+  24:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  25:.\StdPeriphLib\src/stm32f0xx_flash.c ****          (#) FLASH Memory Programming functions: this group includes all needed 
+  26:.\StdPeriphLib\src/stm32f0xx_flash.c ****              functions to erase and program the main memory:
+  27:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Lock and Unlock the Flash interface.
+  28:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Erase function: Erase Page, erase all pages.
+  29:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Program functions: Half Word and Word write.
+  30:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  31:.\StdPeriphLib\src/stm32f0xx_flash.c ****          (#) FLASH Option Bytes Programming functions: this group includes all 
+  32:.\StdPeriphLib\src/stm32f0xx_flash.c ****              needed functions to:
+  33:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Lock and Unlock the Flash Option bytes.
+  34:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Launch the Option Bytes loader
+  35:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Erase the Option Bytes
+  36:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++)Set/Reset the write protection
+  37:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Set the Read protection Level
+  38:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Program the user option Bytes
+  39:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Set/Reset the BOOT1 bit
+  40:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Enable/Disable the VDDA Analog Monitoring
+  41:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Get the user option bytes
+  42:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Get the Write protection
+  43:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Get the read protection status
+  44:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  45:.\StdPeriphLib\src/stm32f0xx_flash.c ****          (#) FLASH Interrupts and flag management functions: this group includes 
+  46:.\StdPeriphLib\src/stm32f0xx_flash.c ****              all needed functions to:
+  47:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Enable/Disable the flash interrupt sources
+  48:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Get flags status
+  49:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Clear flags
+  50:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Get Flash operation status
+  51:.\StdPeriphLib\src/stm32f0xx_flash.c ****              (++) Wait for last flash operation
+  52:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  53:.\StdPeriphLib\src/stm32f0xx_flash.c ****  @endverbatim
+  54:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+  55:.\StdPeriphLib\src/stm32f0xx_flash.c ****   ******************************************************************************
+  56:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @attention
+  57:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *
+  58:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  59:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *
+  60:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  61:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * You may not use this file except in compliance with the License.
+  62:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * You may obtain a copy of the License at:
+  63:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *
+  64:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  65:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *
+  66:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * Unless required by applicable law or agreed to in writing, software 
+  67:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  68:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  69:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * See the License for the specific language governing permissions and
+  70:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * limitations under the License.
+  71:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *
+  72:.\StdPeriphLib\src/stm32f0xx_flash.c ****   ******************************************************************************
+  73:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+  74:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  75:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Includes ------------------------------------------------------------------*/
+  76:.\StdPeriphLib\src/stm32f0xx_flash.c **** #include "stm32f0xx_flash.h"
+  77:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  78:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @addtogroup STM32F0xx_StdPeriph_Driver
+  79:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+  80:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+  81:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  82:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @defgroup FLASH 
+  83:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief FLASH driver modules
+  84:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+  85:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */ 
+  86:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  87:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Private typedef -----------------------------------------------------------*/
+  88:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Private define ------------------------------------------------------------*/
+  89:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Private macro -------------------------------------------------------------*/
+  90:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Private variables ---------------------------------------------------------*/
+  91:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Private function prototypes -----------------------------------------------*/
+  92:.\StdPeriphLib\src/stm32f0xx_flash.c **** /* Private functions ---------------------------------------------------------*/
+  93:.\StdPeriphLib\src/stm32f0xx_flash.c ****  
+  94:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @defgroup FLASH_Private_Functions
+  95:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+  96:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */ 
+  97:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+  98:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @defgroup FLASH_Group1 FLASH Interface configuration functions
+  99:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *  @brief   FLASH Interface configuration functions 
+ 100:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *
+ 101:.\StdPeriphLib\src/stm32f0xx_flash.c **** @verbatim   
+ 102:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+ 103:.\StdPeriphLib\src/stm32f0xx_flash.c ****                ##### FLASH Interface configuration functions #####
+ 104:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+ 105:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 106:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] FLASH_Interface configuration_Functions, includes the following functions:
+ 107:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_SetLatency(uint32_t FLASH_Latency):
+ 108:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] To correctly read data from Flash memory, the number of wait states (LATENCY) 
+ 109:.\StdPeriphLib\src/stm32f0xx_flash.c ****      must be correctly programmed according to the frequency of the CPU clock (HCLK) 
+ 110:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..]
+ 111:.\StdPeriphLib\src/stm32f0xx_flash.c ****         +--------------------------------------------- +
+ 112:.\StdPeriphLib\src/stm32f0xx_flash.c ****         |  Wait states  |   HCLK clock frequency (MHz) |
+ 113:.\StdPeriphLib\src/stm32f0xx_flash.c ****         |---------------|------------------------------|
+ 114:.\StdPeriphLib\src/stm32f0xx_flash.c ****         |0WS(1CPU cycle)|       0 < HCLK <= 24         |
+ 115:.\StdPeriphLib\src/stm32f0xx_flash.c ****         |---------------|------------------------------|
+ 116:.\StdPeriphLib\src/stm32f0xx_flash.c ****         |1WS(2CPU cycle)|       24 < HCLK <= 48        |
+ 117:.\StdPeriphLib\src/stm32f0xx_flash.c ****         +----------------------------------------------+
+ 118:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..]
+ 119:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_PrefetchBufferCmd(FunctionalState NewState);
+ 120:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..]
+ 121:.\StdPeriphLib\src/stm32f0xx_flash.c ****      All these functions don't need the unlock sequence.
+ 122:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 123:.\StdPeriphLib\src/stm32f0xx_flash.c **** @endverbatim
+ 124:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+ 125:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 126:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 127:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 128:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Sets the code latency value.
+ 129:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  FLASH_Latency: specifies the FLASH Latency value.
+ 130:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 131:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_Latency_0: FLASH Zero Latency cycle
+ 132:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_Latency_1: FLASH One Latency cycle
+ 133:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 134:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 135:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_SetLatency(uint32_t FLASH_Latency)
+ 136:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+  26              		.loc 1 136 0
+  27              		.cfi_startproc
+  28              	.LVL0:
+ 137:.\StdPeriphLib\src/stm32f0xx_flash.c ****    uint32_t tmpreg = 0;
+ 138:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 139:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 140:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_LATENCY(FLASH_Latency));
+ 141:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 142:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Read the ACR register */
+ 143:.\StdPeriphLib\src/stm32f0xx_flash.c ****   tmpreg = FLASH->ACR;  
+  29              		.loc 1 143 0
+  30 0000 034A     		ldr	r2, .L2
+  31 0002 1368     		ldr	r3, [r2]
+  32              	.LVL1:
+ 144:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 145:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Sets the Latency value */
+ 146:.\StdPeriphLib\src/stm32f0xx_flash.c ****   tmpreg &= (uint32_t) (~((uint32_t)FLASH_ACR_LATENCY));
+  33              		.loc 1 146 0
+  34 0004 0121     		mov	r1, #1
+  35 0006 8B43     		bic	r3, r1
+  36              	.LVL2:
+ 147:.\StdPeriphLib\src/stm32f0xx_flash.c ****   tmpreg |= FLASH_Latency;
+  37              		.loc 1 147 0
+  38 0008 1843     		orr	r0, r3
+  39              	.LVL3:
+ 148:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 149:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Write the ACR register */
+ 150:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH->ACR = tmpreg;
+  40              		.loc 1 150 0
+  41 000a 1060     		str	r0, [r2]
+ 151:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+  42              		.loc 1 151 0
+  43              		@ sp needed
+  44 000c 7047     		bx	lr
+  45              	.L3:
+  46 000e C046     		.align	2
+  47              	.L2:
+  48 0010 00200240 		.word	1073881088
+  49              		.cfi_endproc
+  50              	.LFE33:
+  52              		.section	.text.FLASH_PrefetchBufferCmd,"ax",%progbits
+  53              		.align	2
+  54              		.global	FLASH_PrefetchBufferCmd
+  55              		.code	16
+  56              		.thumb_func
+  58              	FLASH_PrefetchBufferCmd:
+  59              	.LFB34:
+ 152:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 153:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 154:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Enables or disables the Prefetch Buffer.
+ 155:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  NewState: new state of the FLASH prefetch buffer.
+ 156:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be: ENABLE or DISABLE. 
+ 157:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 158:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 159:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_PrefetchBufferCmd(FunctionalState NewState)
+ 160:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+  60              		.loc 1 160 0
+  61              		.cfi_startproc
+  62              	.LVL4:
+ 161:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 162:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 163:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 164:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(NewState != DISABLE)
+  63              		.loc 1 164 0
+  64 0000 0028     		cmp	r0, #0
+  65 0002 05D0     		beq	.L5
+ 165:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 166:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+  66              		.loc 1 166 0
+  67 0004 054A     		ldr	r2, .L7
+  68 0006 1168     		ldr	r1, [r2]
+  69 0008 1023     		mov	r3, #16
+  70 000a 0B43     		orr	r3, r1
+  71 000c 1360     		str	r3, [r2]
+  72 000e 04E0     		b	.L4
+  73              	.L5:
+ 167:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 168:.\StdPeriphLib\src/stm32f0xx_flash.c ****   else
+ 169:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 170:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->ACR &= (uint32_t)(~((uint32_t)FLASH_ACR_PRFTBE));
+  74              		.loc 1 170 0
+  75 0010 024A     		ldr	r2, .L7
+  76 0012 1368     		ldr	r3, [r2]
+  77 0014 1021     		mov	r1, #16
+  78 0016 8B43     		bic	r3, r1
+  79 0018 1360     		str	r3, [r2]
+  80              	.L4:
+ 171:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 172:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+  81              		.loc 1 172 0
+  82              		@ sp needed
+  83 001a 7047     		bx	lr
+  84              	.L8:
+  85              		.align	2
+  86              	.L7:
+  87 001c 00200240 		.word	1073881088
+  88              		.cfi_endproc
+  89              	.LFE34:
+  91              		.section	.text.FLASH_GetPrefetchBufferStatus,"ax",%progbits
+  92              		.align	2
+  93              		.global	FLASH_GetPrefetchBufferStatus
+  94              		.code	16
+  95              		.thumb_func
+  97              	FLASH_GetPrefetchBufferStatus:
+  98              	.LFB35:
+ 173:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 174:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 175:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Checks whether the FLASH Prefetch Buffer status is set or not.
+ 176:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 177:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Prefetch Buffer Status (SET or RESET).
+ 178:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 179:.\StdPeriphLib\src/stm32f0xx_flash.c **** FlagStatus FLASH_GetPrefetchBufferStatus(void)
+ 180:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+  99              		.loc 1 180 0
+ 100              		.cfi_startproc
+ 101              	.LVL5:
+ 181:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FlagStatus bitstatus = RESET;
+ 182:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 183:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if ((FLASH->ACR & FLASH_ACR_PRFTBS) != (uint32_t)RESET)
+ 102              		.loc 1 183 0
+ 103 0000 024B     		ldr	r3, .L10
+ 104 0002 1868     		ldr	r0, [r3]
+ 105              	.LVL6:
+ 106 0004 8006     		lsl	r0, r0, #26
+ 107              	.LVL7:
+ 184:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 185:.\StdPeriphLib\src/stm32f0xx_flash.c ****     bitstatus = SET;
+ 186:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 187:.\StdPeriphLib\src/stm32f0xx_flash.c ****   else
+ 188:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 189:.\StdPeriphLib\src/stm32f0xx_flash.c ****     bitstatus = RESET;
+ 190:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 191:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the new state of FLASH Prefetch Buffer Status (SET or RESET) */
+ 192:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return bitstatus; 
+ 108              		.loc 1 192 0
+ 109 0006 C00F     		lsr	r0, r0, #31
+ 193:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 110              		.loc 1 193 0
+ 111              		@ sp needed
+ 112 0008 7047     		bx	lr
+ 113              	.L11:
+ 114 000a C046     		.align	2
+ 115              	.L10:
+ 116 000c 00200240 		.word	1073881088
+ 117              		.cfi_endproc
+ 118              	.LFE35:
+ 120              		.section	.text.FLASH_Unlock,"ax",%progbits
+ 121              		.align	2
+ 122              		.global	FLASH_Unlock
+ 123              		.code	16
+ 124              		.thumb_func
+ 126              	FLASH_Unlock:
+ 127              	.LFB36:
+ 194:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 195:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 196:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @}
+ 197:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 198:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 199:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @defgroup FLASH_Group2 FLASH Memory Programming functions
+ 200:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *  @brief   FLASH Memory Programming functions
+ 201:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *
+ 202:.\StdPeriphLib\src/stm32f0xx_flash.c **** @verbatim   
+ 203:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+ 204:.\StdPeriphLib\src/stm32f0xx_flash.c ****                 ##### FLASH Memory Programming functions #####
+ 205:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+ 206:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 207:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] The FLASH Memory Programming functions, includes the following functions:
+ 208:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_Unlock(void);
+ 209:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_Lock(void);
+ 210:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_ErasePage(uint32_t Page_Address);
+ 211:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_EraseAllPages(void);
+ 212:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data);
+ 213:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data);
+ 214:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 215:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] Any operation of erase or program should follow these steps:
+ 216:.\StdPeriphLib\src/stm32f0xx_flash.c ****        
+ 217:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (#) Call the FLASH_Unlock() function to enable the flash control register and 
+ 218:.\StdPeriphLib\src/stm32f0xx_flash.c ****            program memory access
+ 219:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (#) Call the desired function to erase page or program data
+ 220:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (#) Call the FLASH_Lock() to disable the flash program memory access 
+ 221:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (recommended to protect the FLASH memory against possible unwanted operation)
+ 222:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 223:.\StdPeriphLib\src/stm32f0xx_flash.c **** @endverbatim
+ 224:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+ 225:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 226:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 227:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 228:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Unlocks the FLASH control register and program memory access.
+ 229:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 230:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 231:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 232:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_Unlock(void)
+ 233:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 128              		.loc 1 233 0
+ 129              		.cfi_startproc
+ 234:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if((FLASH->CR & FLASH_CR_LOCK) != RESET)
+ 130              		.loc 1 234 0
+ 131 0000 044B     		ldr	r3, .L14
+ 132 0002 1B69     		ldr	r3, [r3, #16]
+ 133 0004 1B06     		lsl	r3, r3, #24
+ 134 0006 04D5     		bpl	.L12
+ 235:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 236:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Unlocking the program memory access */
+ 237:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->KEYR = FLASH_FKEY1;
+ 135              		.loc 1 237 0
+ 136 0008 024B     		ldr	r3, .L14
+ 137 000a 034A     		ldr	r2, .L14+4
+ 138 000c 5A60     		str	r2, [r3, #4]
+ 238:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->KEYR = FLASH_FKEY2;
+ 139              		.loc 1 238 0
+ 140 000e 034A     		ldr	r2, .L14+8
+ 141 0010 5A60     		str	r2, [r3, #4]
+ 142              	.L12:
+ 239:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 240:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 143              		.loc 1 240 0
+ 144              		@ sp needed
+ 145 0012 7047     		bx	lr
+ 146              	.L15:
+ 147              		.align	2
+ 148              	.L14:
+ 149 0014 00200240 		.word	1073881088
+ 150 0018 23016745 		.word	1164378403
+ 151 001c AB89EFCD 		.word	-839939669
+ 152              		.cfi_endproc
+ 153              	.LFE36:
+ 155              		.section	.text.FLASH_Lock,"ax",%progbits
+ 156              		.align	2
+ 157              		.global	FLASH_Lock
+ 158              		.code	16
+ 159              		.thumb_func
+ 161              	FLASH_Lock:
+ 162              	.LFB37:
+ 241:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 242:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 243:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Locks the Program memory access.
+ 244:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 245:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 246:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 247:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_Lock(void)
+ 248:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 163              		.loc 1 248 0
+ 164              		.cfi_startproc
+ 249:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Set the LOCK Bit to lock the FLASH control register and program memory access */
+ 250:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH->CR |= FLASH_CR_LOCK;
+ 165              		.loc 1 250 0
+ 166 0000 024A     		ldr	r2, .L17
+ 167 0002 1169     		ldr	r1, [r2, #16]
+ 168 0004 8023     		mov	r3, #128
+ 169 0006 0B43     		orr	r3, r1
+ 170 0008 1361     		str	r3, [r2, #16]
+ 251:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 171              		.loc 1 251 0
+ 172              		@ sp needed
+ 173 000a 7047     		bx	lr
+ 174              	.L18:
+ 175              		.align	2
+ 176              	.L17:
+ 177 000c 00200240 		.word	1073881088
+ 178              		.cfi_endproc
+ 179              	.LFE37:
+ 181              		.section	.text.FLASH_OB_Unlock,"ax",%progbits
+ 182              		.align	2
+ 183              		.global	FLASH_OB_Unlock
+ 184              		.code	16
+ 185              		.thumb_func
+ 187              	FLASH_OB_Unlock:
+ 188              	.LFB42:
+ 252:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 253:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 254:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Erases a specified page in program memory.
+ 255:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_Unlock() function must be called before.
+ 256:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_Lock() to disable the flash memory access (recommended
+ 257:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         to protect the FLASH memory against possible unwanted operation)
+ 258:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Page_Address: The page address in program memory to be erased.
+ 259:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   A Page is erased in the Program memory only if the address to load 
+ 260:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         is the start address of a page (multiple of 1024 bytes).
+ 261:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: 
+ 262:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 263:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 264:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_ErasePage(uint32_t Page_Address)
+ 265:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 266:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 267:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 268:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 269:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_PROGRAM_ADDRESS(Page_Address));
+ 270:.\StdPeriphLib\src/stm32f0xx_flash.c ****  
+ 271:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 272:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 273:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 274:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 275:.\StdPeriphLib\src/stm32f0xx_flash.c ****   { 
+ 276:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* If the previous operation is completed, proceed to erase the page */
+ 277:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_PER;
+ 278:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->AR  = Page_Address;
+ 279:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_STRT;
+ 280:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 281:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 282:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 283:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 284:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Disable the PER Bit */
+ 285:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR &= ~FLASH_CR_PER;
+ 286:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 287:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 288:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Erase Status */
+ 289:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 290:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 291:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 292:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 293:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Erases all FLASH pages.
+ 294:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_Unlock() function must be called before.
+ 295:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_Lock() to disable the flash memory access (recommended
+ 296:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         to protect the FLASH memory against possible unwanted operation)
+ 297:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 298:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
+ 299:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 300:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 301:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_EraseAllPages(void)
+ 302:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 303:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 304:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 305:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 306:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 307:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 308:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 309:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 310:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* if the previous operation is completed, proceed to erase all pages */
+ 311:.\StdPeriphLib\src/stm32f0xx_flash.c ****      FLASH->CR |= FLASH_CR_MER;
+ 312:.\StdPeriphLib\src/stm32f0xx_flash.c ****      FLASH->CR |= FLASH_CR_STRT;
+ 313:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 314:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 315:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 316:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 317:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Disable the MER Bit */
+ 318:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR &= ~FLASH_CR_MER;
+ 319:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 320:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 321:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Erase Status */
+ 322:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 323:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 324:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 325:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 326:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Programs a word at a specified address.
+ 327:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_Unlock() function must be called before.
+ 328:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_Lock() to disable the flash memory access (recommended
+ 329:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         to protect the FLASH memory against possible unwanted operation)
+ 330:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Address: specifies the address to be programmed.
+ 331:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Data: specifies the data to be programmed.
+ 332:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
+ 333:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT. 
+ 334:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 335:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
+ 336:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 337:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 338:.\StdPeriphLib\src/stm32f0xx_flash.c ****   __IO uint32_t tmp = 0;
+ 339:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 340:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 341:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_PROGRAM_ADDRESS(Address));
+ 342:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 343:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 344:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 345:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 346:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 347:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 348:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* If the previous operation is completed, proceed to program the new first 
+ 349:.\StdPeriphLib\src/stm32f0xx_flash.c ****     half word */
+ 350:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_PG;
+ 351:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 352:.\StdPeriphLib\src/stm32f0xx_flash.c ****     *(__IO uint16_t*)Address = (uint16_t)Data;
+ 353:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 354:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 355:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 356:.\StdPeriphLib\src/stm32f0xx_flash.c ****  
+ 357:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status == FLASH_COMPLETE)
+ 358:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 359:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the previous operation is completed, proceed to program the new second 
+ 360:.\StdPeriphLib\src/stm32f0xx_flash.c ****       half word */
+ 361:.\StdPeriphLib\src/stm32f0xx_flash.c ****       tmp = Address + 2;
+ 362:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 363:.\StdPeriphLib\src/stm32f0xx_flash.c ****       *(__IO uint16_t*) tmp = Data >> 16;
+ 364:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 365:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 366:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 367:.\StdPeriphLib\src/stm32f0xx_flash.c ****         
+ 368:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Disable the PG Bit */
+ 369:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_PG;
+ 370:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 371:.\StdPeriphLib\src/stm32f0xx_flash.c ****     else
+ 372:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 373:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Disable the PG Bit */
+ 374:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_PG;
+ 375:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 376:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 377:.\StdPeriphLib\src/stm32f0xx_flash.c ****    
+ 378:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Program Status */
+ 379:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 380:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 381:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 382:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 383:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Programs a half word at a specified address.
+ 384:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_Unlock() function must be called before.
+ 385:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_Lock() to disable the flash memory access (recommended
+ 386:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         to protect the FLASH memory against possible unwanted operation)
+ 387:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Address: specifies the address to be programmed.
+ 388:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Data: specifies the data to be programmed.
+ 389:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
+ 390:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT. 
+ 391:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 392:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
+ 393:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 394:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 395:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 396:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 397:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_PROGRAM_ADDRESS(Address));
+ 398:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 399:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 400:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 401:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 402:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 403:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 404:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* If the previous operation is completed, proceed to program the new data */
+ 405:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_PG;
+ 406:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 407:.\StdPeriphLib\src/stm32f0xx_flash.c ****     *(__IO uint16_t*)Address = Data;
+ 408:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 409:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 410:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 411:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 412:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Disable the PG Bit */
+ 413:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR &= ~FLASH_CR_PG;
+ 414:.\StdPeriphLib\src/stm32f0xx_flash.c ****   } 
+ 415:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 416:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Program Status */
+ 417:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 418:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 419:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 420:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 421:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @}
+ 422:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 423:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 424:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @defgroup FLASH_Group3 Option Bytes Programming functions
+ 425:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *  @brief   Option Bytes Programming functions 
+ 426:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *
+ 427:.\StdPeriphLib\src/stm32f0xx_flash.c **** @verbatim   
+ 428:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+ 429:.\StdPeriphLib\src/stm32f0xx_flash.c ****                 ##### Option Bytes Programming functions #####
+ 430:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+ 431:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 432:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] The FLASH_Option Bytes Programming_functions, includes the following functions:
+ 433:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_OB_Unlock(void);
+ 434:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_OB_Lock(void);
+ 435:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) void FLASH_OB_Launch(void);
+ 436:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_Erase(void);
+ 437:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState);
+ 438:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_RDPConfig(uint8_t OB_RDP);
+ 439:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY);
+ 440:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1);
+ 441:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG);
+ 442:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER);
+ 443:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FLASH_OB_ProgramData(uint32_t Address, uint8_t Data);
+ 444:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) uint8_t FLASH_OB_GetUser(void);
+ 445:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) uint32_t FLASH_OB_GetWRP(void);
+ 446:.\StdPeriphLib\src/stm32f0xx_flash.c ****        (+) FlagStatus FLASH_OB_GetRDP(void);
+ 447:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 448:.\StdPeriphLib\src/stm32f0xx_flash.c ****     [..] Any operation of erase or program should follow these steps:
+ 449:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 450:.\StdPeriphLib\src/stm32f0xx_flash.c ****    (#) Call the FLASH_OB_Unlock() function to enable the Option Bytes registers access
+ 451:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 452:.\StdPeriphLib\src/stm32f0xx_flash.c ****    (#) Call one or several functions to program the desired option bytes 
+ 453:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) FLASH_Status FLASH_OB_RDPConfig(uint8_t OB_RDP) => to set the desired read Protection Le
+ 454:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) FLASH_Status FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState) 
+ 455:.\StdPeriphLib\src/stm32f0xx_flash.c ****            => to Enable/Disable the desired sector write protection
+ 456:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) FLASH_Status FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY) 
+ 457:.\StdPeriphLib\src/stm32f0xx_flash.c ****            => to configure the user option Bytes: IWDG, STOP and the Standby.
+ 458:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1)
+ 459:.\StdPeriphLib\src/stm32f0xx_flash.c ****            => to set or reset BOOT1 
+ 460:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG) 
+ 461:.\StdPeriphLib\src/stm32f0xx_flash.c ****            => to enable or disable the VDDA Analog Monitoring 			 
+ 462:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) You can write all User Options bytes at once using a single function
+ 463:.\StdPeriphLib\src/stm32f0xx_flash.c ****            by calling FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER)
+ 464:.\StdPeriphLib\src/stm32f0xx_flash.c ****       (++) FLASH_OB_ProgramData(uint32_t Address, uint8_t Data) to program the 
+ 465:.\StdPeriphLib\src/stm32f0xx_flash.c ****            two half word in the option bytes
+ 466:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 467:.\StdPeriphLib\src/stm32f0xx_flash.c ****    (#) Once all needed option bytes to be programmed are correctly written, call the
+ 468:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH_OB_Launch(void) function to launch the Option Bytes programming process.
+ 469:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 470:.\StdPeriphLib\src/stm32f0xx_flash.c ****    (#) Call the FLASH_OB_Lock() to disable the Option Bytes registers access (recommended
+ 471:.\StdPeriphLib\src/stm32f0xx_flash.c ****       to protect the option Bytes against possible unwanted operations)
+ 472:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 473:.\StdPeriphLib\src/stm32f0xx_flash.c **** @endverbatim
+ 474:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+ 475:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 476:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 477:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 478:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Unlocks the option bytes block access.
+ 479:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 480:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 481:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 482:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_OB_Unlock(void)
+ 483:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 189              		.loc 1 483 0
+ 190              		.cfi_startproc
+ 484:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if((FLASH->CR & FLASH_CR_OPTWRE) == RESET)
+ 191              		.loc 1 484 0
+ 192 0000 044B     		ldr	r3, .L21
+ 193 0002 1B69     		ldr	r3, [r3, #16]
+ 194 0004 9B05     		lsl	r3, r3, #22
+ 195 0006 04D4     		bmi	.L19
+ 485:.\StdPeriphLib\src/stm32f0xx_flash.c ****   { 
+ 486:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Unlocking the option bytes block access */
+ 487:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->OPTKEYR = FLASH_OPTKEY1;
+ 196              		.loc 1 487 0
+ 197 0008 024B     		ldr	r3, .L21
+ 198 000a 034A     		ldr	r2, .L21+4
+ 199 000c 9A60     		str	r2, [r3, #8]
+ 488:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->OPTKEYR = FLASH_OPTKEY2;
+ 200              		.loc 1 488 0
+ 201 000e 034A     		ldr	r2, .L21+8
+ 202 0010 9A60     		str	r2, [r3, #8]
+ 203              	.L19:
+ 489:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 490:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 204              		.loc 1 490 0
+ 205              		@ sp needed
+ 206 0012 7047     		bx	lr
+ 207              	.L22:
+ 208              		.align	2
+ 209              	.L21:
+ 210 0014 00200240 		.word	1073881088
+ 211 0018 23016745 		.word	1164378403
+ 212 001c AB89EFCD 		.word	-839939669
+ 213              		.cfi_endproc
+ 214              	.LFE42:
+ 216              		.section	.text.FLASH_OB_Lock,"ax",%progbits
+ 217              		.align	2
+ 218              		.global	FLASH_OB_Lock
+ 219              		.code	16
+ 220              		.thumb_func
+ 222              	FLASH_OB_Lock:
+ 223              	.LFB43:
+ 491:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 492:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 493:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Locks the option bytes block access.
+ 494:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 495:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 496:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 497:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_OB_Lock(void)
+ 498:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 224              		.loc 1 498 0
+ 225              		.cfi_startproc
+ 499:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Set the OPTWREN Bit to lock the option bytes block access */
+ 500:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH->CR &= ~FLASH_CR_OPTWRE;
+ 226              		.loc 1 500 0
+ 227 0000 024A     		ldr	r2, .L24
+ 228 0002 1169     		ldr	r1, [r2, #16]
+ 229 0004 024B     		ldr	r3, .L24+4
+ 230 0006 0B40     		and	r3, r1
+ 231 0008 1361     		str	r3, [r2, #16]
+ 501:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 232              		.loc 1 501 0
+ 233              		@ sp needed
+ 234 000a 7047     		bx	lr
+ 235              	.L25:
+ 236              		.align	2
+ 237              	.L24:
+ 238 000c 00200240 		.word	1073881088
+ 239 0010 FFFDFFFF 		.word	-513
+ 240              		.cfi_endproc
+ 241              	.LFE43:
+ 243              		.section	.text.FLASH_OB_Launch,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	FLASH_OB_Launch
+ 246              		.code	16
+ 247              		.thumb_func
+ 249              	FLASH_OB_Launch:
+ 250              	.LFB44:
+ 502:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 503:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 504:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Launch the option byte loading.
+ 505:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 506:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 507:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 508:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_OB_Launch(void)
+ 509:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 251              		.loc 1 509 0
+ 252              		.cfi_startproc
+ 510:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Set the OBL_Launch bit to launch the option byte loading */
+ 511:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH->CR |= FLASH_CR_OBL_LAUNCH;
+ 253              		.loc 1 511 0
+ 254 0000 034A     		ldr	r2, .L27
+ 255 0002 1369     		ldr	r3, [r2, #16]
+ 256 0004 8021     		mov	r1, #128
+ 257 0006 8901     		lsl	r1, r1, #6
+ 258 0008 0B43     		orr	r3, r1
+ 259 000a 1361     		str	r3, [r2, #16]
+ 512:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 260              		.loc 1 512 0
+ 261              		@ sp needed
+ 262 000c 7047     		bx	lr
+ 263              	.L28:
+ 264 000e C046     		.align	2
+ 265              	.L27:
+ 266 0010 00200240 		.word	1073881088
+ 267              		.cfi_endproc
+ 268              	.LFE44:
+ 270              		.section	.text.FLASH_OB_GetUser,"ax",%progbits
+ 271              		.align	2
+ 272              		.global	FLASH_OB_GetUser
+ 273              		.code	16
+ 274              		.thumb_func
+ 276              	FLASH_OB_GetUser:
+ 277              	.LFB56:
+ 513:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 514:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 515:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Erases the FLASH option bytes.
+ 516:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_OB_Unlock() function must be called before.
+ 517:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_OB_Lock() to disable the flash control register access and the option
+ 518:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         bytes (recommended to protect the FLASH memory against possible unwanted operation)
+ 519:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   This functions erases all option bytes except the Read protection (RDP).
+ 520:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+ 521:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
+ 522:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 523:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 524:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_Erase(void)
+ 525:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 526:.\StdPeriphLib\src/stm32f0xx_flash.c ****   uint16_t rdptmp = OB_RDP_Level_0;
+ 527:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 528:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 529:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 530:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Get the actual read protection Option Byte value */ 
+ 531:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(FLASH_OB_GetRDP() != RESET)
+ 532:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 533:.\StdPeriphLib\src/stm32f0xx_flash.c ****     rdptmp = 0x00;  
+ 534:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 535:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 536:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 537:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 538:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 539:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 540:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {   
+ 541:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* If the previous operation is completed, proceed to erase the option bytes */
+ 542:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTER;
+ 543:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_STRT;
+ 544:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 545:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 546:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 547:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 548:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status == FLASH_COMPLETE)
+ 549:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 550:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the erase operation is completed, disable the OPTER Bit */
+ 551:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTER;
+ 552:.\StdPeriphLib\src/stm32f0xx_flash.c ****        
+ 553:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Enable the Option Bytes Programming operation */
+ 554:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR |= FLASH_CR_OPTPG;
+ 555:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 556:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Restore the last read protection Option Byte value */
+ 557:.\StdPeriphLib\src/stm32f0xx_flash.c ****       OB->RDP = (uint16_t)rdptmp; 
+ 558:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 559:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 560:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 561:.\StdPeriphLib\src/stm32f0xx_flash.c ****  
+ 562:.\StdPeriphLib\src/stm32f0xx_flash.c ****       if(status != FLASH_TIMEOUT)
+ 563:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 564:.\StdPeriphLib\src/stm32f0xx_flash.c ****         /* if the program operation is completed, disable the OPTPG Bit */
+ 565:.\StdPeriphLib\src/stm32f0xx_flash.c ****         FLASH->CR &= ~FLASH_CR_OPTPG;
+ 566:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 567:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 568:.\StdPeriphLib\src/stm32f0xx_flash.c ****     else
+ 569:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 570:.\StdPeriphLib\src/stm32f0xx_flash.c ****       if (status != FLASH_TIMEOUT)
+ 571:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 572:.\StdPeriphLib\src/stm32f0xx_flash.c ****         /* Disable the OPTPG Bit */
+ 573:.\StdPeriphLib\src/stm32f0xx_flash.c ****         FLASH->CR &= ~FLASH_CR_OPTPG;
+ 574:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 575:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }  
+ 576:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 577:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the erase status */
+ 578:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 579:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 580:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 581:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 582:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Write protects the desired pages
+ 583:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_OB_Unlock() function must be called before.
+ 584:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_OB_Lock() to disable the flash control register access and the option
+ 585:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         bytes (recommended to protect the FLASH memory against possible unwanted operation)
+ 586:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_WRP: specifies the address of the pages to be write protected.
+ 587:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be:
+ 588:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_WRP_Pages0to3..OB_WRP_Pages60to63
+ 589:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_WRP_AllPages
+ 590:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: 
+ 591:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 592:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 593:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_EnableWRP(uint32_t OB_WRP)
+ 594:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 595:.\StdPeriphLib\src/stm32f0xx_flash.c ****  uint16_t WRP0_Data = 0xFFFF, WRP1_Data = 0xFFFF, WRP2_Data = 0xFFFF, WRP3_Data = 0xFFFF;
+ 596:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 597:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 598:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 599:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 600:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_WRP(OB_WRP));
+ 601:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 602:.\StdPeriphLib\src/stm32f0xx_flash.c ****   OB_WRP = (uint32_t)(~OB_WRP);
+ 603:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP0_Data = (uint16_t)(OB_WRP & OB_WRP0_WRP0);
+ 604:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP1_Data = (uint16_t)((OB_WRP >> 8) & OB_WRP0_WRP0);
+ 605:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP2_Data = (uint16_t)((OB_WRP >> 16) & OB_WRP0_WRP0) ;
+ 606:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP3_Data = (uint16_t)((OB_WRP >> 24) & OB_WRP0_WRP0) ;
+ 607:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 608:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 609:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 610:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 611:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 612:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 613:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG;
+ 614:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 615:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(WRP0_Data != 0xFF)
+ 616:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 617:.\StdPeriphLib\src/stm32f0xx_flash.c ****       OB->WRP0 = WRP0_Data;
+ 618:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 619:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 620:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 621:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 622:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if((status == FLASH_COMPLETE) && (WRP1_Data != 0xFF))
+ 623:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 624:.\StdPeriphLib\src/stm32f0xx_flash.c ****       OB->WRP1 = WRP1_Data;
+ 625:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 626:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 627:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 628:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 629:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if((status == FLASH_COMPLETE) && (WRP2_Data != 0xFF))
+ 630:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 631:.\StdPeriphLib\src/stm32f0xx_flash.c ****       OB->WRP2 = WRP2_Data;
+ 632:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 633:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 634:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 635:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }    
+ 636:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if((status == FLASH_COMPLETE) && (WRP3_Data != 0xFF))
+ 637:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 638:.\StdPeriphLib\src/stm32f0xx_flash.c ****       OB->WRP3 = WRP3_Data;
+ 639:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 640:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 641:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 642:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }  
+ 643:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 644:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 645:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* if the program operation is completed, disable the OPTPG Bit */
+ 646:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 647:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 648:.\StdPeriphLib\src/stm32f0xx_flash.c ****   } 
+ 649:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the write protection operation Status */
+ 650:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 651:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 652:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 653:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 654:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Enables or disables the read out protection.
+ 655:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_OB_Unlock() function must be called before.
+ 656:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_OB_Lock() to disable the flash control register access and the option
+ 657:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         bytes (recommended to protect the FLASH memory against possible unwanted operation)
+ 658:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  FLASH_ReadProtection_Level: specifies the read protection level. 
+ 659:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be:
+ 660:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_RDP_Level_0: No protection
+ 661:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_RDP_Level_1: Read protection of the memory
+ 662:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_RDP_Level_2: Chip protection
+ 663:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   When enabling OB_RDP level 2 it's no more possible to go back to level 1 or 0
+ 664:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: 
+ 665:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 666:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 667:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_RDPConfig(uint8_t OB_RDP)
+ 668:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 669:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 670:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 671:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 672:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_RDP(OB_RDP));
+ 673:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 674:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 675:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 676:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 677:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTER;
+ 678:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_STRT;
+ 679:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 680:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 681:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 682:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 683:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status == FLASH_COMPLETE)
+ 684:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 685:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the erase operation is completed, disable the OPTER Bit */
+ 686:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTER;
+ 687:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 688:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Enable the Option Bytes Programming operation */
+ 689:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR |= FLASH_CR_OPTPG;
+ 690:.\StdPeriphLib\src/stm32f0xx_flash.c ****        
+ 691:.\StdPeriphLib\src/stm32f0xx_flash.c ****       OB->RDP = OB_RDP;
+ 692:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 693:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* Wait for last operation to be completed */
+ 694:.\StdPeriphLib\src/stm32f0xx_flash.c ****       status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT); 
+ 695:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 696:.\StdPeriphLib\src/stm32f0xx_flash.c ****       if(status != FLASH_TIMEOUT)
+ 697:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 698:.\StdPeriphLib\src/stm32f0xx_flash.c ****         /* if the program operation is completed, disable the OPTPG Bit */
+ 699:.\StdPeriphLib\src/stm32f0xx_flash.c ****         FLASH->CR &= ~FLASH_CR_OPTPG;
+ 700:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 701:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 702:.\StdPeriphLib\src/stm32f0xx_flash.c ****     else 
+ 703:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 704:.\StdPeriphLib\src/stm32f0xx_flash.c ****       if(status != FLASH_TIMEOUT)
+ 705:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 706:.\StdPeriphLib\src/stm32f0xx_flash.c ****         /* Disable the OPTER Bit */
+ 707:.\StdPeriphLib\src/stm32f0xx_flash.c ****         FLASH->CR &= ~FLASH_CR_OPTER;
+ 708:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 709:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 710:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 711:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the protection operation Status */
+ 712:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 713:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 714:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 715:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 716:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Programs the FLASH User Option Byte: IWDG_SW / RST_STOP / RST_STDBY.
+ 717:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_OB_Unlock() function must be called before.
+ 718:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_OB_Lock() to disable the flash control register access and the option
+ 719:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         bytes (recommended to protect the FLASH memory against possible unwanted operation)
+ 720:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_IWDG: Selects the WDG mode
+ 721:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 722:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_IWDG_SW: Software WDG selected
+ 723:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_IWDG_HW: Hardware WDG selected
+ 724:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_STOP: Reset event when entering STOP mode.
+ 725:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 726:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_STOP_NoRST: No reset generated when entering in STOP
+ 727:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_STOP_RST: Reset generated when entering in STOP
+ 728:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_STDBY: Reset event when entering Standby mode.
+ 729:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 730:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_STDBY_NoRST: No reset generated when entering in STANDBY
+ 731:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_STDBY_RST: Reset generated when entering in STANDBY
+ 732:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: 
+ 733:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 734:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 735:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY)
+ 736:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 737:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 738:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 739:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 740:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_IWDG_SOURCE(OB_IWDG));
+ 741:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_STOP_SOURCE(OB_STOP));
+ 742:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_STDBY_SOURCE(OB_STDBY));
+ 743:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 744:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 745:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 746:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 747:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 748:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 749:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 750:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG; 
+ 751:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 752:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = (uint16_t)((uint16_t)(OB_IWDG | OB_STOP) | (uint16_t)(OB_STDBY | 0xF8));
+ 753:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 754:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 755:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 756:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 757:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 758:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 759:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the program operation is completed, disable the OPTPG Bit */
+ 760:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 761:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 762:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }    
+ 763:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+ 764:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 765:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 766:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 767:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 768:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Sets or resets the BOOT1 option bit.
+ 769:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_BOOT1: Set or Reset the BOOT1 option bit.
+ 770:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 771:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT1_RESET: BOOT1 option bit reset
+ 772:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT1_SET: BOOT1 option bit set
+ 773:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 774:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 775:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1)
+ 776:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 777:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 778:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 779:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 780:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_BOOT1(OB_BOOT1));
+ 781:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 782:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 783:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 784:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 785:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 786:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 787:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 788:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG;
+ 789:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 790:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = OB_BOOT1 | 0xEF;
+ 791:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 792:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 793:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 794:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 795:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 796:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 797:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the program operation is completed, disable the OPTPG Bit */
+ 798:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 799:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 800:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 801:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+ 802:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 803:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 804:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 805:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 806:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Sets or resets the BOOT0 option bit.
+ 807:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   This function is applicable only for the STM32F042 devices.
+ 808:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_BOOT0: Set or Reset the BOOT0 option bit.
+ 809:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 810:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT0_RESET: BOOT0 option bit reset
+ 811:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT0_SET: BOOT0 option bit set
+ 812:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 813:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 814:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_BOOT0Config(uint8_t OB_BOOT0)
+ 815:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 816:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 817:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 818:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 819:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_BOOT0(OB_BOOT0));
+ 820:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 821:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 822:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 823:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 824:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 825:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 826:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 827:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG;
+ 828:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 829:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = OB_BOOT0 | 0xF7;
+ 830:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 831:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 832:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 833:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 834:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 835:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 836:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the program operation is completed, disable the OPTPG Bit */
+ 837:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 838:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 839:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 840:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+ 841:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 842:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 843:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 844:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 845:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Sets or resets the BOOT0SW option bit.
+ 846:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   This function is applicable only for the STM32F042 devices.   
+ 847:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_BOOT0SW: Set or Reset the BOOT0_SW option bit.
+ 848:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 849:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT0_SW: BOOT0_SW option bit reset
+ 850:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT0_HW: BOOT0_SW option bit set
+ 851:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 852:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 853:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_BOOT0SWConfig(uint8_t OB_BOOT0SW)
+ 854:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 855:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 856:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 857:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 858:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_BOOT0SW(OB_BOOT0SW));
+ 859:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 860:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 861:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 862:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 863:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 864:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 865:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 866:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG;
+ 867:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 868:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = OB_BOOT0SW | 0x7F;
+ 869:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 870:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 871:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 872:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 873:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 874:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 875:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the program operation is completed, disable the OPTPG Bit */
+ 876:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 877:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 878:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 879:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+ 880:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 881:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 882:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 883:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 884:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Sets or resets the analogue monitoring on VDDA Power source.
+ 885:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_VDDA_ANALOG: Selects the analog monitoring on VDDA Power source.
+ 886:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 887:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_VDDA_ANALOG_ON: Analog monitoring on VDDA Power source ON
+ 888:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_VDDA_ANALOG_OFF: Analog monitoring on VDDA Power source OFF
+ 889:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 890:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 891:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG)
+ 892:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 893:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 894:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 895:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 896:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_VDDA_ANALOG(OB_VDDA_ANALOG));
+ 897:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 898:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 899:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 900:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 901:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 902:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 903:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 904:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG; 
+ 905:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 906:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = OB_VDDA_ANALOG | 0xDF;
+ 907:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 908:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 909:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 910:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 911:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 912:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 913:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* if the program operation is completed, disable the OPTPG Bit */
+ 914:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 915:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 916:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 917:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+ 918:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 919:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 920:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 921:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 922:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Sets or resets the SRAM parity.
+ 923:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_SRAM_Parity: Set or Reset the SRAM parity enable bit.
+ 924:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+ 925:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_SRAM_PARITY_SET: Set SRAM parity.
+ 926:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_SRAM_PARITY_RESET: Reset SRAM parity.
+ 927:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+ 928:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 929:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_SRAMParityConfig(uint8_t OB_SRAM_Parity)
+ 930:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 931:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 932:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 933:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+ 934:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_SRAM_PARITY(OB_SRAM_Parity));
+ 935:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 936:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 937:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 938:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 939:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 940:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 941:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 942:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG; 
+ 943:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 944:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = OB_SRAM_Parity | 0xBF;
+ 945:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 946:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 947:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 948:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 949:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 950:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 951:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* if the program operation is completed, disable the OPTPG Bit */
+ 952:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 953:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 954:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 955:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+ 956:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+ 957:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 958:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 959:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+ 960:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Programs the FLASH User Option Byte: IWDG_SW, RST_STOP, RST_STDBY,
+ 961:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         BOOT1 and VDDA ANALOG monitoring.
+ 962:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_OB_Unlock() function must be called before.
+ 963:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_OB_Lock() to disable the flash control register access and the option
+ 964:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         bytes (recommended to protect the FLASH memory against possible unwanted operation)
+ 965:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  OB_USER: Selects all user option bytes
+ 966:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter is a combination of the following values:
+ 967:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_IWDG_SW / OB_IWDG_HW: Software / Hardware WDG selected
+ 968:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_STOP_NoRST / OB_STOP_RST: No reset / Reset generated when entering in STOP
+ 969:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_STDBY_NoRST / OB_STDBY_RST: No reset / Reset generated when entering in STA
+ 970:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT1_RESET / OB_BOOT1_SET: BOOT1 Reset / Set
+ 971:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_VDDA_ANALOG_ON / OB_VDDA_ANALOG_OFF: Analog monitoring on VDDA Power source
+ 972:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_SRAM_PARITY_SET / OB_SRAM_PARITY_RESET: SRAM Parity SET / RESET
+ 973:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT0_RESET / OB_BOOT0_SET: BOOT0 Reset / Set
+ 974:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg OB_BOOT0_SW / OB_BOOT0_SW: BOOT0 pin disabled / BOOT0 pin bonded with GPIO    
+ 975:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: 
+ 976:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+ 977:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+ 978:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER)
+ 979:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 980:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 981:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 982:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for last operation to be completed */
+ 983:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 984:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 985:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+ 986:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 987:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the Option Bytes Programming operation */
+ 988:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG; 
+ 989:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 990:.\StdPeriphLib\src/stm32f0xx_flash.c ****     OB->USER = OB_USER;
+ 991:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 992:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+ 993:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+ 994:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 995:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+ 996:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 997:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the program operation is completed, disable the OPTPG Bit */
+ 998:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+ 999:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+1000:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }    
+1001:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte program Status */
+1002:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+1003:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1004:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+1005:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1006:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1007:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Programs a half word at a specified Option Byte Data address.
+1008:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   To correctly run this function, the FLASH_OB_Unlock() function must be called before.
+1009:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @note   Call the FLASH_OB_Lock() to disable the flash control register access and the option
+1010:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         bytes (recommended to protect the FLASH memory against possible unwanted operation)
+1011:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Address: specifies the address to be programmed.
+1012:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be 0x1FFFF804 or 0x1FFFF806. 
+1013:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Data: specifies the data to be programmed.
+1014:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: FLASH_ERROR_PG,
+1015:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+1016:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1017:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_OB_ProgramData(uint32_t Address, uint8_t Data)
+1018:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+1019:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+1020:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+1021:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_OB_DATA_ADDRESS(Address));
+1022:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+1023:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1024:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(status == FLASH_COMPLETE)
+1025:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1026:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enables the Option Bytes Programming operation */
+1027:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_OPTPG; 
+1028:.\StdPeriphLib\src/stm32f0xx_flash.c ****     *(__IO uint16_t*)Address = Data;
+1029:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+1030:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Wait for last operation to be completed */
+1031:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
+1032:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+1033:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if(status != FLASH_TIMEOUT)
+1034:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+1035:.\StdPeriphLib\src/stm32f0xx_flash.c ****       /* If the program operation is completed, disable the OPTPG Bit */
+1036:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASH->CR &= ~FLASH_CR_OPTPG;
+1037:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+1038:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1039:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the Option Byte Data Program Status */
+1040:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+1041:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+1042:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1043:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1044:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Returns the FLASH User Option Bytes values.
+1045:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+1046:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval The FLASH User Option Bytes .
+1047:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1048:.\StdPeriphLib\src/stm32f0xx_flash.c **** uint8_t FLASH_OB_GetUser(void)
+1049:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 278              		.loc 1 1049 0
+ 279              		.cfi_startproc
+1050:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the User Option Byte */
+1051:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return (uint8_t)(FLASH->OBR >> 8);
+ 280              		.loc 1 1051 0
+ 281 0000 024B     		ldr	r3, .L30
+ 282 0002 D869     		ldr	r0, [r3, #28]
+ 283 0004 000A     		lsr	r0, r0, #8
+ 284 0006 C0B2     		uxtb	r0, r0
+1052:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 285              		.loc 1 1052 0
+ 286              		@ sp needed
+ 287 0008 7047     		bx	lr
+ 288              	.L31:
+ 289 000a C046     		.align	2
+ 290              	.L30:
+ 291 000c 00200240 		.word	1073881088
+ 292              		.cfi_endproc
+ 293              	.LFE56:
+ 295              		.section	.text.FLASH_OB_GetWRP,"ax",%progbits
+ 296              		.align	2
+ 297              		.global	FLASH_OB_GetWRP
+ 298              		.code	16
+ 299              		.thumb_func
+ 301              	FLASH_OB_GetWRP:
+ 302              	.LFB57:
+1053:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1054:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1055:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Returns the FLASH Write Protection Option Bytes value.
+1056:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+1057:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval The FLASH Write Protection Option Bytes value
+1058:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1059:.\StdPeriphLib\src/stm32f0xx_flash.c **** uint32_t FLASH_OB_GetWRP(void)
+1060:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 303              		.loc 1 1060 0
+ 304              		.cfi_startproc
+1061:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the FLASH write protection Register value */
+1062:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return (uint32_t)(FLASH->WRPR);
+ 305              		.loc 1 1062 0
+ 306 0000 014B     		ldr	r3, .L33
+ 307 0002 186A     		ldr	r0, [r3, #32]
+1063:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 308              		.loc 1 1063 0
+ 309              		@ sp needed
+ 310 0004 7047     		bx	lr
+ 311              	.L34:
+ 312 0006 C046     		.align	2
+ 313              	.L33:
+ 314 0008 00200240 		.word	1073881088
+ 315              		.cfi_endproc
+ 316              	.LFE57:
+ 318              		.section	.text.FLASH_OB_GetRDP,"ax",%progbits
+ 319              		.align	2
+ 320              		.global	FLASH_OB_GetRDP
+ 321              		.code	16
+ 322              		.thumb_func
+ 324              	FLASH_OB_GetRDP:
+ 325              	.LFB58:
+1064:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1065:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1066:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Checks whether the FLASH Read out Protection Status is set or not.
+1067:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+1068:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH ReadOut Protection Status(SET or RESET)
+1069:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1070:.\StdPeriphLib\src/stm32f0xx_flash.c **** FlagStatus FLASH_OB_GetRDP(void)
+1071:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 326              		.loc 1 1071 0
+ 327              		.cfi_startproc
+ 328              	.LVL8:
+1072:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FlagStatus readstatus = RESET;
+1073:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+1074:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if ((uint8_t)(FLASH->OBR & (FLASH_OBR_RDPRT1 | FLASH_OBR_RDPRT2)) != RESET)
+ 329              		.loc 1 1074 0
+ 330 0000 034B     		ldr	r3, .L36
+ 331 0002 D869     		ldr	r0, [r3, #28]
+ 332              	.LVL9:
+ 333 0004 0623     		mov	r3, #6
+ 334 0006 1840     		and	r0, r3
+ 335              	.LVL10:
+ 336 0008 431E     		sub	r3, r0, #1
+ 337 000a 9841     		sbc	r0, r0, r3
+1075:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1076:.\StdPeriphLib\src/stm32f0xx_flash.c ****     readstatus = SET;
+1077:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1078:.\StdPeriphLib\src/stm32f0xx_flash.c ****   else
+1079:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1080:.\StdPeriphLib\src/stm32f0xx_flash.c ****     readstatus = RESET;
+1081:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1082:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return readstatus;
+ 338              		.loc 1 1082 0
+ 339 000c C0B2     		uxtb	r0, r0
+1083:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 340              		.loc 1 1083 0
+ 341              		@ sp needed
+ 342 000e 7047     		bx	lr
+ 343              	.L37:
+ 344              		.align	2
+ 345              	.L36:
+ 346 0010 00200240 		.word	1073881088
+ 347              		.cfi_endproc
+ 348              	.LFE58:
+ 350              		.section	.text.FLASH_ITConfig,"ax",%progbits
+ 351              		.align	2
+ 352              		.global	FLASH_ITConfig
+ 353              		.code	16
+ 354              		.thumb_func
+ 356              	FLASH_ITConfig:
+ 357              	.LFB59:
+1084:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1085:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1086:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @}
+1087:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1088:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1089:.\StdPeriphLib\src/stm32f0xx_flash.c **** /** @defgroup FLASH_Group4 Interrupts and flags management functions
+1090:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *  @brief   Interrupts and flags management functions
+1091:.\StdPeriphLib\src/stm32f0xx_flash.c ****  *
+1092:.\StdPeriphLib\src/stm32f0xx_flash.c **** @verbatim   
+1093:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================
+1094:.\StdPeriphLib\src/stm32f0xx_flash.c ****              ##### Interrupts and flags management functions #####
+1095:.\StdPeriphLib\src/stm32f0xx_flash.c ****  ===============================================================================  
+1096:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1097:.\StdPeriphLib\src/stm32f0xx_flash.c **** @endverbatim
+1098:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @{
+1099:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1100:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1101:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1102:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Enables or disables the specified FLASH interrupts.
+1103:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  FLASH_IT: specifies the FLASH interrupt sources to be enabled or 
+1104:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         disabled.
+1105:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be any combination of the following values:
+1106:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_IT_EOP: FLASH end of programming Interrupt
+1107:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_IT_ERR: FLASH Error Interrupt
+1108:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None 
+1109:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1110:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState)
+1111:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 358              		.loc 1 1111 0
+ 359              		.cfi_startproc
+ 360              	.LVL11:
+1112:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+1113:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_IT(FLASH_IT)); 
+1114:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+1115:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+1116:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(NewState != DISABLE)
+ 361              		.loc 1 1116 0
+ 362 0000 0029     		cmp	r1, #0
+ 363 0002 04D0     		beq	.L39
+1117:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1118:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Enable the interrupt sources */
+1119:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_IT;
+ 364              		.loc 1 1119 0
+ 365 0004 044A     		ldr	r2, .L41
+ 366 0006 1369     		ldr	r3, [r2, #16]
+ 367 0008 1843     		orr	r0, r3
+ 368              	.LVL12:
+ 369 000a 1061     		str	r0, [r2, #16]
+ 370 000c 03E0     		b	.L38
+ 371              	.LVL13:
+ 372              	.L39:
+1120:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1121:.\StdPeriphLib\src/stm32f0xx_flash.c ****   else
+1122:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1123:.\StdPeriphLib\src/stm32f0xx_flash.c ****     /* Disable the interrupt sources */
+1124:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR &= ~(uint32_t)FLASH_IT;
+ 373              		.loc 1 1124 0
+ 374 000e 024A     		ldr	r2, .L41
+ 375 0010 1369     		ldr	r3, [r2, #16]
+ 376 0012 8343     		bic	r3, r0
+ 377 0014 1361     		str	r3, [r2, #16]
+ 378              	.LVL14:
+ 379              	.L38:
+1125:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1126:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 380              		.loc 1 1126 0
+ 381              		@ sp needed
+ 382 0016 7047     		bx	lr
+ 383              	.L42:
+ 384              		.align	2
+ 385              	.L41:
+ 386 0018 00200240 		.word	1073881088
+ 387              		.cfi_endproc
+ 388              	.LFE59:
+ 390              		.section	.text.FLASH_GetFlagStatus,"ax",%progbits
+ 391              		.align	2
+ 392              		.global	FLASH_GetFlagStatus
+ 393              		.code	16
+ 394              		.thumb_func
+ 396              	FLASH_GetFlagStatus:
+ 397              	.LFB60:
+1127:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1128:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1129:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Checks whether the specified FLASH flag is set or not.
+1130:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  FLASH_FLAG: specifies the FLASH flag to check.
+1131:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be one of the following values:
+1132:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_BSY: FLASH write/erase operations in progress flag 
+1133:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_PGERR: FLASH Programming error flag flag
+1134:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_WRPERR: FLASH Write protected error flag
+1135:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_EOP: FLASH End of Programming flag
+1136:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval The new state of FLASH_FLAG (SET or RESET).
+1137:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1138:.\StdPeriphLib\src/stm32f0xx_flash.c **** FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG)
+1139:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 398              		.loc 1 1139 0
+ 399              		.cfi_startproc
+ 400              	.LVL15:
+1140:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FlagStatus bitstatus = RESET;
+1141:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1142:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+1143:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_GET_FLAG(FLASH_FLAG));
+1144:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1145:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if((FLASH->SR & FLASH_FLAG) != (uint32_t)RESET)
+ 401              		.loc 1 1145 0
+ 402 0000 034B     		ldr	r3, .L44
+ 403 0002 DB68     		ldr	r3, [r3, #12]
+ 404              	.LVL16:
+ 405 0004 1840     		and	r0, r3
+ 406              	.LVL17:
+ 407 0006 431E     		sub	r3, r0, #1
+ 408 0008 9841     		sbc	r0, r0, r3
+ 409              	.LVL18:
+1146:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1147:.\StdPeriphLib\src/stm32f0xx_flash.c ****     bitstatus = SET;
+1148:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1149:.\StdPeriphLib\src/stm32f0xx_flash.c ****   else
+1150:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1151:.\StdPeriphLib\src/stm32f0xx_flash.c ****     bitstatus = RESET;
+1152:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1153:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the new state of FLASH_FLAG (SET or RESET) */
+1154:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return bitstatus; 
+ 410              		.loc 1 1154 0
+ 411 000a C0B2     		uxtb	r0, r0
+1155:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 412              		.loc 1 1155 0
+ 413              		@ sp needed
+ 414 000c 7047     		bx	lr
+ 415              	.L45:
+ 416 000e C046     		.align	2
+ 417              	.L44:
+ 418 0010 00200240 		.word	1073881088
+ 419              		.cfi_endproc
+ 420              	.LFE60:
+ 422              		.section	.text.FLASH_ClearFlag,"ax",%progbits
+ 423              		.align	2
+ 424              		.global	FLASH_ClearFlag
+ 425              		.code	16
+ 426              		.thumb_func
+ 428              	FLASH_ClearFlag:
+ 429              	.LFB61:
+1156:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1157:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1158:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Clears the FLASH's pending flags.
+1159:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  FLASH_FLAG: specifies the FLASH flags to clear.
+1160:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *          This parameter can be any combination of the following values:
+1161:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_PGERR: FLASH Programming error flag flag
+1162:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_WRPERR: FLASH Write protected error flag
+1163:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *             @arg FLASH_FLAG_EOP: FLASH End of Programming flag
+1164:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval None
+1165:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1166:.\StdPeriphLib\src/stm32f0xx_flash.c **** void FLASH_ClearFlag(uint32_t FLASH_FLAG)
+1167:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 430              		.loc 1 1167 0
+ 431              		.cfi_startproc
+ 432              	.LVL19:
+1168:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check the parameters */
+1169:.\StdPeriphLib\src/stm32f0xx_flash.c ****   assert_param(IS_FLASH_CLEAR_FLAG(FLASH_FLAG));
+1170:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+1171:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Clear the flags */
+1172:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH->SR = FLASH_FLAG;
+ 433              		.loc 1 1172 0
+ 434 0000 014B     		ldr	r3, .L47
+ 435 0002 D860     		str	r0, [r3, #12]
+1173:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 436              		.loc 1 1173 0
+ 437              		@ sp needed
+ 438 0004 7047     		bx	lr
+ 439              	.L48:
+ 440 0006 C046     		.align	2
+ 441              	.L47:
+ 442 0008 00200240 		.word	1073881088
+ 443              		.cfi_endproc
+ 444              	.LFE61:
+ 446              		.section	.text.FLASH_GetStatus,"ax",%progbits
+ 447              		.align	2
+ 448              		.global	FLASH_GetStatus
+ 449              		.code	16
+ 450              		.thumb_func
+ 452              	FLASH_GetStatus:
+ 453              	.LFB62:
+1174:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1175:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1176:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Returns the FLASH Status.
+1177:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  None
+1178:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: 
+1179:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_BUSY, FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP or FLASH_COMPLETE.
+1180:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1181:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_GetStatus(void)
+1182:.\StdPeriphLib\src/stm32f0xx_flash.c **** {
+ 454              		.loc 1 1182 0
+ 455              		.cfi_startproc
+ 456              	.LVL20:
+1183:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status FLASHstatus = FLASH_COMPLETE;
+1184:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+1185:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if((FLASH->SR & FLASH_FLAG_BSY) == FLASH_FLAG_BSY) 
+ 457              		.loc 1 1185 0
+ 458 0000 084B     		ldr	r3, .L54
+ 459 0002 DB68     		ldr	r3, [r3, #12]
+1186:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1187:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASHstatus = FLASH_BUSY;
+ 460              		.loc 1 1187 0
+ 461 0004 0120     		mov	r0, #1
+1185:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 462              		.loc 1 1185 0
+ 463 0006 DB07     		lsl	r3, r3, #31
+ 464 0008 0AD4     		bmi	.L50
+1188:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1189:.\StdPeriphLib\src/stm32f0xx_flash.c ****   else 
+1190:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+1191:.\StdPeriphLib\src/stm32f0xx_flash.c ****     if((FLASH->SR & (uint32_t)FLASH_FLAG_WRPERR)!= (uint32_t)0x00)
+ 465              		.loc 1 1191 0
+ 466 000a 064B     		ldr	r3, .L54
+ 467 000c DB68     		ldr	r3, [r3, #12]
+1192:.\StdPeriphLib\src/stm32f0xx_flash.c ****     { 
+1193:.\StdPeriphLib\src/stm32f0xx_flash.c ****       FLASHstatus = FLASH_ERROR_WRP;
+ 468              		.loc 1 1193 0
+ 469 000e 0130     		add	r0, r0, #1
+1191:.\StdPeriphLib\src/stm32f0xx_flash.c ****     { 
+ 470              		.loc 1 1191 0
+ 471 0010 DB06     		lsl	r3, r3, #27
+ 472 0012 05D4     		bmi	.L50
+1194:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+1195:.\StdPeriphLib\src/stm32f0xx_flash.c ****     else 
+1196:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+1197:.\StdPeriphLib\src/stm32f0xx_flash.c ****       if((FLASH->SR & (uint32_t)(FLASH_SR_PGERR)) != (uint32_t)0x00)
+ 473              		.loc 1 1197 0
+ 474 0014 034B     		ldr	r3, .L54
+ 475 0016 D868     		ldr	r0, [r3, #12]
+ 476 0018 4007     		lsl	r0, r0, #29
+1198:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+1199:.\StdPeriphLib\src/stm32f0xx_flash.c ****         FLASHstatus = FLASH_ERROR_PROGRAM; 
+1200:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+1201:.\StdPeriphLib\src/stm32f0xx_flash.c ****       else
+1202:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+1203:.\StdPeriphLib\src/stm32f0xx_flash.c ****         FLASHstatus = FLASH_COMPLETE;
+ 477              		.loc 1 1203 0
+ 478 001a C00F     		lsr	r0, r0, #31
+ 479 001c 0423     		mov	r3, #4
+ 480 001e 181A     		sub	r0, r3, r0
+ 481              	.L50:
+ 482              	.LVL21:
+1204:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+1205:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+1206:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1207:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the FLASH Status */
+1208:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return FLASHstatus;
+1209:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 483              		.loc 1 1209 0
+ 484              		@ sp needed
+ 485 0020 7047     		bx	lr
+ 486              	.L55:
+ 487 0022 C046     		.align	2
+ 488              	.L54:
+ 489 0024 00200240 		.word	1073881088
+ 490              		.cfi_endproc
+ 491              	.LFE62:
+ 493              		.section	.text.FLASH_WaitForLastOperation,"ax",%progbits
+ 494              		.align	2
+ 495              		.global	FLASH_WaitForLastOperation
+ 496              		.code	16
+ 497              		.thumb_func
+ 499              	FLASH_WaitForLastOperation:
+ 500              	.LFB63:
+1210:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1211:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+1212:.\StdPeriphLib\src/stm32f0xx_flash.c **** /**
+1213:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @brief  Waits for a FLASH operation to complete or a TIMEOUT to occur.
+1214:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @param  Timeout: FLASH programming Timeout
+1215:.\StdPeriphLib\src/stm32f0xx_flash.c ****   * @retval FLASH Status: The returned value can be: FLASH_BUSY, 
+1216:.\StdPeriphLib\src/stm32f0xx_flash.c ****   *         FLASH_ERROR_PROGRAM, FLASH_ERROR_WRP, FLASH_COMPLETE or FLASH_TIMEOUT.
+1217:.\StdPeriphLib\src/stm32f0xx_flash.c ****   */
+1218:.\StdPeriphLib\src/stm32f0xx_flash.c **** FLASH_Status FLASH_WaitForLastOperation(uint32_t Timeout)
+1219:.\StdPeriphLib\src/stm32f0xx_flash.c **** { 
+ 501              		.loc 1 1219 0
+ 502              		.cfi_startproc
+ 503              	.LVL22:
+ 504 0000 10B5     		push	{r4, lr}
+ 505              	.LCFI0:
+ 506              		.cfi_def_cfa_offset 8
+ 507              		.cfi_offset 4, -8
+ 508              		.cfi_offset 14, -4
+ 509 0002 041C     		mov	r4, r0
+ 510              	.LVL23:
+1220:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+1221:.\StdPeriphLib\src/stm32f0xx_flash.c ****    
+1222:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Check for the FLASH Status */
+1223:.\StdPeriphLib\src/stm32f0xx_flash.c ****   status = FLASH_GetStatus();
+ 511              		.loc 1 1223 0
+ 512 0004 FFF7FEFF 		bl	FLASH_GetStatus
+ 513              	.LVL24:
+1224:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+1225:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Wait for a FLASH operation to complete or a TIMEOUT to occur */
+1226:.\StdPeriphLib\src/stm32f0xx_flash.c ****   while((status == FLASH_BUSY) && (Timeout != 0x00))
+ 514              		.loc 1 1226 0
+ 515 0008 0128     		cmp	r0, #1
+ 516 000a 09D1     		bne	.L57
+ 517 000c 002C     		cmp	r4, #0
+ 518 000e 0BD0     		beq	.L58
+ 519              	.LVL25:
+ 520              	.L62:
+1227:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1228:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_GetStatus();
+ 521              		.loc 1 1228 0
+ 522 0010 FFF7FEFF 		bl	FLASH_GetStatus
+ 523              	.LVL26:
+1229:.\StdPeriphLib\src/stm32f0xx_flash.c ****     Timeout--;
+ 524              		.loc 1 1229 0
+ 525 0014 013C     		sub	r4, r4, #1
+ 526              	.LVL27:
+1226:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 527              		.loc 1 1226 0
+ 528 0016 0128     		cmp	r0, #1
+ 529 0018 02D1     		bne	.L57
+1226:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 530              		.loc 1 1226 0 is_stmt 0 discriminator 1
+ 531 001a 002C     		cmp	r4, #0
+ 532 001c F8D1     		bne	.L62
+ 533 001e 03E0     		b	.L58
+ 534              	.LVL28:
+ 535              	.L57:
+1230:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1231:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+1232:.\StdPeriphLib\src/stm32f0xx_flash.c ****   if(Timeout == 0x00 )
+ 536              		.loc 1 1232 0 is_stmt 1
+ 537 0020 002C     		cmp	r4, #0
+ 538 0022 02D1     		bne	.L61
+1233:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+1234:.\StdPeriphLib\src/stm32f0xx_flash.c ****     status = FLASH_TIMEOUT;
+ 539              		.loc 1 1234 0
+ 540 0024 0520     		mov	r0, #5
+ 541 0026 00E0     		b	.L61
+ 542              	.L58:
+ 543 0028 0520     		mov	r0, #5
+ 544              	.LVL29:
+ 545              	.L61:
+1235:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+1236:.\StdPeriphLib\src/stm32f0xx_flash.c ****   /* Return the operation status */
+1237:.\StdPeriphLib\src/stm32f0xx_flash.c ****   return status;
+1238:.\StdPeriphLib\src/stm32f0xx_flash.c **** }
+ 546              		.loc 1 1238 0
+ 547              		@ sp needed
+ 548              	.LVL30:
+ 549 002a 10BD     		pop	{r4, pc}
+ 550              		.cfi_endproc
+ 551              	.LFE63:
+ 553              		.section	.text.FLASH_ErasePage,"ax",%progbits
+ 554              		.align	2
+ 555              		.global	FLASH_ErasePage
+ 556              		.code	16
+ 557              		.thumb_func
+ 559              	FLASH_ErasePage:
+ 560              	.LFB38:
+ 265:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 561              		.loc 1 265 0
+ 562              		.cfi_startproc
+ 563              	.LVL31:
+ 564 0000 70B5     		push	{r4, r5, r6, lr}
+ 565              	.LCFI1:
+ 566              		.cfi_def_cfa_offset 16
+ 567              		.cfi_offset 4, -16
+ 568              		.cfi_offset 5, -12
+ 569              		.cfi_offset 6, -8
+ 570              		.cfi_offset 14, -4
+ 571 0002 051C     		mov	r5, r0
+ 572              	.LVL32:
+ 272:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 573              		.loc 1 272 0
+ 574 0004 B020     		mov	r0, #176
+ 575              	.LVL33:
+ 576 0006 0003     		lsl	r0, r0, #12
+ 577 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 578              	.LVL34:
+ 274:.\StdPeriphLib\src/stm32f0xx_flash.c ****   { 
+ 579              		.loc 1 274 0
+ 580 000c 0428     		cmp	r0, #4
+ 581 000e 10D1     		bne	.L65
+ 277:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->AR  = Page_Address;
+ 582              		.loc 1 277 0
+ 583 0010 084C     		ldr	r4, .L66
+ 584 0012 2369     		ldr	r3, [r4, #16]
+ 585 0014 0226     		mov	r6, #2
+ 586 0016 3343     		orr	r3, r6
+ 587 0018 2361     		str	r3, [r4, #16]
+ 278:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_STRT;
+ 588              		.loc 1 278 0
+ 589 001a 6561     		str	r5, [r4, #20]
+ 279:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 590              		.loc 1 279 0
+ 591 001c 2269     		ldr	r2, [r4, #16]
+ 592 001e 4023     		mov	r3, #64
+ 593 0020 1343     		orr	r3, r2
+ 594 0022 2361     		str	r3, [r4, #16]
+ 282:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 595              		.loc 1 282 0
+ 596 0024 B020     		mov	r0, #176
+ 597              	.LVL35:
+ 598 0026 0003     		lsl	r0, r0, #12
+ 599 0028 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 600              	.LVL36:
+ 285:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 601              		.loc 1 285 0
+ 602 002c 2369     		ldr	r3, [r4, #16]
+ 603 002e B343     		bic	r3, r6
+ 604 0030 2361     		str	r3, [r4, #16]
+ 605              	.LVL37:
+ 606              	.L65:
+ 290:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 607              		.loc 1 290 0
+ 608              		@ sp needed
+ 609              	.LVL38:
+ 610 0032 70BD     		pop	{r4, r5, r6, pc}
+ 611              	.L67:
+ 612              		.align	2
+ 613              	.L66:
+ 614 0034 00200240 		.word	1073881088
+ 615              		.cfi_endproc
+ 616              	.LFE38:
+ 618              		.section	.text.FLASH_EraseAllPages,"ax",%progbits
+ 619              		.align	2
+ 620              		.global	FLASH_EraseAllPages
+ 621              		.code	16
+ 622              		.thumb_func
+ 624              	FLASH_EraseAllPages:
+ 625              	.LFB39:
+ 302:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 626              		.loc 1 302 0
+ 627              		.cfi_startproc
+ 628 0000 38B5     		push	{r3, r4, r5, lr}
+ 629              	.LCFI2:
+ 630              		.cfi_def_cfa_offset 16
+ 631              		.cfi_offset 3, -16
+ 632              		.cfi_offset 4, -12
+ 633              		.cfi_offset 5, -8
+ 634              		.cfi_offset 14, -4
+ 635              	.LVL39:
+ 306:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 636              		.loc 1 306 0
+ 637 0002 B020     		mov	r0, #176
+ 638 0004 0003     		lsl	r0, r0, #12
+ 639 0006 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 640              	.LVL40:
+ 308:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 641              		.loc 1 308 0
+ 642 000a 0428     		cmp	r0, #4
+ 643 000c 0FD1     		bne	.L69
+ 311:.\StdPeriphLib\src/stm32f0xx_flash.c ****      FLASH->CR |= FLASH_CR_STRT;
+ 644              		.loc 1 311 0
+ 645 000e 084C     		ldr	r4, .L70
+ 646 0010 2369     		ldr	r3, [r4, #16]
+ 647 0012 0425     		mov	r5, #4
+ 648 0014 2B43     		orr	r3, r5
+ 649 0016 2361     		str	r3, [r4, #16]
+ 312:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 650              		.loc 1 312 0
+ 651 0018 2269     		ldr	r2, [r4, #16]
+ 652 001a 4023     		mov	r3, #64
+ 653 001c 1343     		orr	r3, r2
+ 654 001e 2361     		str	r3, [r4, #16]
+ 315:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 655              		.loc 1 315 0
+ 656 0020 B020     		mov	r0, #176
+ 657              	.LVL41:
+ 658 0022 0003     		lsl	r0, r0, #12
+ 659 0024 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 660              	.LVL42:
+ 318:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 661              		.loc 1 318 0
+ 662 0028 2369     		ldr	r3, [r4, #16]
+ 663 002a AB43     		bic	r3, r5
+ 664 002c 2361     		str	r3, [r4, #16]
+ 665              	.LVL43:
+ 666              	.L69:
+ 323:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 667              		.loc 1 323 0
+ 668              		@ sp needed
+ 669 002e 38BD     		pop	{r3, r4, r5, pc}
+ 670              	.L71:
+ 671              		.align	2
+ 672              	.L70:
+ 673 0030 00200240 		.word	1073881088
+ 674              		.cfi_endproc
+ 675              	.LFE39:
+ 677              		.section	.text.FLASH_ProgramWord,"ax",%progbits
+ 678              		.align	2
+ 679              		.global	FLASH_ProgramWord
+ 680              		.code	16
+ 681              		.thumb_func
+ 683              	FLASH_ProgramWord:
+ 684              	.LFB40:
+ 336:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 685              		.loc 1 336 0
+ 686              		.cfi_startproc
+ 687              	.LVL44:
+ 688 0000 30B5     		push	{r4, r5, lr}
+ 689              	.LCFI3:
+ 690              		.cfi_def_cfa_offset 12
+ 691              		.cfi_offset 4, -12
+ 692              		.cfi_offset 5, -8
+ 693              		.cfi_offset 14, -4
+ 694 0002 83B0     		sub	sp, sp, #12
+ 695              	.LCFI4:
+ 696              		.cfi_def_cfa_offset 24
+ 697 0004 051C     		mov	r5, r0
+ 698 0006 0C1C     		mov	r4, r1
+ 699              	.LVL45:
+ 338:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 700              		.loc 1 338 0
+ 701 0008 0023     		mov	r3, #0
+ 702 000a 0193     		str	r3, [sp, #4]
+ 344:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 703              		.loc 1 344 0
+ 704 000c B020     		mov	r0, #176
+ 705              	.LVL46:
+ 706 000e 0003     		lsl	r0, r0, #12
+ 707 0010 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 708              	.LVL47:
+ 346:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 709              		.loc 1 346 0
+ 710 0014 0428     		cmp	r0, #4
+ 711 0016 20D1     		bne	.L73
+ 350:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 712              		.loc 1 350 0
+ 713 0018 114A     		ldr	r2, .L75
+ 714 001a 1169     		ldr	r1, [r2, #16]
+ 715 001c 0123     		mov	r3, #1
+ 716 001e 0B43     		orr	r3, r1
+ 717 0020 1361     		str	r3, [r2, #16]
+ 352:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 718              		.loc 1 352 0
+ 719 0022 A3B2     		uxth	r3, r4
+ 720 0024 2B80     		strh	r3, [r5]
+ 355:.\StdPeriphLib\src/stm32f0xx_flash.c ****  
+ 721              		.loc 1 355 0
+ 722 0026 B020     		mov	r0, #176
+ 723              	.LVL48:
+ 724 0028 0003     		lsl	r0, r0, #12
+ 725 002a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 726              	.LVL49:
+ 357:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 727              		.loc 1 357 0
+ 728 002e 0428     		cmp	r0, #4
+ 729 0030 0ED1     		bne	.L74
+ 361:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 730              		.loc 1 361 0
+ 731 0032 0235     		add	r5, r5, #2
+ 732              	.LVL50:
+ 733 0034 0195     		str	r5, [sp, #4]
+ 363:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 734              		.loc 1 363 0
+ 735 0036 019B     		ldr	r3, [sp, #4]
+ 736 0038 240C     		lsr	r4, r4, #16
+ 737              	.LVL51:
+ 738 003a 1C80     		strh	r4, [r3]
+ 366:.\StdPeriphLib\src/stm32f0xx_flash.c ****         
+ 739              		.loc 1 366 0
+ 740 003c B020     		mov	r0, #176
+ 741              	.LVL52:
+ 742 003e 0003     		lsl	r0, r0, #12
+ 743 0040 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 744              	.LVL53:
+ 369:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 745              		.loc 1 369 0
+ 746 0044 064A     		ldr	r2, .L75
+ 747 0046 1369     		ldr	r3, [r2, #16]
+ 748 0048 0121     		mov	r1, #1
+ 749 004a 8B43     		bic	r3, r1
+ 750 004c 1361     		str	r3, [r2, #16]
+ 751 004e 04E0     		b	.L73
+ 752              	.LVL54:
+ 753              	.L74:
+ 374:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 754              		.loc 1 374 0
+ 755 0050 034A     		ldr	r2, .L75
+ 756 0052 1369     		ldr	r3, [r2, #16]
+ 757 0054 0121     		mov	r1, #1
+ 758 0056 8B43     		bic	r3, r1
+ 759 0058 1361     		str	r3, [r2, #16]
+ 760              	.LVL55:
+ 761              	.L73:
+ 380:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 762              		.loc 1 380 0
+ 763 005a 03B0     		add	sp, sp, #12
+ 764              		@ sp needed
+ 765 005c 30BD     		pop	{r4, r5, pc}
+ 766              	.L76:
+ 767 005e C046     		.align	2
+ 768              	.L75:
+ 769 0060 00200240 		.word	1073881088
+ 770              		.cfi_endproc
+ 771              	.LFE40:
+ 773              		.section	.text.FLASH_ProgramHalfWord,"ax",%progbits
+ 774              		.align	2
+ 775              		.global	FLASH_ProgramHalfWord
+ 776              		.code	16
+ 777              		.thumb_func
+ 779              	FLASH_ProgramHalfWord:
+ 780              	.LFB41:
+ 393:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 781              		.loc 1 393 0
+ 782              		.cfi_startproc
+ 783              	.LVL56:
+ 784 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 785              	.LCFI5:
+ 786              		.cfi_def_cfa_offset 24
+ 787              		.cfi_offset 3, -24
+ 788              		.cfi_offset 4, -20
+ 789              		.cfi_offset 5, -16
+ 790              		.cfi_offset 6, -12
+ 791              		.cfi_offset 7, -8
+ 792              		.cfi_offset 14, -4
+ 793 0002 041C     		mov	r4, r0
+ 794 0004 0D1C     		mov	r5, r1
+ 795              	.LVL57:
+ 400:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 796              		.loc 1 400 0
+ 797 0006 B020     		mov	r0, #176
+ 798              	.LVL58:
+ 799 0008 0003     		lsl	r0, r0, #12
+ 800 000a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 801              	.LVL59:
+ 402:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 802              		.loc 1 402 0
+ 803 000e 0428     		cmp	r0, #4
+ 804 0010 0CD1     		bne	.L78
+ 405:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 805              		.loc 1 405 0
+ 806 0012 074E     		ldr	r6, .L79
+ 807 0014 3369     		ldr	r3, [r6, #16]
+ 808 0016 0127     		mov	r7, #1
+ 809 0018 3B43     		orr	r3, r7
+ 810 001a 3361     		str	r3, [r6, #16]
+ 407:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 811              		.loc 1 407 0
+ 812 001c 2580     		strh	r5, [r4]
+ 410:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 813              		.loc 1 410 0
+ 814 001e B020     		mov	r0, #176
+ 815              	.LVL60:
+ 816 0020 0003     		lsl	r0, r0, #12
+ 817 0022 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 818              	.LVL61:
+ 413:.\StdPeriphLib\src/stm32f0xx_flash.c ****   } 
+ 819              		.loc 1 413 0
+ 820 0026 3369     		ldr	r3, [r6, #16]
+ 821 0028 BB43     		bic	r3, r7
+ 822 002a 3361     		str	r3, [r6, #16]
+ 823              	.LVL62:
+ 824              	.L78:
+ 418:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 825              		.loc 1 418 0
+ 826              		@ sp needed
+ 827              	.LVL63:
+ 828 002c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 829              	.L80:
+ 830 002e C046     		.align	2
+ 831              	.L79:
+ 832 0030 00200240 		.word	1073881088
+ 833              		.cfi_endproc
+ 834              	.LFE41:
+ 836              		.section	.text.FLASH_OB_Erase,"ax",%progbits
+ 837              		.align	2
+ 838              		.global	FLASH_OB_Erase
+ 839              		.code	16
+ 840              		.thumb_func
+ 842              	FLASH_OB_Erase:
+ 843              	.LFB45:
+ 525:.\StdPeriphLib\src/stm32f0xx_flash.c ****   uint16_t rdptmp = OB_RDP_Level_0;
+ 844              		.loc 1 525 0
+ 845              		.cfi_startproc
+ 846 0000 10B5     		push	{r4, lr}
+ 847              	.LCFI6:
+ 848              		.cfi_def_cfa_offset 8
+ 849              		.cfi_offset 4, -8
+ 850              		.cfi_offset 14, -4
+ 851              	.LVL64:
+ 531:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 852              		.loc 1 531 0
+ 853 0002 FFF7FEFF 		bl	FLASH_OB_GetRDP
+ 854              	.LVL65:
+ 526:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 855              		.loc 1 526 0
+ 856 0006 AA24     		mov	r4, #170
+ 533:.\StdPeriphLib\src/stm32f0xx_flash.c ****   }
+ 857              		.loc 1 533 0
+ 858 0008 4342     		neg	r3, r0
+ 859 000a 5841     		adc	r0, r0, r3
+ 860 000c 4042     		neg	r0, r0
+ 861 000e 0440     		and	r4, r0
+ 862              	.LVL66:
+ 537:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 863              		.loc 1 537 0
+ 864 0010 B020     		mov	r0, #176
+ 865 0012 0003     		lsl	r0, r0, #12
+ 866 0014 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 867              	.LVL67:
+ 539:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {   
+ 868              		.loc 1 539 0
+ 869 0018 0428     		cmp	r0, #4
+ 870 001a 2CD1     		bne	.L83
+ 542:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_STRT;
+ 871              		.loc 1 542 0
+ 872 001c 164B     		ldr	r3, .L86
+ 873 001e 1969     		ldr	r1, [r3, #16]
+ 874 0020 2022     		mov	r2, #32
+ 875 0022 0A43     		orr	r2, r1
+ 876 0024 1A61     		str	r2, [r3, #16]
+ 543:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 877              		.loc 1 543 0
+ 878 0026 1969     		ldr	r1, [r3, #16]
+ 879 0028 4022     		mov	r2, #64
+ 880 002a 0A43     		orr	r2, r1
+ 881 002c 1A61     		str	r2, [r3, #16]
+ 546:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 882              		.loc 1 546 0
+ 883 002e B020     		mov	r0, #176
+ 884              	.LVL68:
+ 885 0030 0003     		lsl	r0, r0, #12
+ 886 0032 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 887              	.LVL69:
+ 548:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 888              		.loc 1 548 0
+ 889 0036 0428     		cmp	r0, #4
+ 890 0038 16D1     		bne	.L84
+ 551:.\StdPeriphLib\src/stm32f0xx_flash.c ****        
+ 891              		.loc 1 551 0
+ 892 003a 0F4B     		ldr	r3, .L86
+ 893 003c 1A69     		ldr	r2, [r3, #16]
+ 894 003e 2021     		mov	r1, #32
+ 895 0040 8A43     		bic	r2, r1
+ 896 0042 1A61     		str	r2, [r3, #16]
+ 554:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 897              		.loc 1 554 0
+ 898 0044 1969     		ldr	r1, [r3, #16]
+ 899 0046 1022     		mov	r2, #16
+ 900 0048 0A43     		orr	r2, r1
+ 901 004a 1A61     		str	r2, [r3, #16]
+ 557:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 902              		.loc 1 557 0
+ 903 004c 0B4B     		ldr	r3, .L86+4
+ 904 004e 1C80     		strh	r4, [r3]
+ 560:.\StdPeriphLib\src/stm32f0xx_flash.c ****  
+ 905              		.loc 1 560 0
+ 906 0050 B020     		mov	r0, #176
+ 907              	.LVL70:
+ 908 0052 0003     		lsl	r0, r0, #12
+ 909 0054 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 910              	.LVL71:
+ 562:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 911              		.loc 1 562 0
+ 912 0058 0528     		cmp	r0, #5
+ 913 005a 0CD0     		beq	.L83
+ 565:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 914              		.loc 1 565 0
+ 915 005c 064A     		ldr	r2, .L86
+ 916 005e 1369     		ldr	r3, [r2, #16]
+ 917 0060 1021     		mov	r1, #16
+ 918 0062 8B43     		bic	r3, r1
+ 919 0064 1361     		str	r3, [r2, #16]
+ 920 0066 06E0     		b	.L83
+ 921              	.L84:
+ 570:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 922              		.loc 1 570 0
+ 923 0068 0528     		cmp	r0, #5
+ 924 006a 04D0     		beq	.L83
+ 573:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 925              		.loc 1 573 0
+ 926 006c 024A     		ldr	r2, .L86
+ 927 006e 1369     		ldr	r3, [r2, #16]
+ 928 0070 1021     		mov	r1, #16
+ 929 0072 8B43     		bic	r3, r1
+ 930 0074 1361     		str	r3, [r2, #16]
+ 931              	.LVL72:
+ 932              	.L83:
+ 579:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 933              		.loc 1 579 0
+ 934              		@ sp needed
+ 935              	.LVL73:
+ 936 0076 10BD     		pop	{r4, pc}
+ 937              	.L87:
+ 938              		.align	2
+ 939              	.L86:
+ 940 0078 00200240 		.word	1073881088
+ 941 007c 00F8FF1F 		.word	536868864
+ 942              		.cfi_endproc
+ 943              	.LFE45:
+ 945              		.section	.text.FLASH_OB_EnableWRP,"ax",%progbits
+ 946              		.align	2
+ 947              		.global	FLASH_OB_EnableWRP
+ 948              		.code	16
+ 949              		.thumb_func
+ 951              	FLASH_OB_EnableWRP:
+ 952              	.LFB46:
+ 594:.\StdPeriphLib\src/stm32f0xx_flash.c ****  uint16_t WRP0_Data = 0xFFFF, WRP1_Data = 0xFFFF, WRP2_Data = 0xFFFF, WRP3_Data = 0xFFFF;
+ 953              		.loc 1 594 0
+ 954              		.cfi_startproc
+ 955              	.LVL74:
+ 956 0000 38B5     		push	{r3, r4, r5, lr}
+ 957              	.LCFI7:
+ 958              		.cfi_def_cfa_offset 16
+ 959              		.cfi_offset 3, -16
+ 960              		.cfi_offset 4, -12
+ 961              		.cfi_offset 5, -8
+ 962              		.cfi_offset 14, -4
+ 963 0002 051C     		mov	r5, r0
+ 964              	.LVL75:
+ 609:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 965              		.loc 1 609 0
+ 966 0004 B020     		mov	r0, #176
+ 967              	.LVL76:
+ 968 0006 0003     		lsl	r0, r0, #12
+ 969 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 970              	.LVL77:
+ 971 000c 041E     		sub	r4, r0, #0
+ 972              	.LVL78:
+ 611:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 973              		.loc 1 611 0
+ 974 000e 042C     		cmp	r4, #4
+ 975 0010 3BD1     		bne	.L89
+ 602:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP0_Data = (uint16_t)(OB_WRP & OB_WRP0_WRP0);
+ 976              		.loc 1 602 0
+ 977 0012 ED43     		mvn	r5, r5
+ 978              	.LVL79:
+ 603:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP1_Data = (uint16_t)((OB_WRP >> 8) & OB_WRP0_WRP0);
+ 979              		.loc 1 603 0
+ 980 0014 FF23     		mov	r3, #255
+ 981 0016 2B40     		and	r3, r5
+ 613:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 982              		.loc 1 613 0
+ 983 0018 1C49     		ldr	r1, .L97
+ 984 001a 0869     		ldr	r0, [r1, #16]
+ 985 001c 1022     		mov	r2, #16
+ 986 001e 0243     		orr	r2, r0
+ 987 0020 0A61     		str	r2, [r1, #16]
+ 615:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 988              		.loc 1 615 0
+ 989 0022 FF2B     		cmp	r3, #255
+ 990 0024 07D0     		beq	.L90
+ 617:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 991              		.loc 1 617 0
+ 992 0026 1A4A     		ldr	r2, .L97+4
+ 993 0028 1381     		strh	r3, [r2, #8]
+ 620:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 994              		.loc 1 620 0
+ 995 002a B020     		mov	r0, #176
+ 996 002c 0003     		lsl	r0, r0, #12
+ 997 002e FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 998              	.LVL80:
+ 622:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 999              		.loc 1 622 0
+ 1000 0032 0428     		cmp	r0, #4
+ 1001 0034 20D1     		bne	.L91
+ 1002              	.LVL81:
+ 1003              	.L90:
+ 604:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP2_Data = (uint16_t)((OB_WRP >> 16) & OB_WRP0_WRP0) ;
+ 1004              		.loc 1 604 0 discriminator 1
+ 1005 0036 2B04     		lsl	r3, r5, #16
+ 1006 0038 1B0E     		lsr	r3, r3, #24
+ 622:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1007              		.loc 1 622 0 discriminator 1
+ 1008 003a FF2B     		cmp	r3, #255
+ 1009 003c 07D0     		beq	.L92
+ 624:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 1010              		.loc 1 624 0
+ 1011 003e 144A     		ldr	r2, .L97+4
+ 1012 0040 5381     		strh	r3, [r2, #10]
+ 627:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1013              		.loc 1 627 0
+ 1014 0042 B020     		mov	r0, #176
+ 1015 0044 0003     		lsl	r0, r0, #12
+ 1016 0046 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1017              	.LVL82:
+ 629:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1018              		.loc 1 629 0
+ 1019 004a 0428     		cmp	r0, #4
+ 1020 004c 14D1     		bne	.L91
+ 1021              	.LVL83:
+ 1022              	.L92:
+ 605:.\StdPeriphLib\src/stm32f0xx_flash.c ****   WRP3_Data = (uint16_t)((OB_WRP >> 24) & OB_WRP0_WRP0) ;
+ 1023              		.loc 1 605 0 discriminator 1
+ 1024 004e 2B02     		lsl	r3, r5, #8
+ 1025 0050 1B0E     		lsr	r3, r3, #24
+ 1026              	.LVL84:
+ 629:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1027              		.loc 1 629 0 discriminator 1
+ 1028 0052 FF2B     		cmp	r3, #255
+ 1029 0054 07D0     		beq	.L93
+ 631:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 1030              		.loc 1 631 0
+ 1031 0056 0E4A     		ldr	r2, .L97+4
+ 1032 0058 9381     		strh	r3, [r2, #12]
+ 634:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }    
+ 1033              		.loc 1 634 0
+ 1034 005a B020     		mov	r0, #176
+ 1035 005c 0003     		lsl	r0, r0, #12
+ 1036 005e FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1037              	.LVL85:
+ 636:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1038              		.loc 1 636 0
+ 1039 0062 0428     		cmp	r0, #4
+ 1040 0064 08D1     		bne	.L91
+ 1041              	.LVL86:
+ 1042              	.L93:
+ 606:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 1043              		.loc 1 606 0 discriminator 1
+ 1044 0066 2D0E     		lsr	r5, r5, #24
+ 1045              	.LVL87:
+ 636:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1046              		.loc 1 636 0 discriminator 1
+ 1047 0068 FF2D     		cmp	r5, #255
+ 1048 006a 08D0     		beq	.L95
+ 638:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 1049              		.loc 1 638 0
+ 1050 006c 084B     		ldr	r3, .L97+4
+ 1051 006e DD81     		strh	r5, [r3, #14]
+ 641:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }  
+ 1052              		.loc 1 641 0
+ 1053 0070 B020     		mov	r0, #176
+ 1054 0072 0003     		lsl	r0, r0, #12
+ 1055 0074 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1056              	.LVL88:
+ 1057              	.L91:
+ 643:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1058              		.loc 1 643 0
+ 1059 0078 0528     		cmp	r0, #5
+ 1060 007a 01D1     		bne	.L94
+ 1061 007c 05E0     		b	.L89
+ 1062              	.LVL89:
+ 1063              	.L95:
+ 1064 007e 201C     		mov	r0, r4
+ 1065              	.LVL90:
+ 1066              	.L94:
+ 646:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1067              		.loc 1 646 0
+ 1068 0080 024A     		ldr	r2, .L97
+ 1069 0082 1369     		ldr	r3, [r2, #16]
+ 1070 0084 1021     		mov	r1, #16
+ 1071 0086 8B43     		bic	r3, r1
+ 1072 0088 1361     		str	r3, [r2, #16]
+ 1073              	.LVL91:
+ 1074              	.L89:
+ 651:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1075              		.loc 1 651 0
+ 1076              		@ sp needed
+ 1077 008a 38BD     		pop	{r3, r4, r5, pc}
+ 1078              	.L98:
+ 1079              		.align	2
+ 1080              	.L97:
+ 1081 008c 00200240 		.word	1073881088
+ 1082 0090 00F8FF1F 		.word	536868864
+ 1083              		.cfi_endproc
+ 1084              	.LFE46:
+ 1086              		.section	.text.FLASH_OB_RDPConfig,"ax",%progbits
+ 1087              		.align	2
+ 1088              		.global	FLASH_OB_RDPConfig
+ 1089              		.code	16
+ 1090              		.thumb_func
+ 1092              	FLASH_OB_RDPConfig:
+ 1093              	.LFB47:
+ 668:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 1094              		.loc 1 668 0
+ 1095              		.cfi_startproc
+ 1096              	.LVL92:
+ 1097 0000 10B5     		push	{r4, lr}
+ 1098              	.LCFI8:
+ 1099              		.cfi_def_cfa_offset 8
+ 1100              		.cfi_offset 4, -8
+ 1101              		.cfi_offset 14, -4
+ 1102 0002 041C     		mov	r4, r0
+ 1103              	.LVL93:
+ 673:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1104              		.loc 1 673 0
+ 1105 0004 B020     		mov	r0, #176
+ 1106              	.LVL94:
+ 1107 0006 0003     		lsl	r0, r0, #12
+ 1108 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1109              	.LVL95:
+ 675:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 1110              		.loc 1 675 0
+ 1111 000c 0428     		cmp	r0, #4
+ 1112 000e 2DD1     		bne	.L100
+ 677:.\StdPeriphLib\src/stm32f0xx_flash.c ****     FLASH->CR |= FLASH_CR_STRT;
+ 1113              		.loc 1 677 0
+ 1114 0010 174B     		ldr	r3, .L102
+ 1115 0012 1969     		ldr	r1, [r3, #16]
+ 1116 0014 2022     		mov	r2, #32
+ 1117 0016 0A43     		orr	r2, r1
+ 1118 0018 1A61     		str	r2, [r3, #16]
+ 678:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 1119              		.loc 1 678 0
+ 1120 001a 1969     		ldr	r1, [r3, #16]
+ 1121 001c 4022     		mov	r2, #64
+ 1122 001e 0A43     		orr	r2, r1
+ 1123 0020 1A61     		str	r2, [r3, #16]
+ 681:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 1124              		.loc 1 681 0
+ 1125 0022 B020     		mov	r0, #176
+ 1126              	.LVL96:
+ 1127 0024 0003     		lsl	r0, r0, #12
+ 1128 0026 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1129              	.LVL97:
+ 683:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1130              		.loc 1 683 0
+ 1131 002a 0428     		cmp	r0, #4
+ 1132 002c 17D1     		bne	.L101
+ 686:.\StdPeriphLib\src/stm32f0xx_flash.c ****       
+ 1133              		.loc 1 686 0
+ 1134 002e 104B     		ldr	r3, .L102
+ 1135 0030 1A69     		ldr	r2, [r3, #16]
+ 1136 0032 2021     		mov	r1, #32
+ 1137 0034 8A43     		bic	r2, r1
+ 1138 0036 1A61     		str	r2, [r3, #16]
+ 689:.\StdPeriphLib\src/stm32f0xx_flash.c ****        
+ 1139              		.loc 1 689 0
+ 1140 0038 1969     		ldr	r1, [r3, #16]
+ 1141 003a 1022     		mov	r2, #16
+ 1142 003c 0A43     		orr	r2, r1
+ 1143 003e 1A61     		str	r2, [r3, #16]
+ 691:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1144              		.loc 1 691 0
+ 1145 0040 A4B2     		uxth	r4, r4
+ 1146 0042 0C4B     		ldr	r3, .L102+4
+ 1147 0044 1C80     		strh	r4, [r3]
+ 694:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 1148              		.loc 1 694 0
+ 1149 0046 B020     		mov	r0, #176
+ 1150              	.LVL98:
+ 1151 0048 0003     		lsl	r0, r0, #12
+ 1152 004a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1153              	.LVL99:
+ 696:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 1154              		.loc 1 696 0
+ 1155 004e 0528     		cmp	r0, #5
+ 1156 0050 0CD0     		beq	.L100
+ 699:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 1157              		.loc 1 699 0
+ 1158 0052 074A     		ldr	r2, .L102
+ 1159 0054 1369     		ldr	r3, [r2, #16]
+ 1160 0056 1021     		mov	r1, #16
+ 1161 0058 8B43     		bic	r3, r1
+ 1162 005a 1361     		str	r3, [r2, #16]
+ 1163 005c 06E0     		b	.L100
+ 1164              	.L101:
+ 704:.\StdPeriphLib\src/stm32f0xx_flash.c ****       {
+ 1165              		.loc 1 704 0
+ 1166 005e 0528     		cmp	r0, #5
+ 1167 0060 04D0     		beq	.L100
+ 707:.\StdPeriphLib\src/stm32f0xx_flash.c ****       }
+ 1168              		.loc 1 707 0
+ 1169 0062 034A     		ldr	r2, .L102
+ 1170 0064 1369     		ldr	r3, [r2, #16]
+ 1171 0066 2021     		mov	r1, #32
+ 1172 0068 8B43     		bic	r3, r1
+ 1173 006a 1361     		str	r3, [r2, #16]
+ 1174              	.LVL100:
+ 1175              	.L100:
+ 713:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1176              		.loc 1 713 0
+ 1177              		@ sp needed
+ 1178 006c 10BD     		pop	{r4, pc}
+ 1179              	.L103:
+ 1180 006e C046     		.align	2
+ 1181              	.L102:
+ 1182 0070 00200240 		.word	1073881088
+ 1183 0074 00F8FF1F 		.word	536868864
+ 1184              		.cfi_endproc
+ 1185              	.LFE47:
+ 1187              		.section	.text.FLASH_OB_UserConfig,"ax",%progbits
+ 1188              		.align	2
+ 1189              		.global	FLASH_OB_UserConfig
+ 1190              		.code	16
+ 1191              		.thumb_func
+ 1193              	FLASH_OB_UserConfig:
+ 1194              	.LFB48:
+ 736:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1195              		.loc 1 736 0
+ 1196              		.cfi_startproc
+ 1197              	.LVL101:
+ 1198 0000 70B5     		push	{r4, r5, r6, lr}
+ 1199              	.LCFI9:
+ 1200              		.cfi_def_cfa_offset 16
+ 1201              		.cfi_offset 4, -16
+ 1202              		.cfi_offset 5, -12
+ 1203              		.cfi_offset 6, -8
+ 1204              		.cfi_offset 14, -4
+ 1205 0002 051C     		mov	r5, r0
+ 1206 0004 0E1C     		mov	r6, r1
+ 1207 0006 141C     		mov	r4, r2
+ 1208              	.LVL102:
+ 745:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1209              		.loc 1 745 0
+ 1210 0008 B020     		mov	r0, #176
+ 1211              	.LVL103:
+ 1212 000a 0003     		lsl	r0, r0, #12
+ 1213 000c FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1214              	.LVL104:
+ 747:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 1215              		.loc 1 747 0
+ 1216 0010 0428     		cmp	r0, #4
+ 1217 0012 17D1     		bne	.L105
+ 750:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1218              		.loc 1 750 0
+ 1219 0014 0C4A     		ldr	r2, .L106
+ 1220 0016 1169     		ldr	r1, [r2, #16]
+ 1221 0018 1023     		mov	r3, #16
+ 1222 001a 0B43     		orr	r3, r1
+ 1223 001c 1361     		str	r3, [r2, #16]
+ 1224 001e 0823     		mov	r3, #8
+ 1225 0020 5B42     		neg	r3, r3
+ 1226 0022 1C43     		orr	r4, r3
+ 1227 0024 2643     		orr	r6, r4
+ 752:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1228              		.loc 1 752 0
+ 1229 0026 3543     		orr	r5, r6
+ 1230 0028 EDB2     		uxtb	r5, r5
+ 1231 002a 084B     		ldr	r3, .L106+4
+ 1232 002c 5D80     		strh	r5, [r3, #2]
+ 755:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1233              		.loc 1 755 0
+ 1234 002e B020     		mov	r0, #176
+ 1235              	.LVL105:
+ 1236 0030 0003     		lsl	r0, r0, #12
+ 1237 0032 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1238              	.LVL106:
+ 757:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1239              		.loc 1 757 0
+ 1240 0036 0528     		cmp	r0, #5
+ 1241 0038 04D0     		beq	.L105
+ 760:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1242              		.loc 1 760 0
+ 1243 003a 034A     		ldr	r2, .L106
+ 1244 003c 1369     		ldr	r3, [r2, #16]
+ 1245 003e 1021     		mov	r1, #16
+ 1246 0040 8B43     		bic	r3, r1
+ 1247 0042 1361     		str	r3, [r2, #16]
+ 1248              	.LVL107:
+ 1249              	.L105:
+ 765:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1250              		.loc 1 765 0
+ 1251              		@ sp needed
+ 1252 0044 70BD     		pop	{r4, r5, r6, pc}
+ 1253              	.L107:
+ 1254 0046 C046     		.align	2
+ 1255              	.L106:
+ 1256 0048 00200240 		.word	1073881088
+ 1257 004c 00F8FF1F 		.word	536868864
+ 1258              		.cfi_endproc
+ 1259              	.LFE48:
+ 1261              		.section	.text.FLASH_OB_BOOTConfig,"ax",%progbits
+ 1262              		.align	2
+ 1263              		.global	FLASH_OB_BOOTConfig
+ 1264              		.code	16
+ 1265              		.thumb_func
+ 1267              	FLASH_OB_BOOTConfig:
+ 1268              	.LFB49:
+ 776:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1269              		.loc 1 776 0
+ 1270              		.cfi_startproc
+ 1271              	.LVL108:
+ 1272 0000 10B5     		push	{r4, lr}
+ 1273              	.LCFI10:
+ 1274              		.cfi_def_cfa_offset 8
+ 1275              		.cfi_offset 4, -8
+ 1276              		.cfi_offset 14, -4
+ 1277 0002 041C     		mov	r4, r0
+ 1278              	.LVL109:
+ 783:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1279              		.loc 1 783 0
+ 1280 0004 B020     		mov	r0, #176
+ 1281              	.LVL110:
+ 1282 0006 0003     		lsl	r0, r0, #12
+ 1283 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1284              	.LVL111:
+ 785:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 1285              		.loc 1 785 0
+ 1286 000c 0428     		cmp	r0, #4
+ 1287 000e 13D1     		bne	.L109
+ 788:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1288              		.loc 1 788 0
+ 1289 0010 0A4A     		ldr	r2, .L110
+ 1290 0012 1169     		ldr	r1, [r2, #16]
+ 1291 0014 1023     		mov	r3, #16
+ 1292 0016 0B43     		orr	r3, r1
+ 1293 0018 1361     		str	r3, [r2, #16]
+ 790:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1294              		.loc 1 790 0
+ 1295 001a EF23     		mov	r3, #239
+ 1296 001c 1C43     		orr	r4, r3
+ 1297 001e 084B     		ldr	r3, .L110+4
+ 1298 0020 5C80     		strh	r4, [r3, #2]
+ 793:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1299              		.loc 1 793 0
+ 1300 0022 B020     		mov	r0, #176
+ 1301              	.LVL112:
+ 1302 0024 0003     		lsl	r0, r0, #12
+ 1303 0026 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1304              	.LVL113:
+ 795:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1305              		.loc 1 795 0
+ 1306 002a 0528     		cmp	r0, #5
+ 1307 002c 04D0     		beq	.L109
+ 798:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1308              		.loc 1 798 0
+ 1309 002e 034A     		ldr	r2, .L110
+ 1310 0030 1369     		ldr	r3, [r2, #16]
+ 1311 0032 1021     		mov	r1, #16
+ 1312 0034 8B43     		bic	r3, r1
+ 1313 0036 1361     		str	r3, [r2, #16]
+ 1314              	.LVL114:
+ 1315              	.L109:
+ 803:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1316              		.loc 1 803 0
+ 1317              		@ sp needed
+ 1318 0038 10BD     		pop	{r4, pc}
+ 1319              	.L111:
+ 1320 003a C046     		.align	2
+ 1321              	.L110:
+ 1322 003c 00200240 		.word	1073881088
+ 1323 0040 00F8FF1F 		.word	536868864
+ 1324              		.cfi_endproc
+ 1325              	.LFE49:
+ 1327              		.section	.text.FLASH_OB_BOOT0Config,"ax",%progbits
+ 1328              		.align	2
+ 1329              		.global	FLASH_OB_BOOT0Config
+ 1330              		.code	16
+ 1331              		.thumb_func
+ 1333              	FLASH_OB_BOOT0Config:
+ 1334              	.LFB50:
+ 815:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1335              		.loc 1 815 0
+ 1336              		.cfi_startproc
+ 1337              	.LVL115:
+ 1338 0000 10B5     		push	{r4, lr}
+ 1339              	.LCFI11:
+ 1340              		.cfi_def_cfa_offset 8
+ 1341              		.cfi_offset 4, -8
+ 1342              		.cfi_offset 14, -4
+ 1343 0002 041C     		mov	r4, r0
+ 1344              	.LVL116:
+ 822:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1345              		.loc 1 822 0
+ 1346 0004 B020     		mov	r0, #176
+ 1347              	.LVL117:
+ 1348 0006 0003     		lsl	r0, r0, #12
+ 1349 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1350              	.LVL118:
+ 824:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 1351              		.loc 1 824 0
+ 1352 000c 0428     		cmp	r0, #4
+ 1353 000e 13D1     		bne	.L113
+ 827:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1354              		.loc 1 827 0
+ 1355 0010 0A4A     		ldr	r2, .L114
+ 1356 0012 1169     		ldr	r1, [r2, #16]
+ 1357 0014 1023     		mov	r3, #16
+ 1358 0016 0B43     		orr	r3, r1
+ 1359 0018 1361     		str	r3, [r2, #16]
+ 829:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1360              		.loc 1 829 0
+ 1361 001a F723     		mov	r3, #247
+ 1362 001c 1C43     		orr	r4, r3
+ 1363 001e 084B     		ldr	r3, .L114+4
+ 1364 0020 5C80     		strh	r4, [r3, #2]
+ 832:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1365              		.loc 1 832 0
+ 1366 0022 B020     		mov	r0, #176
+ 1367              	.LVL119:
+ 1368 0024 0003     		lsl	r0, r0, #12
+ 1369 0026 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1370              	.LVL120:
+ 834:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1371              		.loc 1 834 0
+ 1372 002a 0528     		cmp	r0, #5
+ 1373 002c 04D0     		beq	.L113
+ 837:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1374              		.loc 1 837 0
+ 1375 002e 034A     		ldr	r2, .L114
+ 1376 0030 1369     		ldr	r3, [r2, #16]
+ 1377 0032 1021     		mov	r1, #16
+ 1378 0034 8B43     		bic	r3, r1
+ 1379 0036 1361     		str	r3, [r2, #16]
+ 1380              	.LVL121:
+ 1381              	.L113:
+ 842:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1382              		.loc 1 842 0
+ 1383              		@ sp needed
+ 1384 0038 10BD     		pop	{r4, pc}
+ 1385              	.L115:
+ 1386 003a C046     		.align	2
+ 1387              	.L114:
+ 1388 003c 00200240 		.word	1073881088
+ 1389 0040 00F8FF1F 		.word	536868864
+ 1390              		.cfi_endproc
+ 1391              	.LFE50:
+ 1393              		.section	.text.FLASH_OB_BOOT0SWConfig,"ax",%progbits
+ 1394              		.align	2
+ 1395              		.global	FLASH_OB_BOOT0SWConfig
+ 1396              		.code	16
+ 1397              		.thumb_func
+ 1399              	FLASH_OB_BOOT0SWConfig:
+ 1400              	.LFB51:
+ 854:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1401              		.loc 1 854 0
+ 1402              		.cfi_startproc
+ 1403              	.LVL122:
+ 1404 0000 10B5     		push	{r4, lr}
+ 1405              	.LCFI12:
+ 1406              		.cfi_def_cfa_offset 8
+ 1407              		.cfi_offset 4, -8
+ 1408              		.cfi_offset 14, -4
+ 1409 0002 041C     		mov	r4, r0
+ 1410              	.LVL123:
+ 861:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1411              		.loc 1 861 0
+ 1412 0004 B020     		mov	r0, #176
+ 1413              	.LVL124:
+ 1414 0006 0003     		lsl	r0, r0, #12
+ 1415 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1416              	.LVL125:
+ 863:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 1417              		.loc 1 863 0
+ 1418 000c 0428     		cmp	r0, #4
+ 1419 000e 13D1     		bne	.L117
+ 866:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1420              		.loc 1 866 0
+ 1421 0010 0A4A     		ldr	r2, .L118
+ 1422 0012 1169     		ldr	r1, [r2, #16]
+ 1423 0014 1023     		mov	r3, #16
+ 1424 0016 0B43     		orr	r3, r1
+ 1425 0018 1361     		str	r3, [r2, #16]
+ 868:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1426              		.loc 1 868 0
+ 1427 001a 7F23     		mov	r3, #127
+ 1428 001c 1C43     		orr	r4, r3
+ 1429 001e 084B     		ldr	r3, .L118+4
+ 1430 0020 5C80     		strh	r4, [r3, #2]
+ 871:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1431              		.loc 1 871 0
+ 1432 0022 B020     		mov	r0, #176
+ 1433              	.LVL126:
+ 1434 0024 0003     		lsl	r0, r0, #12
+ 1435 0026 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1436              	.LVL127:
+ 873:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1437              		.loc 1 873 0
+ 1438 002a 0528     		cmp	r0, #5
+ 1439 002c 04D0     		beq	.L117
+ 876:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1440              		.loc 1 876 0
+ 1441 002e 034A     		ldr	r2, .L118
+ 1442 0030 1369     		ldr	r3, [r2, #16]
+ 1443 0032 1021     		mov	r1, #16
+ 1444 0034 8B43     		bic	r3, r1
+ 1445 0036 1361     		str	r3, [r2, #16]
+ 1446              	.LVL128:
+ 1447              	.L117:
+ 881:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1448              		.loc 1 881 0
+ 1449              		@ sp needed
+ 1450 0038 10BD     		pop	{r4, pc}
+ 1451              	.L119:
+ 1452 003a C046     		.align	2
+ 1453              	.L118:
+ 1454 003c 00200240 		.word	1073881088
+ 1455 0040 00F8FF1F 		.word	536868864
+ 1456              		.cfi_endproc
+ 1457              	.LFE51:
+ 1459              		.section	.text.FLASH_OB_VDDAConfig,"ax",%progbits
+ 1460              		.align	2
+ 1461              		.global	FLASH_OB_VDDAConfig
+ 1462              		.code	16
+ 1463              		.thumb_func
+ 1465              	FLASH_OB_VDDAConfig:
+ 1466              	.LFB52:
+ 892:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1467              		.loc 1 892 0
+ 1468              		.cfi_startproc
+ 1469              	.LVL129:
+ 1470 0000 10B5     		push	{r4, lr}
+ 1471              	.LCFI13:
+ 1472              		.cfi_def_cfa_offset 8
+ 1473              		.cfi_offset 4, -8
+ 1474              		.cfi_offset 14, -4
+ 1475 0002 041C     		mov	r4, r0
+ 1476              	.LVL130:
+ 899:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1477              		.loc 1 899 0
+ 1478 0004 B020     		mov	r0, #176
+ 1479              	.LVL131:
+ 1480 0006 0003     		lsl	r0, r0, #12
+ 1481 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1482              	.LVL132:
+ 901:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 1483              		.loc 1 901 0
+ 1484 000c 0428     		cmp	r0, #4
+ 1485 000e 13D1     		bne	.L121
+ 904:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1486              		.loc 1 904 0
+ 1487 0010 0A4A     		ldr	r2, .L122
+ 1488 0012 1169     		ldr	r1, [r2, #16]
+ 1489 0014 1023     		mov	r3, #16
+ 1490 0016 0B43     		orr	r3, r1
+ 1491 0018 1361     		str	r3, [r2, #16]
+ 906:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1492              		.loc 1 906 0
+ 1493 001a DF23     		mov	r3, #223
+ 1494 001c 1C43     		orr	r4, r3
+ 1495 001e 084B     		ldr	r3, .L122+4
+ 1496 0020 5C80     		strh	r4, [r3, #2]
+ 909:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1497              		.loc 1 909 0
+ 1498 0022 B020     		mov	r0, #176
+ 1499              	.LVL133:
+ 1500 0024 0003     		lsl	r0, r0, #12
+ 1501 0026 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1502              	.LVL134:
+ 911:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1503              		.loc 1 911 0
+ 1504 002a 0528     		cmp	r0, #5
+ 1505 002c 04D0     		beq	.L121
+ 914:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1506              		.loc 1 914 0
+ 1507 002e 034A     		ldr	r2, .L122
+ 1508 0030 1369     		ldr	r3, [r2, #16]
+ 1509 0032 1021     		mov	r1, #16
+ 1510 0034 8B43     		bic	r3, r1
+ 1511 0036 1361     		str	r3, [r2, #16]
+ 1512              	.LVL135:
+ 1513              	.L121:
+ 919:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1514              		.loc 1 919 0
+ 1515              		@ sp needed
+ 1516 0038 10BD     		pop	{r4, pc}
+ 1517              	.L123:
+ 1518 003a C046     		.align	2
+ 1519              	.L122:
+ 1520 003c 00200240 		.word	1073881088
+ 1521 0040 00F8FF1F 		.word	536868864
+ 1522              		.cfi_endproc
+ 1523              	.LFE52:
+ 1525              		.section	.text.FLASH_OB_SRAMParityConfig,"ax",%progbits
+ 1526              		.align	2
+ 1527              		.global	FLASH_OB_SRAMParityConfig
+ 1528              		.code	16
+ 1529              		.thumb_func
+ 1531              	FLASH_OB_SRAMParityConfig:
+ 1532              	.LFB53:
+ 930:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1533              		.loc 1 930 0
+ 1534              		.cfi_startproc
+ 1535              	.LVL136:
+ 1536 0000 10B5     		push	{r4, lr}
+ 1537              	.LCFI14:
+ 1538              		.cfi_def_cfa_offset 8
+ 1539              		.cfi_offset 4, -8
+ 1540              		.cfi_offset 14, -4
+ 1541 0002 041C     		mov	r4, r0
+ 1542              	.LVL137:
+ 937:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1543              		.loc 1 937 0
+ 1544 0004 B020     		mov	r0, #176
+ 1545              	.LVL138:
+ 1546 0006 0003     		lsl	r0, r0, #12
+ 1547 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1548              	.LVL139:
+ 939:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {  
+ 1549              		.loc 1 939 0
+ 1550 000c 0428     		cmp	r0, #4
+ 1551 000e 13D1     		bne	.L125
+ 942:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1552              		.loc 1 942 0
+ 1553 0010 0A4A     		ldr	r2, .L126
+ 1554 0012 1169     		ldr	r1, [r2, #16]
+ 1555 0014 1023     		mov	r3, #16
+ 1556 0016 0B43     		orr	r3, r1
+ 1557 0018 1361     		str	r3, [r2, #16]
+ 944:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1558              		.loc 1 944 0
+ 1559 001a BF23     		mov	r3, #191
+ 1560 001c 1C43     		orr	r4, r3
+ 1561 001e 084B     		ldr	r3, .L126+4
+ 1562 0020 5C80     		strh	r4, [r3, #2]
+ 947:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1563              		.loc 1 947 0
+ 1564 0022 B020     		mov	r0, #176
+ 1565              	.LVL140:
+ 1566 0024 0003     		lsl	r0, r0, #12
+ 1567 0026 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1568              	.LVL141:
+ 949:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1569              		.loc 1 949 0
+ 1570 002a 0528     		cmp	r0, #5
+ 1571 002c 04D0     		beq	.L125
+ 952:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1572              		.loc 1 952 0
+ 1573 002e 034A     		ldr	r2, .L126
+ 1574 0030 1369     		ldr	r3, [r2, #16]
+ 1575 0032 1021     		mov	r1, #16
+ 1576 0034 8B43     		bic	r3, r1
+ 1577 0036 1361     		str	r3, [r2, #16]
+ 1578              	.LVL142:
+ 1579              	.L125:
+ 957:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1580              		.loc 1 957 0
+ 1581              		@ sp needed
+ 1582 0038 10BD     		pop	{r4, pc}
+ 1583              	.L127:
+ 1584 003a C046     		.align	2
+ 1585              	.L126:
+ 1586 003c 00200240 		.word	1073881088
+ 1587 0040 00F8FF1F 		.word	536868864
+ 1588              		.cfi_endproc
+ 1589              	.LFE53:
+ 1591              		.section	.text.FLASH_OB_WriteUser,"ax",%progbits
+ 1592              		.align	2
+ 1593              		.global	FLASH_OB_WriteUser
+ 1594              		.code	16
+ 1595              		.thumb_func
+ 1597              	FLASH_OB_WriteUser:
+ 1598              	.LFB54:
+ 979:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE; 
+ 1599              		.loc 1 979 0
+ 1600              		.cfi_startproc
+ 1601              	.LVL143:
+ 1602 0000 10B5     		push	{r4, lr}
+ 1603              	.LCFI15:
+ 1604              		.cfi_def_cfa_offset 8
+ 1605              		.cfi_offset 4, -8
+ 1606              		.cfi_offset 14, -4
+ 1607 0002 041C     		mov	r4, r0
+ 1608              	.LVL144:
+ 983:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1609              		.loc 1 983 0
+ 1610 0004 B020     		mov	r0, #176
+ 1611              	.LVL145:
+ 1612 0006 0003     		lsl	r0, r0, #12
+ 1613 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1614              	.LVL146:
+ 985:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 1615              		.loc 1 985 0
+ 1616 000c 0428     		cmp	r0, #4
+ 1617 000e 12D1     		bne	.L129
+ 988:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1618              		.loc 1 988 0
+ 1619 0010 094A     		ldr	r2, .L130
+ 1620 0012 1169     		ldr	r1, [r2, #16]
+ 1621 0014 1023     		mov	r3, #16
+ 1622 0016 0B43     		orr	r3, r1
+ 1623 0018 1361     		str	r3, [r2, #16]
+ 990:.\StdPeriphLib\src/stm32f0xx_flash.c ****   
+ 1624              		.loc 1 990 0
+ 1625 001a A4B2     		uxth	r4, r4
+ 1626 001c 074B     		ldr	r3, .L130+4
+ 1627 001e 5C80     		strh	r4, [r3, #2]
+ 993:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1628              		.loc 1 993 0
+ 1629 0020 B020     		mov	r0, #176
+ 1630              	.LVL147:
+ 1631 0022 0003     		lsl	r0, r0, #12
+ 1632 0024 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1633              	.LVL148:
+ 995:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1634              		.loc 1 995 0
+ 1635 0028 0528     		cmp	r0, #5
+ 1636 002a 04D0     		beq	.L129
+ 998:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1637              		.loc 1 998 0
+ 1638 002c 024A     		ldr	r2, .L130
+ 1639 002e 1369     		ldr	r3, [r2, #16]
+ 1640 0030 1021     		mov	r1, #16
+ 1641 0032 8B43     		bic	r3, r1
+ 1642 0034 1361     		str	r3, [r2, #16]
+ 1643              	.LVL149:
+ 1644              	.L129:
+1004:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1645              		.loc 1 1004 0
+ 1646              		@ sp needed
+ 1647 0036 10BD     		pop	{r4, pc}
+ 1648              	.L131:
+ 1649              		.align	2
+ 1650              	.L130:
+ 1651 0038 00200240 		.word	1073881088
+ 1652 003c 00F8FF1F 		.word	536868864
+ 1653              		.cfi_endproc
+ 1654              	.LFE54:
+ 1656              		.section	.text.FLASH_OB_ProgramData,"ax",%progbits
+ 1657              		.align	2
+ 1658              		.global	FLASH_OB_ProgramData
+ 1659              		.code	16
+ 1660              		.thumb_func
+ 1662              	FLASH_OB_ProgramData:
+ 1663              	.LFB55:
+1018:.\StdPeriphLib\src/stm32f0xx_flash.c ****   FLASH_Status status = FLASH_COMPLETE;
+ 1664              		.loc 1 1018 0
+ 1665              		.cfi_startproc
+ 1666              	.LVL150:
+ 1667 0000 38B5     		push	{r3, r4, r5, lr}
+ 1668              	.LCFI16:
+ 1669              		.cfi_def_cfa_offset 16
+ 1670              		.cfi_offset 3, -16
+ 1671              		.cfi_offset 4, -12
+ 1672              		.cfi_offset 5, -8
+ 1673              		.cfi_offset 14, -4
+ 1674 0002 051C     		mov	r5, r0
+ 1675 0004 0C1C     		mov	r4, r1
+ 1676              	.LVL151:
+1022:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1677              		.loc 1 1022 0
+ 1678 0006 B020     		mov	r0, #176
+ 1679              	.LVL152:
+ 1680 0008 0003     		lsl	r0, r0, #12
+ 1681 000a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1682              	.LVL153:
+1024:.\StdPeriphLib\src/stm32f0xx_flash.c ****   {
+ 1683              		.loc 1 1024 0
+ 1684 000e 0428     		cmp	r0, #4
+ 1685 0010 11D1     		bne	.L133
+1027:.\StdPeriphLib\src/stm32f0xx_flash.c ****     *(__IO uint16_t*)Address = Data;
+ 1686              		.loc 1 1027 0
+ 1687 0012 094A     		ldr	r2, .L134
+ 1688 0014 1169     		ldr	r1, [r2, #16]
+ 1689 0016 1023     		mov	r3, #16
+ 1690 0018 0B43     		orr	r3, r1
+ 1691 001a 1361     		str	r3, [r2, #16]
+1028:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 1692              		.loc 1 1028 0
+ 1693 001c A4B2     		uxth	r4, r4
+ 1694 001e 2C80     		strh	r4, [r5]
+1031:.\StdPeriphLib\src/stm32f0xx_flash.c ****     
+ 1695              		.loc 1 1031 0
+ 1696 0020 B020     		mov	r0, #176
+ 1697              	.LVL154:
+ 1698 0022 0003     		lsl	r0, r0, #12
+ 1699 0024 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1700              	.LVL155:
+1033:.\StdPeriphLib\src/stm32f0xx_flash.c ****     {
+ 1701              		.loc 1 1033 0
+ 1702 0028 0528     		cmp	r0, #5
+ 1703 002a 04D0     		beq	.L133
+1036:.\StdPeriphLib\src/stm32f0xx_flash.c ****     }
+ 1704              		.loc 1 1036 0
+ 1705 002c 024A     		ldr	r2, .L134
+ 1706 002e 1369     		ldr	r3, [r2, #16]
+ 1707 0030 1021     		mov	r1, #16
+ 1708 0032 8B43     		bic	r3, r1
+ 1709 0034 1361     		str	r3, [r2, #16]
+ 1710              	.LVL156:
+ 1711              	.L133:
+1041:.\StdPeriphLib\src/stm32f0xx_flash.c **** 
+ 1712              		.loc 1 1041 0
+ 1713              		@ sp needed
+ 1714              	.LVL157:
+ 1715 0036 38BD     		pop	{r3, r4, r5, pc}
+ 1716              	.L135:
+ 1717              		.align	2
+ 1718              	.L134:
+ 1719 0038 00200240 		.word	1073881088
+ 1720              		.cfi_endproc
+ 1721              	.LFE55:
+ 1723              		.text
+ 1724              	.Letext0:
+ 1725              		.file 2 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 1726              		.file 3 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 1727              		.file 4 ".\\CMSIS/stm32f0xx.h"
+ 1728              		.file 5 ".\\StdPeriphLib\\inc/stm32f0xx_flash.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f0xx_flash.c
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:18     .text.FLASH_SetLatency:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:23     .text.FLASH_SetLatency:00000000 FLASH_SetLatency
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:48     .text.FLASH_SetLatency:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:53     .text.FLASH_PrefetchBufferCmd:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:58     .text.FLASH_PrefetchBufferCmd:00000000 FLASH_PrefetchBufferCmd
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:87     .text.FLASH_PrefetchBufferCmd:0000001c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:92     .text.FLASH_GetPrefetchBufferStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:97     .text.FLASH_GetPrefetchBufferStatus:00000000 FLASH_GetPrefetchBufferStatus
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:116    .text.FLASH_GetPrefetchBufferStatus:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:121    .text.FLASH_Unlock:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:126    .text.FLASH_Unlock:00000000 FLASH_Unlock
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:149    .text.FLASH_Unlock:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:156    .text.FLASH_Lock:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:161    .text.FLASH_Lock:00000000 FLASH_Lock
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:177    .text.FLASH_Lock:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:182    .text.FLASH_OB_Unlock:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:187    .text.FLASH_OB_Unlock:00000000 FLASH_OB_Unlock
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:210    .text.FLASH_OB_Unlock:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:217    .text.FLASH_OB_Lock:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:222    .text.FLASH_OB_Lock:00000000 FLASH_OB_Lock
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:238    .text.FLASH_OB_Lock:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:244    .text.FLASH_OB_Launch:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:249    .text.FLASH_OB_Launch:00000000 FLASH_OB_Launch
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:266    .text.FLASH_OB_Launch:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:271    .text.FLASH_OB_GetUser:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:276    .text.FLASH_OB_GetUser:00000000 FLASH_OB_GetUser
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:291    .text.FLASH_OB_GetUser:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:296    .text.FLASH_OB_GetWRP:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:301    .text.FLASH_OB_GetWRP:00000000 FLASH_OB_GetWRP
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:314    .text.FLASH_OB_GetWRP:00000008 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:319    .text.FLASH_OB_GetRDP:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:324    .text.FLASH_OB_GetRDP:00000000 FLASH_OB_GetRDP
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:346    .text.FLASH_OB_GetRDP:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:351    .text.FLASH_ITConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:356    .text.FLASH_ITConfig:00000000 FLASH_ITConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:386    .text.FLASH_ITConfig:00000018 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:391    .text.FLASH_GetFlagStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:396    .text.FLASH_GetFlagStatus:00000000 FLASH_GetFlagStatus
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:418    .text.FLASH_GetFlagStatus:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:423    .text.FLASH_ClearFlag:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:428    .text.FLASH_ClearFlag:00000000 FLASH_ClearFlag
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:442    .text.FLASH_ClearFlag:00000008 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:447    .text.FLASH_GetStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:452    .text.FLASH_GetStatus:00000000 FLASH_GetStatus
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:489    .text.FLASH_GetStatus:00000024 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:494    .text.FLASH_WaitForLastOperation:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:499    .text.FLASH_WaitForLastOperation:00000000 FLASH_WaitForLastOperation
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:554    .text.FLASH_ErasePage:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:559    .text.FLASH_ErasePage:00000000 FLASH_ErasePage
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:614    .text.FLASH_ErasePage:00000034 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:619    .text.FLASH_EraseAllPages:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:624    .text.FLASH_EraseAllPages:00000000 FLASH_EraseAllPages
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:673    .text.FLASH_EraseAllPages:00000030 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:678    .text.FLASH_ProgramWord:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:683    .text.FLASH_ProgramWord:00000000 FLASH_ProgramWord
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:769    .text.FLASH_ProgramWord:00000060 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:774    .text.FLASH_ProgramHalfWord:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:779    .text.FLASH_ProgramHalfWord:00000000 FLASH_ProgramHalfWord
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:832    .text.FLASH_ProgramHalfWord:00000030 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:837    .text.FLASH_OB_Erase:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:842    .text.FLASH_OB_Erase:00000000 FLASH_OB_Erase
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:940    .text.FLASH_OB_Erase:00000078 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:946    .text.FLASH_OB_EnableWRP:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:951    .text.FLASH_OB_EnableWRP:00000000 FLASH_OB_EnableWRP
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1081   .text.FLASH_OB_EnableWRP:0000008c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1087   .text.FLASH_OB_RDPConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1092   .text.FLASH_OB_RDPConfig:00000000 FLASH_OB_RDPConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1182   .text.FLASH_OB_RDPConfig:00000070 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1188   .text.FLASH_OB_UserConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1193   .text.FLASH_OB_UserConfig:00000000 FLASH_OB_UserConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1256   .text.FLASH_OB_UserConfig:00000048 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1262   .text.FLASH_OB_BOOTConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1267   .text.FLASH_OB_BOOTConfig:00000000 FLASH_OB_BOOTConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1322   .text.FLASH_OB_BOOTConfig:0000003c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1328   .text.FLASH_OB_BOOT0Config:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1333   .text.FLASH_OB_BOOT0Config:00000000 FLASH_OB_BOOT0Config
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1388   .text.FLASH_OB_BOOT0Config:0000003c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1394   .text.FLASH_OB_BOOT0SWConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1399   .text.FLASH_OB_BOOT0SWConfig:00000000 FLASH_OB_BOOT0SWConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1454   .text.FLASH_OB_BOOT0SWConfig:0000003c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1460   .text.FLASH_OB_VDDAConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1465   .text.FLASH_OB_VDDAConfig:00000000 FLASH_OB_VDDAConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1520   .text.FLASH_OB_VDDAConfig:0000003c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1526   .text.FLASH_OB_SRAMParityConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1531   .text.FLASH_OB_SRAMParityConfig:00000000 FLASH_OB_SRAMParityConfig
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1586   .text.FLASH_OB_SRAMParityConfig:0000003c $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1592   .text.FLASH_OB_WriteUser:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1597   .text.FLASH_OB_WriteUser:00000000 FLASH_OB_WriteUser
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1651   .text.FLASH_OB_WriteUser:00000038 $d
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1657   .text.FLASH_OB_ProgramData:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1662   .text.FLASH_OB_ProgramData:00000000 FLASH_OB_ProgramData
+C:\Users\Dima\AppData\Local\Temp\ccWkoYFl.s:1719   .text.FLASH_OB_ProgramData:00000038 $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

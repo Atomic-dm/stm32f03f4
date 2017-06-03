@@ -1,0 +1,1107 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"stm32f0xx_crs.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.CRS_DeInit,"ax",%progbits
+  18              		.align	2
+  19              		.global	CRS_DeInit
+  20              		.code	16
+  21              		.thumb_func
+  23              	CRS_DeInit:
+  24              	.LFB33:
+  25              		.file 1 ".\\StdPeriphLib\\src/stm32f0xx_crs.c"
+   1:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+   2:.\StdPeriphLib\src/stm32f0xx_crs.c ****   ******************************************************************************
+   3:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @file    stm32f0xx_crs.c
+   4:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @author  MCD Application Team
+   5:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @version V1.5.0
+   6:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @date    05-December-2014
+   7:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          functionalities of CRS peripheral applicable only on STM32F042 and 
+   9:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          STM32F072 devices:
+  10:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            + Configuration of the CRS peripheral
+  11:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            + Interrupts and flags management
+  12:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              
+  13:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *
+  14:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *  @verbatim
+  15:.\StdPeriphLib\src/stm32f0xx_crs.c ****  ===============================================================================
+  16:.\StdPeriphLib\src/stm32f0xx_crs.c ****                      ##### How to use this driver #####
+  17:.\StdPeriphLib\src/stm32f0xx_crs.c ****  ===============================================================================
+  18:.\StdPeriphLib\src/stm32f0xx_crs.c ****     [..]
+  19:.\StdPeriphLib\src/stm32f0xx_crs.c ****     
+  20:.\StdPeriphLib\src/stm32f0xx_crs.c ****          (+) Enable CRS AHB clock using RCC_APB1eriphClockCmd(RCC_APB1Periph_CRS, ENABLE)
+  21:.\StdPeriphLib\src/stm32f0xx_crs.c ****              function
+  22:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  23:.\StdPeriphLib\src/stm32f0xx_crs.c ****       
+  24:.\StdPeriphLib\src/stm32f0xx_crs.c ****      @endverbatim
+  25:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *  
+  26:.\StdPeriphLib\src/stm32f0xx_crs.c ****   ******************************************************************************
+  27:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @attention
+  28:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *
+  29:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  30:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *
+  31:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  32:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * You may not use this file except in compliance with the License.
+  33:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * You may obtain a copy of the License at:
+  34:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *
+  35:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  36:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *
+  37:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * Unless required by applicable law or agreed to in writing, software 
+  38:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  39:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  40:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * See the License for the specific language governing permissions and
+  41:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * limitations under the License.
+  42:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *
+  43:.\StdPeriphLib\src/stm32f0xx_crs.c ****   ******************************************************************************
+  44:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+  45:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  46:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Includes ------------------------------------------------------------------*/
+  47:.\StdPeriphLib\src/stm32f0xx_crs.c **** #include "stm32f0xx_crs.h"
+  48:.\StdPeriphLib\src/stm32f0xx_crs.c **** #include "stm32f0xx_rcc.h"
+  49:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  50:.\StdPeriphLib\src/stm32f0xx_crs.c **** /** @addtogroup STM32F0xx_StdPeriph_Driver
+  51:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @{
+  52:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+  53:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  54:.\StdPeriphLib\src/stm32f0xx_crs.c **** /** @defgroup CRS 
+  55:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief CRS driver modules
+  56:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @{
+  57:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+  58:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  59:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Private typedef -----------------------------------------------------------*/
+  60:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Private define ------------------------------------------------------------*/
+  61:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* CRS Flag Mask */
+  62:.\StdPeriphLib\src/stm32f0xx_crs.c **** #define FLAG_MASK                 ((uint32_t)0x700)
+  63:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  64:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Private macro -------------------------------------------------------------*/
+  65:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Private variables ---------------------------------------------------------*/
+  66:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Private function prototypes -----------------------------------------------*/
+  67:.\StdPeriphLib\src/stm32f0xx_crs.c **** /* Private functions ---------------------------------------------------------*/
+  68:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  69:.\StdPeriphLib\src/stm32f0xx_crs.c **** /** @defgroup CRS_Private_Functions
+  70:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @{
+  71:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+  72:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  73:.\StdPeriphLib\src/stm32f0xx_crs.c **** /** @defgroup CRS_Group1 Configuration of the CRS functions
+  74:.\StdPeriphLib\src/stm32f0xx_crs.c ****  *  @brief   Configuration of the CRS  functions 
+  75:.\StdPeriphLib\src/stm32f0xx_crs.c ****  *
+  76:.\StdPeriphLib\src/stm32f0xx_crs.c **** @verbatim
+  77:.\StdPeriphLib\src/stm32f0xx_crs.c ****  ===============================================================================
+  78:.\StdPeriphLib\src/stm32f0xx_crs.c ****                      ##### CRS configuration functions #####
+  79:.\StdPeriphLib\src/stm32f0xx_crs.c ****  ===============================================================================
+  80:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  81:.\StdPeriphLib\src/stm32f0xx_crs.c **** @endverbatim
+  82:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @{
+  83:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+  84:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  85:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+  86:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Deinitializes CRS peripheral registers to their default reset values.
+  87:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  None
+  88:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+  89:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+  90:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_DeInit(void)
+  91:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+  26              		.loc 1 91 0
+  27              		.cfi_startproc
+  28 0000 10B5     		push	{r4, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 8
+  31              		.cfi_offset 4, -8
+  32              		.cfi_offset 14, -4
+  92:.\StdPeriphLib\src/stm32f0xx_crs.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_CRS, ENABLE);
+  33              		.loc 1 92 0
+  34 0002 8024     		mov	r4, #128
+  35 0004 2405     		lsl	r4, r4, #20
+  36 0006 201C     		mov	r0, r4
+  37 0008 0121     		mov	r1, #1
+  38 000a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  39              	.LVL0:
+  93:.\StdPeriphLib\src/stm32f0xx_crs.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_CRS, DISABLE);
+  40              		.loc 1 93 0
+  41 000e 201C     		mov	r0, r4
+  42 0010 0021     		mov	r1, #0
+  43 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  44              	.LVL1:
+  94:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+  45              		.loc 1 94 0
+  46              		@ sp needed
+  47 0016 10BD     		pop	{r4, pc}
+  48              		.cfi_endproc
+  49              	.LFE33:
+  51              		.section	.text.CRS_AdjustHSI48CalibrationValue,"ax",%progbits
+  52              		.align	2
+  53              		.global	CRS_AdjustHSI48CalibrationValue
+  54              		.code	16
+  55              		.thumb_func
+  57              	CRS_AdjustHSI48CalibrationValue:
+  58              	.LFB34:
+  95:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+  96:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+  97:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Adjusts the Internal High Speed 48 oscillator (HSI 48) calibration value.
+  98:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   The calibration is used to compensate for the variations in voltage
+  99:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *         and temperature that influence the frequency of the internal HSI48 RC.
+ 100:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   This function can be called only when the AUTOTRIMEN bit is reset.
+ 101:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_HSI48CalibrationValue: 
+ 102:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 103:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 104:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_AdjustHSI48CalibrationValue(uint8_t CRS_HSI48CalibrationValue)
+ 105:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+  59              		.loc 1 105 0
+  60              		.cfi_startproc
+  61              	.LVL2:
+ 106:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Clear TRIM[5:0] bits */
+ 107:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CR &= ~CRS_CR_TRIM;
+  62              		.loc 1 107 0
+  63 0000 044B     		ldr	r3, .L3
+  64 0002 1968     		ldr	r1, [r3]
+  65 0004 044A     		ldr	r2, .L3+4
+  66 0006 0A40     		and	r2, r1
+  67 0008 1A60     		str	r2, [r3]
+ 108:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 109:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Set the TRIM[5:0] bits according to CRS_HSI48CalibrationValue value */
+ 110:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CR |= (uint32_t)((uint32_t)CRS_HSI48CalibrationValue << 8);
+  68              		.loc 1 110 0
+  69 000a 1A68     		ldr	r2, [r3]
+  70 000c 0002     		lsl	r0, r0, #8
+  71              	.LVL3:
+  72 000e 1043     		orr	r0, r2
+  73 0010 1860     		str	r0, [r3]
+ 111:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 112:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+  74              		.loc 1 112 0
+  75              		@ sp needed
+  76 0012 7047     		bx	lr
+  77              	.L4:
+  78              		.align	2
+  79              	.L3:
+  80 0014 006C0040 		.word	1073769472
+  81 0018 FFC0FFFF 		.word	-16129
+  82              		.cfi_endproc
+  83              	.LFE34:
+  85              		.section	.text.CRS_FrequencyErrorCounterCmd,"ax",%progbits
+  86              		.align	2
+  87              		.global	CRS_FrequencyErrorCounterCmd
+  88              		.code	16
+  89              		.thumb_func
+  91              	CRS_FrequencyErrorCounterCmd:
+  92              	.LFB35:
+ 113:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 114:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 115:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Enables or disables the oscillator clock for frequency error counter.
+ 116:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   when the CEN bit is set the CRS_CFGR register becomes write-protected.
+ 117:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  NewState: new state of the frequency error counter.
+ 118:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 119:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 120:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 121:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_FrequencyErrorCounterCmd(FunctionalState NewState)
+ 122:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+  93              		.loc 1 122 0
+  94              		.cfi_startproc
+  95              	.LVL4:
+ 123:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 124:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 125:.\StdPeriphLib\src/stm32f0xx_crs.c ****   if (NewState != DISABLE)
+  96              		.loc 1 125 0
+  97 0000 0028     		cmp	r0, #0
+  98 0002 05D0     		beq	.L6
+ 126:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 127:.\StdPeriphLib\src/stm32f0xx_crs.c ****      CRS->CR |= CRS_CR_CEN;
+  99              		.loc 1 127 0
+ 100 0004 054A     		ldr	r2, .L8
+ 101 0006 1168     		ldr	r1, [r2]
+ 102 0008 2023     		mov	r3, #32
+ 103 000a 0B43     		orr	r3, r1
+ 104 000c 1360     		str	r3, [r2]
+ 105 000e 04E0     		b	.L5
+ 106              	.L6:
+ 128:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 129:.\StdPeriphLib\src/stm32f0xx_crs.c ****   else
+ 130:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 131:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->CR &= ~CRS_CR_CEN;
+ 107              		.loc 1 131 0
+ 108 0010 024A     		ldr	r2, .L8
+ 109 0012 1368     		ldr	r3, [r2]
+ 110 0014 2021     		mov	r1, #32
+ 111 0016 8B43     		bic	r3, r1
+ 112 0018 1360     		str	r3, [r2]
+ 113              	.L5:
+ 132:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 133:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 114              		.loc 1 133 0
+ 115              		@ sp needed
+ 116 001a 7047     		bx	lr
+ 117              	.L9:
+ 118              		.align	2
+ 119              	.L8:
+ 120 001c 006C0040 		.word	1073769472
+ 121              		.cfi_endproc
+ 122              	.LFE35:
+ 124              		.section	.text.CRS_AutomaticCalibrationCmd,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	CRS_AutomaticCalibrationCmd
+ 127              		.code	16
+ 128              		.thumb_func
+ 130              	CRS_AutomaticCalibrationCmd:
+ 131              	.LFB36:
+ 134:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 135:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 136:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Enables or disables the automatic hardware adjustement of TRIM bits.
+ 137:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   When the AUTOTRIMEN bit is set the CRS_CFGR register becomes write-protected.
+ 138:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  NewState: new state of the automatic trimming.
+ 139:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 140:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 141:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 142:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_AutomaticCalibrationCmd(FunctionalState NewState)
+ 143:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 132              		.loc 1 143 0
+ 133              		.cfi_startproc
+ 134              	.LVL5:
+ 144:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 145:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 146:.\StdPeriphLib\src/stm32f0xx_crs.c ****   if (NewState != DISABLE)
+ 135              		.loc 1 146 0
+ 136 0000 0028     		cmp	r0, #0
+ 137 0002 05D0     		beq	.L11
+ 147:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 148:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->CR |= CRS_CR_AUTOTRIMEN;
+ 138              		.loc 1 148 0
+ 139 0004 054A     		ldr	r2, .L13
+ 140 0006 1168     		ldr	r1, [r2]
+ 141 0008 4023     		mov	r3, #64
+ 142 000a 0B43     		orr	r3, r1
+ 143 000c 1360     		str	r3, [r2]
+ 144 000e 04E0     		b	.L10
+ 145              	.L11:
+ 149:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 150:.\StdPeriphLib\src/stm32f0xx_crs.c **** else
+ 151:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 152:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->CR &= ~CRS_CR_AUTOTRIMEN;
+ 146              		.loc 1 152 0
+ 147 0010 024A     		ldr	r2, .L13
+ 148 0012 1368     		ldr	r3, [r2]
+ 149 0014 4021     		mov	r1, #64
+ 150 0016 8B43     		bic	r3, r1
+ 151 0018 1360     		str	r3, [r2]
+ 152              	.L10:
+ 153:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 154:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 153              		.loc 1 154 0
+ 154              		@ sp needed
+ 155 001a 7047     		bx	lr
+ 156              	.L14:
+ 157              		.align	2
+ 158              	.L13:
+ 159 001c 006C0040 		.word	1073769472
+ 160              		.cfi_endproc
+ 161              	.LFE36:
+ 163              		.section	.text.CRS_SoftwareSynchronizationGenerate,"ax",%progbits
+ 164              		.align	2
+ 165              		.global	CRS_SoftwareSynchronizationGenerate
+ 166              		.code	16
+ 167              		.thumb_func
+ 169              	CRS_SoftwareSynchronizationGenerate:
+ 170              	.LFB37:
+ 155:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 156:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 157:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Generate the software synchronization event
+ 158:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  None
+ 159:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 160:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 161:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_SoftwareSynchronizationGenerate(void)
+ 162:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 171              		.loc 1 162 0
+ 172              		.cfi_startproc
+ 163:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CR |= CRS_CR_SWSYNC;
+ 173              		.loc 1 163 0
+ 174 0000 024A     		ldr	r2, .L16
+ 175 0002 1168     		ldr	r1, [r2]
+ 176 0004 8023     		mov	r3, #128
+ 177 0006 0B43     		orr	r3, r1
+ 178 0008 1360     		str	r3, [r2]
+ 164:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 179              		.loc 1 164 0
+ 180              		@ sp needed
+ 181 000a 7047     		bx	lr
+ 182              	.L17:
+ 183              		.align	2
+ 184              	.L16:
+ 185 000c 006C0040 		.word	1073769472
+ 186              		.cfi_endproc
+ 187              	.LFE37:
+ 189              		.section	.text.CRS_FrequencyErrorCounterReload,"ax",%progbits
+ 190              		.align	2
+ 191              		.global	CRS_FrequencyErrorCounterReload
+ 192              		.code	16
+ 193              		.thumb_func
+ 195              	CRS_FrequencyErrorCounterReload:
+ 196              	.LFB38:
+ 165:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 166:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 167:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Adjusts the Internal High Speed 48 oscillator (HSI 48) calibration value.
+ 168:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   The calibration is used to compensate for the variations in voltage
+ 169:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *         and temperature that influence the frequency of the internal HSI48 RC.
+ 170:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   This function can be called only when the CEN bit is reset.
+ 171:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_ReloadValue: specifies the HSI calibration trimming value.
+ 172:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter must be a number between 0 and .
+ 173:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 174:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 175:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_FrequencyErrorCounterReload(uint32_t CRS_ReloadValue)
+ 176:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 197              		.loc 1 176 0
+ 198              		.cfi_startproc
+ 199              	.LVL6:
+ 177:.\StdPeriphLib\src/stm32f0xx_crs.c ****  
+ 178:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Clear RELOAD[15:0] bits */
+ 179:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR &= ~CRS_CFGR_RELOAD;
+ 200              		.loc 1 179 0
+ 201 0000 044A     		ldr	r2, .L19
+ 202 0002 5368     		ldr	r3, [r2, #4]
+ 203 0004 1B0C     		lsr	r3, r3, #16
+ 204 0006 1B04     		lsl	r3, r3, #16
+ 205 0008 5360     		str	r3, [r2, #4]
+ 180:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 181:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Set the RELOAD[15:0] bits according to CRS_ReloadValue value */
+ 182:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR |= (uint32_t)CRS_ReloadValue;
+ 206              		.loc 1 182 0
+ 207 000a 5368     		ldr	r3, [r2, #4]
+ 208 000c 1843     		orr	r0, r3
+ 209              	.LVL7:
+ 210 000e 5060     		str	r0, [r2, #4]
+ 183:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 184:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 211              		.loc 1 184 0
+ 212              		@ sp needed
+ 213 0010 7047     		bx	lr
+ 214              	.L20:
+ 215 0012 C046     		.align	2
+ 216              	.L19:
+ 217 0014 006C0040 		.word	1073769472
+ 218              		.cfi_endproc
+ 219              	.LFE38:
+ 221              		.section	.text.CRS_FrequencyErrorLimitConfig,"ax",%progbits
+ 222              		.align	2
+ 223              		.global	CRS_FrequencyErrorLimitConfig
+ 224              		.code	16
+ 225              		.thumb_func
+ 227              	CRS_FrequencyErrorLimitConfig:
+ 228              	.LFB39:
+ 185:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 186:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 187:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  
+ 188:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   This function can be called only when the CEN bit is reset.
+ 189:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_ErrorLimitValue: specifies the HSI calibration trimming value.
+ 190:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter must be a number between 0 and .
+ 191:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 192:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 193:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_FrequencyErrorLimitConfig(uint8_t CRS_ErrorLimitValue)
+ 194:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 229              		.loc 1 194 0
+ 230              		.cfi_startproc
+ 231              	.LVL8:
+ 195:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Clear FELIM[7:0] bits */
+ 196:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR &= ~CRS_CFGR_FELIM;
+ 232              		.loc 1 196 0
+ 233 0000 044B     		ldr	r3, .L22
+ 234 0002 5968     		ldr	r1, [r3, #4]
+ 235 0004 044A     		ldr	r2, .L22+4
+ 236 0006 0A40     		and	r2, r1
+ 237 0008 5A60     		str	r2, [r3, #4]
+ 197:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 198:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Set the FELIM[7:0] bits according to CRS_ErrorLimitValue value */
+ 199:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR |= (uint32_t)CRS_ErrorLimitValue;
+ 238              		.loc 1 199 0
+ 239 000a 5A68     		ldr	r2, [r3, #4]
+ 240 000c 1043     		orr	r0, r2
+ 241              	.LVL9:
+ 242 000e 5860     		str	r0, [r3, #4]
+ 200:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 243              		.loc 1 200 0
+ 244              		@ sp needed
+ 245 0010 7047     		bx	lr
+ 246              	.L23:
+ 247 0012 C046     		.align	2
+ 248              	.L22:
+ 249 0014 006C0040 		.word	1073769472
+ 250 0018 FFFF00FF 		.word	-16711681
+ 251              		.cfi_endproc
+ 252              	.LFE39:
+ 254              		.section	.text.CRS_SynchronizationPrescalerConfig,"ax",%progbits
+ 255              		.align	2
+ 256              		.global	CRS_SynchronizationPrescalerConfig
+ 257              		.code	16
+ 258              		.thumb_func
+ 260              	CRS_SynchronizationPrescalerConfig:
+ 261              	.LFB40:
+ 201:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 202:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 203:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  
+ 204:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   This function can be called only when the CEN bit is reset.
+ 205:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_Prescaler: specifies the HSI calibration trimming value.
+ 206:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 207:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div1:   
+ 208:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div2:   
+ 209:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div4:   
+ 210:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div8:   
+ 211:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div16:  
+ 212:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div32:  
+ 213:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div64: 
+ 214:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNC_Div128: 
+ 215:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 216:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 217:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_SynchronizationPrescalerConfig(uint32_t CRS_Prescaler)
+ 218:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 262              		.loc 1 218 0
+ 263              		.cfi_startproc
+ 264              	.LVL10:
+ 219:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 220:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_SYNC_DIV(CRS_Prescaler));
+ 221:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 222:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Clear SYNCDIV[2:0] bits */
+ 223:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR &= ~CRS_CFGR_SYNCDIV;
+ 265              		.loc 1 223 0
+ 266 0000 044B     		ldr	r3, .L25
+ 267 0002 5968     		ldr	r1, [r3, #4]
+ 268 0004 044A     		ldr	r2, .L25+4
+ 269 0006 0A40     		and	r2, r1
+ 270 0008 5A60     		str	r2, [r3, #4]
+ 224:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 225:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Set the CRS_CFGR_SYNCDIV[2:0] bits according to CRS_Prescaler value */
+ 226:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR |= CRS_Prescaler;
+ 271              		.loc 1 226 0
+ 272 000a 5A68     		ldr	r2, [r3, #4]
+ 273 000c 1043     		orr	r0, r2
+ 274              	.LVL11:
+ 275 000e 5860     		str	r0, [r3, #4]
+ 227:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 276              		.loc 1 227 0
+ 277              		@ sp needed
+ 278 0010 7047     		bx	lr
+ 279              	.L26:
+ 280 0012 C046     		.align	2
+ 281              	.L25:
+ 282 0014 006C0040 		.word	1073769472
+ 283 0018 FFFFFFF8 		.word	-117440513
+ 284              		.cfi_endproc
+ 285              	.LFE40:
+ 287              		.section	.text.CRS_SynchronizationSourceConfig,"ax",%progbits
+ 288              		.align	2
+ 289              		.global	CRS_SynchronizationSourceConfig
+ 290              		.code	16
+ 291              		.thumb_func
+ 293              	CRS_SynchronizationSourceConfig:
+ 294              	.LFB41:
+ 228:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 229:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 230:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  
+ 231:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   This function can be called only when the CEN bit is reset.
+ 232:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_Source: .
+ 233:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 234:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNCSource_GPIO:   
+ 235:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNCSource_LSE:   
+ 236:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNCSource_USB:   
+ 237:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 238:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 239:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_SynchronizationSourceConfig(uint32_t CRS_Source)
+ 240:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 295              		.loc 1 240 0
+ 296              		.cfi_startproc
+ 297              	.LVL12:
+ 241:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 242:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_SYNC_SOURCE(CRS_Source));
+ 243:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 244:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Clear SYNCSRC[1:0] bits */
+ 245:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR &= ~CRS_CFGR_SYNCSRC;
+ 298              		.loc 1 245 0
+ 299 0000 044B     		ldr	r3, .L28
+ 300 0002 5968     		ldr	r1, [r3, #4]
+ 301 0004 044A     		ldr	r2, .L28+4
+ 302 0006 0A40     		and	r2, r1
+ 303 0008 5A60     		str	r2, [r3, #4]
+ 246:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 247:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Set the SYNCSRC[1:0] bits according to CRS_Source value */
+ 248:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR |= CRS_Source;
+ 304              		.loc 1 248 0
+ 305 000a 5A68     		ldr	r2, [r3, #4]
+ 306 000c 1043     		orr	r0, r2
+ 307              	.LVL13:
+ 308 000e 5860     		str	r0, [r3, #4]
+ 249:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 309              		.loc 1 249 0
+ 310              		@ sp needed
+ 311 0010 7047     		bx	lr
+ 312              	.L29:
+ 313 0012 C046     		.align	2
+ 314              	.L28:
+ 315 0014 006C0040 		.word	1073769472
+ 316 0018 FFFFFFCF 		.word	-805306369
+ 317              		.cfi_endproc
+ 318              	.LFE41:
+ 320              		.section	.text.CRS_SynchronizationPolarityConfig,"ax",%progbits
+ 321              		.align	2
+ 322              		.global	CRS_SynchronizationPolarityConfig
+ 323              		.code	16
+ 324              		.thumb_func
+ 326              	CRS_SynchronizationPolarityConfig:
+ 327              	.LFB42:
+ 250:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 251:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 252:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  
+ 253:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @note   This function can be called only when the CEN bit is reset.
+ 254:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_Polarity: .
+ 255:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 256:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNCPolarity_Rising:   
+ 257:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *            @arg CRS_SYNCPolarity_Falling:   
+ 258:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 259:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 260:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_SynchronizationPolarityConfig(uint32_t CRS_Polarity)
+ 261:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 328              		.loc 1 261 0
+ 329              		.cfi_startproc
+ 330              	.LVL14:
+ 262:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 263:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_SYNC_POLARITY(CRS_Polarity));
+ 264:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 265:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Clear SYNCSPOL bit */
+ 266:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR &= ~CRS_CFGR_SYNCPOL;
+ 331              		.loc 1 266 0
+ 332 0000 044A     		ldr	r2, .L31
+ 333 0002 5368     		ldr	r3, [r2, #4]
+ 334 0004 5B00     		lsl	r3, r3, #1
+ 335 0006 5B08     		lsr	r3, r3, #1
+ 336 0008 5360     		str	r3, [r2, #4]
+ 267:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 268:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Set the SYNCSPOL bits according to CRS_Polarity value */
+ 269:.\StdPeriphLib\src/stm32f0xx_crs.c ****   CRS->CFGR |= CRS_Polarity;
+ 337              		.loc 1 269 0
+ 338 000a 5368     		ldr	r3, [r2, #4]
+ 339 000c 1843     		orr	r0, r3
+ 340              	.LVL15:
+ 341 000e 5060     		str	r0, [r2, #4]
+ 270:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 342              		.loc 1 270 0
+ 343              		@ sp needed
+ 344 0010 7047     		bx	lr
+ 345              	.L32:
+ 346 0012 C046     		.align	2
+ 347              	.L31:
+ 348 0014 006C0040 		.word	1073769472
+ 349              		.cfi_endproc
+ 350              	.LFE42:
+ 352              		.section	.text.CRS_GetReloadValue,"ax",%progbits
+ 353              		.align	2
+ 354              		.global	CRS_GetReloadValue
+ 355              		.code	16
+ 356              		.thumb_func
+ 358              	CRS_GetReloadValue:
+ 359              	.LFB43:
+ 271:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 272:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 273:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Returns the Relaod value.
+ 274:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  None
+ 275:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval The reload value 
+ 276:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 277:.\StdPeriphLib\src/stm32f0xx_crs.c **** uint32_t CRS_GetReloadValue(void)
+ 278:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 360              		.loc 1 278 0
+ 361              		.cfi_startproc
+ 279:.\StdPeriphLib\src/stm32f0xx_crs.c ****   return ((uint32_t)(CRS->CFGR & CRS_CFGR_RELOAD));
+ 362              		.loc 1 279 0
+ 363 0000 024B     		ldr	r3, .L34
+ 364 0002 5868     		ldr	r0, [r3, #4]
+ 365 0004 0004     		lsl	r0, r0, #16
+ 366 0006 000C     		lsr	r0, r0, #16
+ 280:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 367              		.loc 1 280 0
+ 368              		@ sp needed
+ 369 0008 7047     		bx	lr
+ 370              	.L35:
+ 371 000a C046     		.align	2
+ 372              	.L34:
+ 373 000c 006C0040 		.word	1073769472
+ 374              		.cfi_endproc
+ 375              	.LFE43:
+ 377              		.section	.text.CRS_GetHSI48CalibrationValue,"ax",%progbits
+ 378              		.align	2
+ 379              		.global	CRS_GetHSI48CalibrationValue
+ 380              		.code	16
+ 381              		.thumb_func
+ 383              	CRS_GetHSI48CalibrationValue:
+ 384              	.LFB44:
+ 281:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 282:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 283:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Returns the HSI48 Calibration value.
+ 284:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  None
+ 285:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval The reload value 
+ 286:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 287:.\StdPeriphLib\src/stm32f0xx_crs.c **** uint32_t CRS_GetHSI48CalibrationValue(void)
+ 288:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 385              		.loc 1 288 0
+ 386              		.cfi_startproc
+ 289:.\StdPeriphLib\src/stm32f0xx_crs.c ****   return (((uint32_t)(CRS->CR & CRS_CR_TRIM)) >> 8);
+ 387              		.loc 1 289 0
+ 388 0000 024B     		ldr	r3, .L37
+ 389 0002 1868     		ldr	r0, [r3]
+ 390 0004 8004     		lsl	r0, r0, #18
+ 391 0006 800E     		lsr	r0, r0, #26
+ 290:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 392              		.loc 1 290 0
+ 393              		@ sp needed
+ 394 0008 7047     		bx	lr
+ 395              	.L38:
+ 396 000a C046     		.align	2
+ 397              	.L37:
+ 398 000c 006C0040 		.word	1073769472
+ 399              		.cfi_endproc
+ 400              	.LFE44:
+ 402              		.section	.text.CRS_GetFrequencyErrorValue,"ax",%progbits
+ 403              		.align	2
+ 404              		.global	CRS_GetFrequencyErrorValue
+ 405              		.code	16
+ 406              		.thumb_func
+ 408              	CRS_GetFrequencyErrorValue:
+ 409              	.LFB45:
+ 291:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 292:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 293:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Returns the frequency error capture.
+ 294:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  None
+ 295:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval The frequency error capture value 
+ 296:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 297:.\StdPeriphLib\src/stm32f0xx_crs.c **** uint32_t CRS_GetFrequencyErrorValue(void)
+ 298:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 410              		.loc 1 298 0
+ 411              		.cfi_startproc
+ 299:.\StdPeriphLib\src/stm32f0xx_crs.c ****   return ((uint32_t)(CRS->ISR & CRS_ISR_FECAP));
+ 412              		.loc 1 299 0
+ 413 0000 024B     		ldr	r3, .L40
+ 414 0002 9868     		ldr	r0, [r3, #8]
+ 415 0004 000C     		lsr	r0, r0, #16
+ 416 0006 0004     		lsl	r0, r0, #16
+ 300:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 417              		.loc 1 300 0
+ 418              		@ sp needed
+ 419 0008 7047     		bx	lr
+ 420              	.L41:
+ 421 000a C046     		.align	2
+ 422              	.L40:
+ 423 000c 006C0040 		.word	1073769472
+ 424              		.cfi_endproc
+ 425              	.LFE45:
+ 427              		.section	.text.CRS_GetFrequencyErrorDirection,"ax",%progbits
+ 428              		.align	2
+ 429              		.global	CRS_GetFrequencyErrorDirection
+ 430              		.code	16
+ 431              		.thumb_func
+ 433              	CRS_GetFrequencyErrorDirection:
+ 434              	.LFB46:
+ 301:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 302:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 303:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Returns the frequency error direction.
+ 304:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  None
+ 305:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval The frequency error direction. The returned value can be one 
+ 306:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *         of the following values:
+ 307:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *           - 0x00: Up counting
+ 308:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *           - 0x8000: Down counting   
+ 309:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 310:.\StdPeriphLib\src/stm32f0xx_crs.c **** uint32_t CRS_GetFrequencyErrorDirection(void)
+ 311:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 435              		.loc 1 311 0
+ 436              		.cfi_startproc
+ 312:.\StdPeriphLib\src/stm32f0xx_crs.c ****   return ((uint32_t)(CRS->ISR & CRS_ISR_FEDIR));
+ 437              		.loc 1 312 0
+ 438 0000 024B     		ldr	r3, .L43
+ 439 0002 9868     		ldr	r0, [r3, #8]
+ 440 0004 8023     		mov	r3, #128
+ 441 0006 1B02     		lsl	r3, r3, #8
+ 442 0008 1840     		and	r0, r3
+ 313:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 443              		.loc 1 313 0
+ 444              		@ sp needed
+ 445 000a 7047     		bx	lr
+ 446              	.L44:
+ 447              		.align	2
+ 448              	.L43:
+ 449 000c 006C0040 		.word	1073769472
+ 450              		.cfi_endproc
+ 451              	.LFE46:
+ 453              		.section	.text.CRS_ITConfig,"ax",%progbits
+ 454              		.align	2
+ 455              		.global	CRS_ITConfig
+ 456              		.code	16
+ 457              		.thumb_func
+ 459              	CRS_ITConfig:
+ 460              	.LFB47:
+ 314:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 315:.\StdPeriphLib\src/stm32f0xx_crs.c **** /** @defgroup CRS_Group2 Interrupts and flags management functions
+ 316:.\StdPeriphLib\src/stm32f0xx_crs.c ****  *  @brief   Interrupts and flags management functions 
+ 317:.\StdPeriphLib\src/stm32f0xx_crs.c ****  *
+ 318:.\StdPeriphLib\src/stm32f0xx_crs.c **** @verbatim
+ 319:.\StdPeriphLib\src/stm32f0xx_crs.c ****  ===============================================================================
+ 320:.\StdPeriphLib\src/stm32f0xx_crs.c ****              ##### Interrupts and flags management functions #####
+ 321:.\StdPeriphLib\src/stm32f0xx_crs.c ****  ===============================================================================
+ 322:.\StdPeriphLib\src/stm32f0xx_crs.c **** @endverbatim
+ 323:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @{
+ 324:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 325:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 326:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Enables or disables the specified CRS interrupts.
+ 327:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_IT: specifies the RCC interrupt sources to be enabled or disabled.
+ 328:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be any combination of the following values:
+ 329:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCOK: 
+ 330:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCWARN: 
+ 331:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_ERR: 
+ 332:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_ESYNC: 
+ 333:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  NewState: new state of the specified CRS interrupts.
+ 334:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 335:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 336:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 337:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_ITConfig(uint32_t CRS_IT, FunctionalState NewState)
+ 338:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 461              		.loc 1 338 0
+ 462              		.cfi_startproc
+ 463              	.LVL16:
+ 339:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 340:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_IT(CRS_IT));
+ 341:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 342:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 343:.\StdPeriphLib\src/stm32f0xx_crs.c ****   if (NewState != DISABLE)
+ 464              		.loc 1 343 0
+ 465 0000 0029     		cmp	r1, #0
+ 466 0002 04D0     		beq	.L46
+ 344:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 345:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->CR |= CRS_IT;
+ 467              		.loc 1 345 0
+ 468 0004 044A     		ldr	r2, .L48
+ 469 0006 1368     		ldr	r3, [r2]
+ 470 0008 1843     		orr	r0, r3
+ 471              	.LVL17:
+ 472 000a 1060     		str	r0, [r2]
+ 473 000c 03E0     		b	.L45
+ 474              	.LVL18:
+ 475              	.L46:
+ 346:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 347:.\StdPeriphLib\src/stm32f0xx_crs.c ****   else
+ 348:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 349:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->CR &= ~CRS_IT;
+ 476              		.loc 1 349 0
+ 477 000e 024A     		ldr	r2, .L48
+ 478 0010 1368     		ldr	r3, [r2]
+ 479 0012 8343     		bic	r3, r0
+ 480 0014 1360     		str	r3, [r2]
+ 481              	.LVL19:
+ 482              	.L45:
+ 350:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 351:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 483              		.loc 1 351 0
+ 484              		@ sp needed
+ 485 0016 7047     		bx	lr
+ 486              	.L49:
+ 487              		.align	2
+ 488              	.L48:
+ 489 0018 006C0040 		.word	1073769472
+ 490              		.cfi_endproc
+ 491              	.LFE47:
+ 493              		.section	.text.CRS_GetFlagStatus,"ax",%progbits
+ 494              		.align	2
+ 495              		.global	CRS_GetFlagStatus
+ 496              		.code	16
+ 497              		.thumb_func
+ 499              	CRS_GetFlagStatus:
+ 500              	.LFB48:
+ 352:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 353:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 354:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Checks whether the specified CRS flag is set or not.
+ 355:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_FLAG: specifies the flag to check.
+ 356:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 357:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCOK: 
+ 358:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCWARN: 
+ 359:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_ERR: 
+ 360:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_ESYNC:   
+ 361:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_TRIMOVF: 
+ 362:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCERR: 
+ 363:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCMISS: 
+ 364:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval The new state of CRS_FLAG (SET or RESET).
+ 365:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 366:.\StdPeriphLib\src/stm32f0xx_crs.c **** FlagStatus CRS_GetFlagStatus(uint32_t CRS_FLAG)
+ 367:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 501              		.loc 1 367 0
+ 502              		.cfi_startproc
+ 503              	.LVL20:
+ 368:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 369:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_FLAG(CRS_FLAG));
+ 370:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 371:.\StdPeriphLib\src/stm32f0xx_crs.c ****   return ((FlagStatus)(CRS->ISR & CRS_FLAG));
+ 504              		.loc 1 371 0
+ 505 0000 024B     		ldr	r3, .L51
+ 506 0002 9B68     		ldr	r3, [r3, #8]
+ 507 0004 1840     		and	r0, r3
+ 508              	.LVL21:
+ 509 0006 C0B2     		uxtb	r0, r0
+ 372:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 510              		.loc 1 372 0
+ 511              		@ sp needed
+ 512 0008 7047     		bx	lr
+ 513              	.L52:
+ 514 000a C046     		.align	2
+ 515              	.L51:
+ 516 000c 006C0040 		.word	1073769472
+ 517              		.cfi_endproc
+ 518              	.LFE48:
+ 520              		.section	.text.CRS_ClearFlag,"ax",%progbits
+ 521              		.align	2
+ 522              		.global	CRS_ClearFlag
+ 523              		.code	16
+ 524              		.thumb_func
+ 526              	CRS_ClearFlag:
+ 527              	.LFB49:
+ 373:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 374:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 375:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Clears the CRS specified FLAG.
+ 376:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_FLAG: specifies the flag to check.
+ 377:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 378:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCOK: 
+ 379:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCWARN: 
+ 380:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_ERR: 
+ 381:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_ESYNC:   
+ 382:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_TRIMOVF: 
+ 383:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCERR: 
+ 384:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_FLAG_SYNCMISS: 
+ 385:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 386:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 387:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_ClearFlag(uint32_t CRS_FLAG)
+ 388:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 528              		.loc 1 388 0
+ 529              		.cfi_startproc
+ 530              	.LVL22:
+ 389:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 390:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_FLAG(CRS_FLAG));
+ 391:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 392:.\StdPeriphLib\src/stm32f0xx_crs.c ****   if ((CRS_FLAG & FLAG_MASK)!= 0)
+ 531              		.loc 1 392 0
+ 532 0000 E023     		mov	r3, #224
+ 533 0002 DB00     		lsl	r3, r3, #3
+ 534 0004 1842     		tst	r0, r3
+ 535 0006 05D0     		beq	.L54
+ 393:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 394:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->ICR |= CRS_ICR_ERRC;  
+ 536              		.loc 1 394 0
+ 537 0008 054A     		ldr	r2, .L56
+ 538 000a D168     		ldr	r1, [r2, #12]
+ 539 000c 0423     		mov	r3, #4
+ 540 000e 0B43     		orr	r3, r1
+ 541 0010 D360     		str	r3, [r2, #12]
+ 542 0012 03E0     		b	.L53
+ 543              	.L54:
+ 395:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 396:.\StdPeriphLib\src/stm32f0xx_crs.c ****   else
+ 397:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 398:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->ICR |= CRS_FLAG;
+ 544              		.loc 1 398 0
+ 545 0014 024A     		ldr	r2, .L56
+ 546 0016 D368     		ldr	r3, [r2, #12]
+ 547 0018 1843     		orr	r0, r3
+ 548              	.LVL23:
+ 549 001a D060     		str	r0, [r2, #12]
+ 550              	.L53:
+ 399:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 400:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 551              		.loc 1 400 0
+ 552              		@ sp needed
+ 553 001c 7047     		bx	lr
+ 554              	.L57:
+ 555 001e C046     		.align	2
+ 556              	.L56:
+ 557 0020 006C0040 		.word	1073769472
+ 558              		.cfi_endproc
+ 559              	.LFE49:
+ 561              		.section	.text.CRS_GetITStatus,"ax",%progbits
+ 562              		.align	2
+ 563              		.global	CRS_GetITStatus
+ 564              		.code	16
+ 565              		.thumb_func
+ 567              	CRS_GetITStatus:
+ 568              	.LFB50:
+ 401:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 402:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 403:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Checks whether the specified CRS IT pending bit is set or not.
+ 404:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_IT: specifies the IT pending bit to check.
+ 405:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 406:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCOK: 
+ 407:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCWARN: 
+ 408:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_ERR: 
+ 409:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_ESYNC:   
+ 410:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_TRIMOVF: 
+ 411:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCERR: 
+ 412:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCMISS: 
+ 413:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval The new state of CRS_IT (SET or RESET).
+ 414:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 415:.\StdPeriphLib\src/stm32f0xx_crs.c **** ITStatus CRS_GetITStatus(uint32_t CRS_IT)
+ 416:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 569              		.loc 1 416 0
+ 570              		.cfi_startproc
+ 571              	.LVL24:
+ 417:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 418:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_GET_IT(CRS_IT));
+ 419:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 420:.\StdPeriphLib\src/stm32f0xx_crs.c ****   return ((ITStatus)(CRS->ISR & CRS_IT));
+ 572              		.loc 1 420 0
+ 573 0000 024B     		ldr	r3, .L59
+ 574 0002 9B68     		ldr	r3, [r3, #8]
+ 575 0004 1840     		and	r0, r3
+ 576              	.LVL25:
+ 577 0006 C0B2     		uxtb	r0, r0
+ 421:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 578              		.loc 1 421 0
+ 579              		@ sp needed
+ 580 0008 7047     		bx	lr
+ 581              	.L60:
+ 582 000a C046     		.align	2
+ 583              	.L59:
+ 584 000c 006C0040 		.word	1073769472
+ 585              		.cfi_endproc
+ 586              	.LFE50:
+ 588              		.section	.text.CRS_ClearITPendingBit,"ax",%progbits
+ 589              		.align	2
+ 590              		.global	CRS_ClearITPendingBit
+ 591              		.code	16
+ 592              		.thumb_func
+ 594              	CRS_ClearITPendingBit:
+ 595              	.LFB51:
+ 422:.\StdPeriphLib\src/stm32f0xx_crs.c **** 
+ 423:.\StdPeriphLib\src/stm32f0xx_crs.c **** /**
+ 424:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @brief  Clears the CRS specified IT pending bi.
+ 425:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @param  CRS_FLAG: specifies the IT pending bi to clear.
+ 426:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *          This parameter can be one of the following values:
+ 427:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCOK: 
+ 428:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCWARN: 
+ 429:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_ERR: 
+ 430:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_ESYNC:   
+ 431:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_TRIMOVF: 
+ 432:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCERR: 
+ 433:.\StdPeriphLib\src/stm32f0xx_crs.c ****   *              @arg CRS_IT_SYNCMISS: 
+ 434:.\StdPeriphLib\src/stm32f0xx_crs.c ****   * @retval None
+ 435:.\StdPeriphLib\src/stm32f0xx_crs.c ****   */
+ 436:.\StdPeriphLib\src/stm32f0xx_crs.c **** void CRS_ClearITPendingBit(uint32_t CRS_IT)
+ 437:.\StdPeriphLib\src/stm32f0xx_crs.c **** {
+ 596              		.loc 1 437 0
+ 597              		.cfi_startproc
+ 598              	.LVL26:
+ 438:.\StdPeriphLib\src/stm32f0xx_crs.c ****   /* Check the parameters */
+ 439:.\StdPeriphLib\src/stm32f0xx_crs.c ****   assert_param(IS_CRS_CLEAR_IT(CRS_IT));
+ 440:.\StdPeriphLib\src/stm32f0xx_crs.c ****   
+ 441:.\StdPeriphLib\src/stm32f0xx_crs.c ****   if ((CRS_IT & FLAG_MASK)!= 0)
+ 599              		.loc 1 441 0
+ 600 0000 E023     		mov	r3, #224
+ 601 0002 DB00     		lsl	r3, r3, #3
+ 602 0004 1842     		tst	r0, r3
+ 603 0006 05D0     		beq	.L62
+ 442:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 443:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->ICR |= CRS_ICR_ERRC;  
+ 604              		.loc 1 443 0
+ 605 0008 054A     		ldr	r2, .L64
+ 606 000a D168     		ldr	r1, [r2, #12]
+ 607 000c 0423     		mov	r3, #4
+ 608 000e 0B43     		orr	r3, r1
+ 609 0010 D360     		str	r3, [r2, #12]
+ 610 0012 03E0     		b	.L61
+ 611              	.L62:
+ 444:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 445:.\StdPeriphLib\src/stm32f0xx_crs.c ****   else
+ 446:.\StdPeriphLib\src/stm32f0xx_crs.c ****   {
+ 447:.\StdPeriphLib\src/stm32f0xx_crs.c ****     CRS->ICR |= CRS_IT;
+ 612              		.loc 1 447 0
+ 613 0014 024A     		ldr	r2, .L64
+ 614 0016 D368     		ldr	r3, [r2, #12]
+ 615 0018 1843     		orr	r0, r3
+ 616              	.LVL27:
+ 617 001a D060     		str	r0, [r2, #12]
+ 618              	.L61:
+ 448:.\StdPeriphLib\src/stm32f0xx_crs.c ****   }
+ 449:.\StdPeriphLib\src/stm32f0xx_crs.c **** }
+ 619              		.loc 1 449 0
+ 620              		@ sp needed
+ 621 001c 7047     		bx	lr
+ 622              	.L65:
+ 623 001e C046     		.align	2
+ 624              	.L64:
+ 625 0020 006C0040 		.word	1073769472
+ 626              		.cfi_endproc
+ 627              	.LFE51:
+ 629              		.text
+ 630              	.Letext0:
+ 631              		.file 2 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 632              		.file 3 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 633              		.file 4 ".\\CMSIS/stm32f0xx.h"
+ 634              		.file 5 ".\\StdPeriphLib\\inc/stm32f0xx_rcc.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f0xx_crs.c
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:18     .text.CRS_DeInit:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:23     .text.CRS_DeInit:00000000 CRS_DeInit
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:52     .text.CRS_AdjustHSI48CalibrationValue:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:57     .text.CRS_AdjustHSI48CalibrationValue:00000000 CRS_AdjustHSI48CalibrationValue
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:80     .text.CRS_AdjustHSI48CalibrationValue:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:86     .text.CRS_FrequencyErrorCounterCmd:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:91     .text.CRS_FrequencyErrorCounterCmd:00000000 CRS_FrequencyErrorCounterCmd
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:120    .text.CRS_FrequencyErrorCounterCmd:0000001c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:125    .text.CRS_AutomaticCalibrationCmd:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:130    .text.CRS_AutomaticCalibrationCmd:00000000 CRS_AutomaticCalibrationCmd
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:159    .text.CRS_AutomaticCalibrationCmd:0000001c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:164    .text.CRS_SoftwareSynchronizationGenerate:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:169    .text.CRS_SoftwareSynchronizationGenerate:00000000 CRS_SoftwareSynchronizationGenerate
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:185    .text.CRS_SoftwareSynchronizationGenerate:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:190    .text.CRS_FrequencyErrorCounterReload:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:195    .text.CRS_FrequencyErrorCounterReload:00000000 CRS_FrequencyErrorCounterReload
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:217    .text.CRS_FrequencyErrorCounterReload:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:222    .text.CRS_FrequencyErrorLimitConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:227    .text.CRS_FrequencyErrorLimitConfig:00000000 CRS_FrequencyErrorLimitConfig
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:249    .text.CRS_FrequencyErrorLimitConfig:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:255    .text.CRS_SynchronizationPrescalerConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:260    .text.CRS_SynchronizationPrescalerConfig:00000000 CRS_SynchronizationPrescalerConfig
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:282    .text.CRS_SynchronizationPrescalerConfig:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:288    .text.CRS_SynchronizationSourceConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:293    .text.CRS_SynchronizationSourceConfig:00000000 CRS_SynchronizationSourceConfig
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:315    .text.CRS_SynchronizationSourceConfig:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:321    .text.CRS_SynchronizationPolarityConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:326    .text.CRS_SynchronizationPolarityConfig:00000000 CRS_SynchronizationPolarityConfig
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:348    .text.CRS_SynchronizationPolarityConfig:00000014 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:353    .text.CRS_GetReloadValue:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:358    .text.CRS_GetReloadValue:00000000 CRS_GetReloadValue
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:373    .text.CRS_GetReloadValue:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:378    .text.CRS_GetHSI48CalibrationValue:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:383    .text.CRS_GetHSI48CalibrationValue:00000000 CRS_GetHSI48CalibrationValue
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:398    .text.CRS_GetHSI48CalibrationValue:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:403    .text.CRS_GetFrequencyErrorValue:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:408    .text.CRS_GetFrequencyErrorValue:00000000 CRS_GetFrequencyErrorValue
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:423    .text.CRS_GetFrequencyErrorValue:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:428    .text.CRS_GetFrequencyErrorDirection:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:433    .text.CRS_GetFrequencyErrorDirection:00000000 CRS_GetFrequencyErrorDirection
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:449    .text.CRS_GetFrequencyErrorDirection:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:454    .text.CRS_ITConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:459    .text.CRS_ITConfig:00000000 CRS_ITConfig
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:489    .text.CRS_ITConfig:00000018 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:494    .text.CRS_GetFlagStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:499    .text.CRS_GetFlagStatus:00000000 CRS_GetFlagStatus
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:516    .text.CRS_GetFlagStatus:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:521    .text.CRS_ClearFlag:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:526    .text.CRS_ClearFlag:00000000 CRS_ClearFlag
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:557    .text.CRS_ClearFlag:00000020 $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:562    .text.CRS_GetITStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:567    .text.CRS_GetITStatus:00000000 CRS_GetITStatus
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:584    .text.CRS_GetITStatus:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:589    .text.CRS_ClearITPendingBit:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:594    .text.CRS_ClearITPendingBit:00000000 CRS_ClearITPendingBit
+C:\Users\Dima\AppData\Local\Temp\ccA9p1zV.s:625    .text.CRS_ClearITPendingBit:00000020 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

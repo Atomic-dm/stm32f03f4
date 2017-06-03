@@ -1,0 +1,565 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"stm32f0xx_wwdg.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.WWDG_DeInit,"ax",%progbits
+  18              		.align	2
+  19              		.global	WWDG_DeInit
+  20              		.code	16
+  21              		.thumb_func
+  23              	WWDG_DeInit:
+  24              	.LFB33:
+  25              		.file 1 ".\\StdPeriphLib\\src/stm32f0xx_wwdg.c"
+   1:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+   2:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ******************************************************************************
+   3:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @file    stm32f0xx_wwdg.c
+   4:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @author  MCD Application Team
+   5:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @version V1.5.0
+   6:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @date    05-December-2014
+   7:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          functionalities of the Window watchdog (WWDG) peripheral:
+   9:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *           + Prescaler, Refresh window and Counter configuration
+  10:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *           + WWDG activation
+  11:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *           + Interrupts and flags management
+  12:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *             
+  13:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *  @verbatim
+  14:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *    
+  15:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ============================================================================== 
+  16:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****                            ##### WWDG features ##### 
+  17:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ============================================================================== 
+  18:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] Once enabled the WWDG generates a system reset on expiry of a programmed
+  19:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         time period, unless the program refreshes the counter (downcounter) 
+  20:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         before to reach 0x3F value (i.e. a reset is generated when the counter
+  21:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         value rolls over from 0x40 to 0x3F). 
+  22:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] An MCU reset is also generated if the counter value is refreshed
+  23:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****          before the counter has reached the refresh window value. This 
+  24:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****          implies that the counter must be refreshed in a limited window.
+  25:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  26:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] Once enabled the WWDG cannot be disabled except by a system reset.
+  27:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  28:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] WWDGRST flag in RCC_CSR register can be used to inform when a WWDG
+  29:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****          reset occurs.
+  30:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  31:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] The WWDG counter input clock is derived from the APB clock divided 
+  32:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****          by a programmable prescaler.
+  33:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  34:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] WWDG counter clock = PCLK1 / Prescaler.
+  35:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] WWDG timeout = (WWDG counter clock) * (counter value).
+  36:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  37:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..] Min-max timeout value @32MHz (PCLK1): ~85us / ~43ms.
+  38:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  39:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****                        ##### How to use this driver ##### 
+  40:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================
+  41:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     [..]
+  42:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         (#) Enable WWDG clock using RCC_APB1PeriphClockCmd(RCC_APB1Periph_WWDG, ENABLE) 
+  43:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             function.
+  44:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****               
+  45:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         (#) Configure the WWDG prescaler using WWDG_SetPrescaler() function.
+  46:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****                              
+  47:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         (#) Configure the WWDG refresh window using WWDG_SetWindowValue() function.
+  48:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****               
+  49:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         (#) Set the WWDG counter value and start it using WWDG_Enable() function.
+  50:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             When the WWDG is enabled the counter value should be configured to 
+  51:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             a value greater than 0x40 to prevent generating an immediate reset.
+  52:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****               
+  53:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         (#) Optionally you can enable the Early wakeup interrupt which is 
+  54:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             generated when the counter reach 0x40.
+  55:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             Once enabled this interrupt cannot be disabled except by a system reset.
+  56:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****                    
+  57:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****         (#) Then the application program must refresh the WWDG counter at regular
+  58:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             intervals during normal operation to prevent an MCU reset, using
+  59:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             WWDG_SetCounter() function. This operation must occur only when
+  60:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             the counter value is lower than the refresh window value, 
+  61:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****             programmed using WWDG_SetWindowValue().
+  62:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   
+  63:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *  @endverbatim
+  64:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *
+  65:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ******************************************************************************
+  66:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @attention
+  67:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *
+  68:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  69:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *
+  70:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  71:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * You may not use this file except in compliance with the License.
+  72:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * You may obtain a copy of the License at:
+  73:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *
+  74:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  75:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *
+  76:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * Unless required by applicable law or agreed to in writing, software 
+  77:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  78:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  79:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * See the License for the specific language governing permissions and
+  80:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * limitations under the License.
+  81:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *
+  82:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ******************************************************************************
+  83:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+  84:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  85:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Includes ------------------------------------------------------------------*/
+  86:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** #include "stm32f0xx_wwdg.h"
+  87:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** #include "stm32f0xx_rcc.h"
+  88:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  89:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /** @addtogroup STM32F0xx_StdPeriph_Driver
+  90:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @{
+  91:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+  92:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  93:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /** @defgroup WWDG 
+  94:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief WWDG driver modules
+  95:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @{
+  96:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+  97:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+  98:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Private typedef -----------------------------------------------------------*/
+  99:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Private define ------------------------------------------------------------*/
+ 100:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* --------------------- WWDG registers bit mask ---------------------------- */
+ 101:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* CFR register bit mask */
+ 102:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** #define CFR_WDGTB_MASK    ((uint32_t)0xFFFFFE7F)
+ 103:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** #define CFR_W_MASK        ((uint32_t)0xFFFFFF80)
+ 104:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** #define BIT_MASK          ((uint8_t)0x7F)
+ 105:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 106:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Private macro -------------------------------------------------------------*/
+ 107:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Private variables ---------------------------------------------------------*/
+ 108:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Private function prototypes -----------------------------------------------*/
+ 109:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /* Private functions ---------------------------------------------------------*/
+ 110:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 111:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /** @defgroup WWDG_Private_Functions
+ 112:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @{
+ 113:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 114:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 115:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /** @defgroup WWDG_Group1 Prescaler, Refresh window and Counter configuration functions
+ 116:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****  *  @brief   Prescaler, Refresh window and Counter configuration functions 
+ 117:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****  *
+ 118:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** @verbatim   
+ 119:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================
+ 120:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     ##### Prescaler, Refresh window and Counter configuration functions #####
+ 121:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================  
+ 122:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 123:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** @endverbatim
+ 124:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @{
+ 125:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 126:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 127:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 128:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Deinitializes the WWDG peripheral registers to their default reset values.
+ 129:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  None
+ 130:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 131:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 132:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_DeInit(void)
+ 133:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+  26              		.loc 1 133 0
+  27              		.cfi_startproc
+  28 0000 10B5     		push	{r4, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 8
+  31              		.cfi_offset 4, -8
+  32              		.cfi_offset 14, -4
+ 134:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_WWDG, ENABLE);
+  33              		.loc 1 134 0
+  34 0002 8024     		mov	r4, #128
+  35 0004 2401     		lsl	r4, r4, #4
+  36 0006 201C     		mov	r0, r4
+  37 0008 0121     		mov	r1, #1
+  38 000a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  39              	.LVL0:
+ 135:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_WWDG, DISABLE);
+  40              		.loc 1 135 0
+  41 000e 201C     		mov	r0, r4
+  42 0010 0021     		mov	r1, #0
+  43 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  44              	.LVL1:
+ 136:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+  45              		.loc 1 136 0
+  46              		@ sp needed
+  47 0016 10BD     		pop	{r4, pc}
+  48              		.cfi_endproc
+  49              	.LFE33:
+  51              		.section	.text.WWDG_SetPrescaler,"ax",%progbits
+  52              		.align	2
+  53              		.global	WWDG_SetPrescaler
+  54              		.code	16
+  55              		.thumb_func
+  57              	WWDG_SetPrescaler:
+  58              	.LFB34:
+ 137:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 138:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 139:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Sets the WWDG Prescaler.
+ 140:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  WWDG_Prescaler: specifies the WWDG Prescaler.
+ 141:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          This parameter can be one of the following values:
+ 142:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *            @arg WWDG_Prescaler_1: WWDG counter clock = (PCLK1/4096)/1
+ 143:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *            @arg WWDG_Prescaler_2: WWDG counter clock = (PCLK1/4096)/2
+ 144:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *            @arg WWDG_Prescaler_4: WWDG counter clock = (PCLK1/4096)/4
+ 145:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *            @arg WWDG_Prescaler_8: WWDG counter clock = (PCLK1/4096)/8
+ 146:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 147:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 148:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_SetPrescaler(uint32_t WWDG_Prescaler)
+ 149:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+  59              		.loc 1 149 0
+  60              		.cfi_startproc
+  61              	.LVL2:
+ 150:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   uint32_t tmpreg = 0;
+ 151:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Check the parameters */
+ 152:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   assert_param(IS_WWDG_PRESCALER(WWDG_Prescaler));
+ 153:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Clear WDGTB[1:0] bits */
+ 154:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   tmpreg = WWDG->CFR & CFR_WDGTB_MASK;
+  62              		.loc 1 154 0
+  63 0000 034A     		ldr	r2, .L3
+  64 0002 5168     		ldr	r1, [r2, #4]
+  65 0004 034B     		ldr	r3, .L3+4
+  66 0006 0B40     		and	r3, r1
+  67              	.LVL3:
+ 155:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Set WDGTB[1:0] bits according to WWDG_Prescaler value */
+ 156:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   tmpreg |= WWDG_Prescaler;
+  68              		.loc 1 156 0
+  69 0008 1843     		orr	r0, r3
+  70              	.LVL4:
+ 157:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Store the new value */
+ 158:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   WWDG->CFR = tmpreg;
+  71              		.loc 1 158 0
+  72 000a 5060     		str	r0, [r2, #4]
+ 159:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+  73              		.loc 1 159 0
+  74              		@ sp needed
+  75 000c 7047     		bx	lr
+  76              	.L4:
+  77 000e C046     		.align	2
+  78              	.L3:
+  79 0010 002C0040 		.word	1073753088
+  80 0014 7FFEFFFF 		.word	-385
+  81              		.cfi_endproc
+  82              	.LFE34:
+  84              		.section	.text.WWDG_SetWindowValue,"ax",%progbits
+  85              		.align	2
+  86              		.global	WWDG_SetWindowValue
+  87              		.code	16
+  88              		.thumb_func
+  90              	WWDG_SetWindowValue:
+  91              	.LFB35:
+ 160:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 161:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 162:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Sets the WWDG window value.
+ 163:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  WindowValue: specifies the window value to be compared to the downcounter.
+ 164:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          This parameter value must be lower than 0x80.
+ 165:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 166:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 167:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_SetWindowValue(uint8_t WindowValue)
+ 168:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+  92              		.loc 1 168 0
+  93              		.cfi_startproc
+  94              	.LVL5:
+  95 0000 82B0     		sub	sp, sp, #8
+  96              	.LCFI1:
+  97              		.cfi_def_cfa_offset 8
+ 169:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   __IO uint32_t tmpreg = 0;
+  98              		.loc 1 169 0
+  99 0002 0023     		mov	r3, #0
+ 100 0004 0193     		str	r3, [sp, #4]
+ 170:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 171:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Check the parameters */
+ 172:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   assert_param(IS_WWDG_WINDOW_VALUE(WindowValue));
+ 173:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Clear W[6:0] bits */
+ 174:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 175:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   tmpreg = WWDG->CFR & CFR_W_MASK;
+ 101              		.loc 1 175 0
+ 102 0006 064A     		ldr	r2, .L6
+ 103 0008 5368     		ldr	r3, [r2, #4]
+ 104 000a 7F21     		mov	r1, #127
+ 105 000c 8B43     		bic	r3, r1
+ 106 000e 0193     		str	r3, [sp, #4]
+ 176:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 177:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Set W[6:0] bits according to WindowValue value */
+ 178:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   tmpreg |= WindowValue & (uint32_t) BIT_MASK;
+ 107              		.loc 1 178 0
+ 108 0010 019B     		ldr	r3, [sp, #4]
+ 109 0012 0840     		and	r0, r1
+ 110              	.LVL6:
+ 111 0014 1843     		orr	r0, r3
+ 112 0016 0190     		str	r0, [sp, #4]
+ 179:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 180:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Store the new value */
+ 181:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   WWDG->CFR = tmpreg;
+ 113              		.loc 1 181 0
+ 114 0018 019B     		ldr	r3, [sp, #4]
+ 115 001a 5360     		str	r3, [r2, #4]
+ 182:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+ 116              		.loc 1 182 0
+ 117 001c 02B0     		add	sp, sp, #8
+ 118              		@ sp needed
+ 119 001e 7047     		bx	lr
+ 120              	.L7:
+ 121              		.align	2
+ 122              	.L6:
+ 123 0020 002C0040 		.word	1073753088
+ 124              		.cfi_endproc
+ 125              	.LFE35:
+ 127              		.section	.text.WWDG_EnableIT,"ax",%progbits
+ 128              		.align	2
+ 129              		.global	WWDG_EnableIT
+ 130              		.code	16
+ 131              		.thumb_func
+ 133              	WWDG_EnableIT:
+ 134              	.LFB36:
+ 183:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 184:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 185:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Enables the WWDG Early Wakeup interrupt(EWI).
+ 186:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @note   Once enabled this interrupt cannot be disabled except by a system reset. 
+ 187:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  None
+ 188:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 189:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 190:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_EnableIT(void)
+ 191:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+ 135              		.loc 1 191 0
+ 136              		.cfi_startproc
+ 192:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   WWDG->CFR |= WWDG_CFR_EWI;
+ 137              		.loc 1 192 0
+ 138 0000 034A     		ldr	r2, .L9
+ 139 0002 5368     		ldr	r3, [r2, #4]
+ 140 0004 8021     		mov	r1, #128
+ 141 0006 8900     		lsl	r1, r1, #2
+ 142 0008 0B43     		orr	r3, r1
+ 143 000a 5360     		str	r3, [r2, #4]
+ 193:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+ 144              		.loc 1 193 0
+ 145              		@ sp needed
+ 146 000c 7047     		bx	lr
+ 147              	.L10:
+ 148 000e C046     		.align	2
+ 149              	.L9:
+ 150 0010 002C0040 		.word	1073753088
+ 151              		.cfi_endproc
+ 152              	.LFE36:
+ 154              		.section	.text.WWDG_SetCounter,"ax",%progbits
+ 155              		.align	2
+ 156              		.global	WWDG_SetCounter
+ 157              		.code	16
+ 158              		.thumb_func
+ 160              	WWDG_SetCounter:
+ 161              	.LFB37:
+ 194:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 195:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 196:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Sets the WWDG counter value.
+ 197:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  Counter: specifies the watchdog counter value.
+ 198:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          This parameter must be a number between 0x40 and 0x7F (to prevent 
+ 199:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          generating an immediate reset).
+ 200:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 201:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 202:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_SetCounter(uint8_t Counter)
+ 203:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+ 162              		.loc 1 203 0
+ 163              		.cfi_startproc
+ 164              	.LVL7:
+ 204:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Check the parameters */
+ 205:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   assert_param(IS_WWDG_COUNTER(Counter));
+ 206:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Write to T[6:0] bits to configure the counter value, no need to do
+ 207:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****      a read-modify-write; writing a 0 to WDGA bit does nothing */
+ 208:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   WWDG->CR = Counter & BIT_MASK;
+ 165              		.loc 1 208 0
+ 166 0000 7F23     		mov	r3, #127
+ 167 0002 1840     		and	r0, r3
+ 168              	.LVL8:
+ 169 0004 014B     		ldr	r3, .L12
+ 170 0006 1860     		str	r0, [r3]
+ 209:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+ 171              		.loc 1 209 0
+ 172              		@ sp needed
+ 173 0008 7047     		bx	lr
+ 174              	.L13:
+ 175 000a C046     		.align	2
+ 176              	.L12:
+ 177 000c 002C0040 		.word	1073753088
+ 178              		.cfi_endproc
+ 179              	.LFE37:
+ 181              		.section	.text.WWDG_Enable,"ax",%progbits
+ 182              		.align	2
+ 183              		.global	WWDG_Enable
+ 184              		.code	16
+ 185              		.thumb_func
+ 187              	WWDG_Enable:
+ 188              	.LFB38:
+ 210:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 211:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 212:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @}
+ 213:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 214:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 215:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /** @defgroup WWDG_Group2 WWDG activation functions
+ 216:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****  *  @brief   WWDG activation functions 
+ 217:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****  *
+ 218:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** @verbatim   
+ 219:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================
+ 220:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****                      ##### WWDG activation function #####
+ 221:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================  
+ 222:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 223:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** @endverbatim
+ 224:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @{
+ 225:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 226:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 227:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 228:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Enables WWDG and load the counter value.                  
+ 229:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  Counter: specifies the watchdog counter value.
+ 230:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          This parameter must be a number between 0x40 and 0x7F (to prevent 
+ 231:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   *          generating an immediate reset).
+ 232:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 233:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 234:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_Enable(uint8_t Counter)
+ 235:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+ 189              		.loc 1 235 0
+ 190              		.cfi_startproc
+ 191              	.LVL9:
+ 236:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   /* Check the parameters */
+ 237:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   assert_param(IS_WWDG_COUNTER(Counter));
+ 238:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   WWDG->CR = WWDG_CR_WDGA | Counter;
+ 192              		.loc 1 238 0
+ 193 0000 8023     		mov	r3, #128
+ 194 0002 1843     		orr	r0, r3
+ 195              	.LVL10:
+ 196 0004 014B     		ldr	r3, .L15
+ 197 0006 1860     		str	r0, [r3]
+ 239:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+ 198              		.loc 1 239 0
+ 199              		@ sp needed
+ 200 0008 7047     		bx	lr
+ 201              	.L16:
+ 202 000a C046     		.align	2
+ 203              	.L15:
+ 204 000c 002C0040 		.word	1073753088
+ 205              		.cfi_endproc
+ 206              	.LFE38:
+ 208              		.section	.text.WWDG_GetFlagStatus,"ax",%progbits
+ 209              		.align	2
+ 210              		.global	WWDG_GetFlagStatus
+ 211              		.code	16
+ 212              		.thumb_func
+ 214              	WWDG_GetFlagStatus:
+ 215              	.LFB39:
+ 240:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 241:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 242:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @}
+ 243:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 244:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 245:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /** @defgroup WWDG_Group3 Interrupts and flags management functions
+ 246:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****  *  @brief   Interrupts and flags management functions 
+ 247:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****  *
+ 248:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** @verbatim   
+ 249:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================
+ 250:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****                 ##### Interrupts and flags management functions #####
+ 251:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   ==============================================================================  
+ 252:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 253:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** @endverbatim
+ 254:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @{
+ 255:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 256:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 257:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 258:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Checks whether the Early Wakeup interrupt flag is set or not.
+ 259:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  None
+ 260:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval The new state of the Early Wakeup interrupt flag (SET or RESET).
+ 261:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 262:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** FlagStatus WWDG_GetFlagStatus(void)
+ 263:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+ 216              		.loc 1 263 0
+ 217              		.cfi_startproc
+ 218              	.LVL11:
+ 264:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   FlagStatus bitstatus = RESET;
+ 265:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     
+ 266:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   if ((WWDG->SR) != (uint32_t)RESET)
+ 219              		.loc 1 266 0
+ 220 0000 024B     		ldr	r3, .L18
+ 221 0002 9868     		ldr	r0, [r3, #8]
+ 222              	.LVL12:
+ 223 0004 431E     		sub	r3, r0, #1
+ 224 0006 9841     		sbc	r0, r0, r3
+ 225              	.LVL13:
+ 267:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   {
+ 268:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     bitstatus = SET;
+ 269:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   }
+ 270:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   else
+ 271:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   {
+ 272:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****     bitstatus = RESET;
+ 273:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   }
+ 274:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   return bitstatus;
+ 226              		.loc 1 274 0
+ 227 0008 C0B2     		uxtb	r0, r0
+ 275:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+ 228              		.loc 1 275 0
+ 229              		@ sp needed
+ 230 000a 7047     		bx	lr
+ 231              	.L19:
+ 232              		.align	2
+ 233              	.L18:
+ 234 000c 002C0040 		.word	1073753088
+ 235              		.cfi_endproc
+ 236              	.LFE39:
+ 238              		.section	.text.WWDG_ClearFlag,"ax",%progbits
+ 239              		.align	2
+ 240              		.global	WWDG_ClearFlag
+ 241              		.code	16
+ 242              		.thumb_func
+ 244              	WWDG_ClearFlag:
+ 245              	.LFB40:
+ 276:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** 
+ 277:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** /**
+ 278:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @brief  Clears Early Wakeup interrupt flag.
+ 279:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @param  None
+ 280:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   * @retval None
+ 281:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   */
+ 282:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** void WWDG_ClearFlag(void)
+ 283:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** {
+ 246              		.loc 1 283 0
+ 247              		.cfi_startproc
+ 284:.\StdPeriphLib\src/stm32f0xx_wwdg.c ****   WWDG->SR = (uint32_t)RESET;
+ 248              		.loc 1 284 0
+ 249 0000 0022     		mov	r2, #0
+ 250 0002 014B     		ldr	r3, .L21
+ 251 0004 9A60     		str	r2, [r3, #8]
+ 285:.\StdPeriphLib\src/stm32f0xx_wwdg.c **** }
+ 252              		.loc 1 285 0
+ 253              		@ sp needed
+ 254 0006 7047     		bx	lr
+ 255              	.L22:
+ 256              		.align	2
+ 257              	.L21:
+ 258 0008 002C0040 		.word	1073753088
+ 259              		.cfi_endproc
+ 260              	.LFE40:
+ 262              		.text
+ 263              	.Letext0:
+ 264              		.file 2 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 265              		.file 3 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 266              		.file 4 ".\\CMSIS/stm32f0xx.h"
+ 267              		.file 5 ".\\StdPeriphLib\\inc/stm32f0xx_rcc.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f0xx_wwdg.c
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:18     .text.WWDG_DeInit:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:23     .text.WWDG_DeInit:00000000 WWDG_DeInit
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:52     .text.WWDG_SetPrescaler:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:57     .text.WWDG_SetPrescaler:00000000 WWDG_SetPrescaler
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:79     .text.WWDG_SetPrescaler:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:85     .text.WWDG_SetWindowValue:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:90     .text.WWDG_SetWindowValue:00000000 WWDG_SetWindowValue
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:123    .text.WWDG_SetWindowValue:00000020 $d
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:128    .text.WWDG_EnableIT:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:133    .text.WWDG_EnableIT:00000000 WWDG_EnableIT
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:150    .text.WWDG_EnableIT:00000010 $d
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:155    .text.WWDG_SetCounter:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:160    .text.WWDG_SetCounter:00000000 WWDG_SetCounter
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:177    .text.WWDG_SetCounter:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:182    .text.WWDG_Enable:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:187    .text.WWDG_Enable:00000000 WWDG_Enable
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:204    .text.WWDG_Enable:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:209    .text.WWDG_GetFlagStatus:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:214    .text.WWDG_GetFlagStatus:00000000 WWDG_GetFlagStatus
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:234    .text.WWDG_GetFlagStatus:0000000c $d
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:239    .text.WWDG_ClearFlag:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:244    .text.WWDG_ClearFlag:00000000 WWDG_ClearFlag
+C:\Users\Dima\AppData\Local\Temp\ccsoMgcB.s:258    .text.WWDG_ClearFlag:00000008 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

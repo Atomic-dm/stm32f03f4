@@ -1,0 +1,935 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	__aeabi_uidiv
+  18              		.section	.text.main,"ax",%progbits
+  19              		.align	2
+  20              		.global	main
+  21              		.code	16
+  22              		.thumb_func
+  24              	main:
+  25              	.LFB33:
+  26              		.file 1 ".\\user-code\\src/main.c"
+   1:.\user-code\src/main.c **** #include "main.h"
+   2:.\user-code\src/main.c **** 
+   3:.\user-code\src/main.c **** 
+   4:.\user-code\src/main.c **** GPIO_InitTypeDef        GPIO_InitStructure;
+   5:.\user-code\src/main.c **** 
+   6:.\user-code\src/main.c **** 
+   7:.\user-code\src/main.c **** int  main(void) {
+  27              		.loc 1 7 0
+  28              		.cfi_startproc
+  29 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 24
+  32              		.cfi_offset 3, -24
+  33              		.cfi_offset 4, -20
+  34              		.cfi_offset 5, -16
+  35              		.cfi_offset 6, -12
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+   8:.\user-code\src/main.c **** 
+   9:.\user-code\src/main.c **** 
+  10:.\user-code\src/main.c **** 
+  11:.\user-code\src/main.c **** SystemCoreClockUpdate();
+  38              		.loc 1 11 0
+  39 0002 FFF7FEFF 		bl	SystemCoreClockUpdate
+  40              	.LVL0:
+  12:.\user-code\src/main.c **** SysTick_Config(SystemCoreClock/1000);	
+  41              		.loc 1 12 0
+  42 0006 2F4B     		ldr	r3, .L4
+  43              	.LVL1:
+  44 0008 1868     		ldr	r0, [r3]
+  45 000a FA21     		mov	r1, #250
+  46 000c 8900     		lsl	r1, r1, #2
+  47 000e FFF7FEFF 		bl	__aeabi_uidiv
+  48              	.LVL2:
+  49              	.LBB6:
+  50              	.LBB7:
+  51              		.file 2 ".\\CMSIS/core_cm0.h"
+   1:.\CMSIS/core_cm0.h **** /**************************************************************************//**
+   2:.\CMSIS/core_cm0.h ****  * @file     core_cm0.h
+   3:.\CMSIS/core_cm0.h ****  * @brief    CMSIS Cortex-M0 Core Peripheral Access Layer Header File
+   4:.\CMSIS/core_cm0.h ****  * @version  V3.20
+   5:.\CMSIS/core_cm0.h ****  * @date     25. February 2013
+   6:.\CMSIS/core_cm0.h ****  *
+   7:.\CMSIS/core_cm0.h ****  * @note
+   8:.\CMSIS/core_cm0.h ****  *
+   9:.\CMSIS/core_cm0.h ****  ******************************************************************************/
+  10:.\CMSIS/core_cm0.h **** /* Copyright (c) 2009 - 2013 ARM LIMITED
+  11:.\CMSIS/core_cm0.h **** 
+  12:.\CMSIS/core_cm0.h ****    All rights reserved.
+  13:.\CMSIS/core_cm0.h ****    Redistribution and use in source and binary forms, with or without
+  14:.\CMSIS/core_cm0.h ****    modification, are permitted provided that the following conditions are met:
+  15:.\CMSIS/core_cm0.h ****    - Redistributions of source code must retain the above copyright
+  16:.\CMSIS/core_cm0.h ****      notice, this list of conditions and the following disclaimer.
+  17:.\CMSIS/core_cm0.h ****    - Redistributions in binary form must reproduce the above copyright
+  18:.\CMSIS/core_cm0.h ****      notice, this list of conditions and the following disclaimer in the
+  19:.\CMSIS/core_cm0.h ****      documentation and/or other materials provided with the distribution.
+  20:.\CMSIS/core_cm0.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  21:.\CMSIS/core_cm0.h ****      to endorse or promote products derived from this software without
+  22:.\CMSIS/core_cm0.h ****      specific prior written permission.
+  23:.\CMSIS/core_cm0.h ****    *
+  24:.\CMSIS/core_cm0.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:.\CMSIS/core_cm0.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:.\CMSIS/core_cm0.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  27:.\CMSIS/core_cm0.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  28:.\CMSIS/core_cm0.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  29:.\CMSIS/core_cm0.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  30:.\CMSIS/core_cm0.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  31:.\CMSIS/core_cm0.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  32:.\CMSIS/core_cm0.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  33:.\CMSIS/core_cm0.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  34:.\CMSIS/core_cm0.h ****    POSSIBILITY OF SUCH DAMAGE.
+  35:.\CMSIS/core_cm0.h ****    ---------------------------------------------------------------------------*/
+  36:.\CMSIS/core_cm0.h **** 
+  37:.\CMSIS/core_cm0.h **** 
+  38:.\CMSIS/core_cm0.h **** #if defined ( __ICCARM__ )
+  39:.\CMSIS/core_cm0.h ****  #pragma system_include  /* treat file as system include file for MISRA check */
+  40:.\CMSIS/core_cm0.h **** #endif
+  41:.\CMSIS/core_cm0.h **** 
+  42:.\CMSIS/core_cm0.h **** #ifdef __cplusplus
+  43:.\CMSIS/core_cm0.h ****  extern "C" {
+  44:.\CMSIS/core_cm0.h **** #endif
+  45:.\CMSIS/core_cm0.h **** 
+  46:.\CMSIS/core_cm0.h **** #ifndef __CORE_CM0_H_GENERIC
+  47:.\CMSIS/core_cm0.h **** #define __CORE_CM0_H_GENERIC
+  48:.\CMSIS/core_cm0.h **** 
+  49:.\CMSIS/core_cm0.h **** /** \page CMSIS_MISRA_Exceptions  MISRA-C:2004 Compliance Exceptions
+  50:.\CMSIS/core_cm0.h ****   CMSIS violates the following MISRA-C:2004 rules:
+  51:.\CMSIS/core_cm0.h **** 
+  52:.\CMSIS/core_cm0.h ****    \li Required Rule 8.5, object/function definition in header file.<br>
+  53:.\CMSIS/core_cm0.h ****      Function definitions in header files are used to allow 'inlining'.
+  54:.\CMSIS/core_cm0.h **** 
+  55:.\CMSIS/core_cm0.h ****    \li Required Rule 18.4, declaration of union type or object of union type: '{...}'.<br>
+  56:.\CMSIS/core_cm0.h ****      Unions are used for effective representation of core registers.
+  57:.\CMSIS/core_cm0.h **** 
+  58:.\CMSIS/core_cm0.h ****    \li Advisory Rule 19.7, Function-like macro defined.<br>
+  59:.\CMSIS/core_cm0.h ****      Function-like macros are used to allow more efficient code.
+  60:.\CMSIS/core_cm0.h ****  */
+  61:.\CMSIS/core_cm0.h **** 
+  62:.\CMSIS/core_cm0.h **** 
+  63:.\CMSIS/core_cm0.h **** /*******************************************************************************
+  64:.\CMSIS/core_cm0.h ****  *                 CMSIS definitions
+  65:.\CMSIS/core_cm0.h ****  ******************************************************************************/
+  66:.\CMSIS/core_cm0.h **** /** \ingroup Cortex_M0
+  67:.\CMSIS/core_cm0.h ****   @{
+  68:.\CMSIS/core_cm0.h ****  */
+  69:.\CMSIS/core_cm0.h **** 
+  70:.\CMSIS/core_cm0.h **** /*  CMSIS CM0 definitions */
+  71:.\CMSIS/core_cm0.h **** #define __CM0_CMSIS_VERSION_MAIN  (0x03)                                   /*!< [31:16] CMSIS HAL m
+  72:.\CMSIS/core_cm0.h **** #define __CM0_CMSIS_VERSION_SUB   (0x20)                                   /*!< [15:0]  CMSIS HAL s
+  73:.\CMSIS/core_cm0.h **** #define __CM0_CMSIS_VERSION       ((__CM0_CMSIS_VERSION_MAIN << 16) | \
+  74:.\CMSIS/core_cm0.h ****                                     __CM0_CMSIS_VERSION_SUB          )     /*!< CMSIS HAL version n
+  75:.\CMSIS/core_cm0.h **** 
+  76:.\CMSIS/core_cm0.h **** #define __CORTEX_M                (0x00)                                   /*!< Cortex-M Core      
+  77:.\CMSIS/core_cm0.h **** 
+  78:.\CMSIS/core_cm0.h **** 
+  79:.\CMSIS/core_cm0.h **** #if   defined ( __CC_ARM )
+  80:.\CMSIS/core_cm0.h ****   #define __ASM            __asm                                      /*!< asm keyword for ARM Comp
+  81:.\CMSIS/core_cm0.h ****   #define __INLINE         __inline                                   /*!< inline keyword for ARM C
+  82:.\CMSIS/core_cm0.h ****   #define __STATIC_INLINE  static __inline
+  83:.\CMSIS/core_cm0.h **** 
+  84:.\CMSIS/core_cm0.h **** #elif defined ( __ICCARM__ )
+  85:.\CMSIS/core_cm0.h ****   #define __ASM            __asm                                      /*!< asm keyword for IAR Comp
+  86:.\CMSIS/core_cm0.h ****   #define __INLINE         inline                                     /*!< inline keyword for IAR C
+  87:.\CMSIS/core_cm0.h ****   #define __STATIC_INLINE  static inline
+  88:.\CMSIS/core_cm0.h **** 
+  89:.\CMSIS/core_cm0.h **** #elif defined ( __GNUC__ )
+  90:.\CMSIS/core_cm0.h ****   #define __ASM            __asm                                      /*!< asm keyword for GNU Comp
+  91:.\CMSIS/core_cm0.h ****   #define __INLINE         inline                                     /*!< inline keyword for GNU C
+  92:.\CMSIS/core_cm0.h ****   #define __STATIC_INLINE  static inline
+  93:.\CMSIS/core_cm0.h **** 
+  94:.\CMSIS/core_cm0.h **** #elif defined ( __TASKING__ )
+  95:.\CMSIS/core_cm0.h ****   #define __ASM            __asm                                      /*!< asm keyword for TASKING 
+  96:.\CMSIS/core_cm0.h ****   #define __INLINE         inline                                     /*!< inline keyword for TASKI
+  97:.\CMSIS/core_cm0.h ****   #define __STATIC_INLINE  static inline
+  98:.\CMSIS/core_cm0.h **** 
+  99:.\CMSIS/core_cm0.h **** #endif
+ 100:.\CMSIS/core_cm0.h **** 
+ 101:.\CMSIS/core_cm0.h **** /** __FPU_USED indicates whether an FPU is used or not. This core does not support an FPU at all
+ 102:.\CMSIS/core_cm0.h **** */
+ 103:.\CMSIS/core_cm0.h **** #define __FPU_USED       0
+ 104:.\CMSIS/core_cm0.h **** 
+ 105:.\CMSIS/core_cm0.h **** #if defined ( __CC_ARM )
+ 106:.\CMSIS/core_cm0.h ****   #if defined __TARGET_FPU_VFP
+ 107:.\CMSIS/core_cm0.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 108:.\CMSIS/core_cm0.h ****   #endif
+ 109:.\CMSIS/core_cm0.h **** 
+ 110:.\CMSIS/core_cm0.h **** #elif defined ( __ICCARM__ )
+ 111:.\CMSIS/core_cm0.h ****   #if defined __ARMVFP__
+ 112:.\CMSIS/core_cm0.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 113:.\CMSIS/core_cm0.h ****   #endif
+ 114:.\CMSIS/core_cm0.h **** 
+ 115:.\CMSIS/core_cm0.h **** #elif defined ( __GNUC__ )
+ 116:.\CMSIS/core_cm0.h ****   #if defined (__VFP_FP__) && !defined(__SOFTFP__)
+ 117:.\CMSIS/core_cm0.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 118:.\CMSIS/core_cm0.h ****   #endif
+ 119:.\CMSIS/core_cm0.h **** 
+ 120:.\CMSIS/core_cm0.h **** #elif defined ( __TASKING__ )
+ 121:.\CMSIS/core_cm0.h ****   #if defined __FPU_VFP__
+ 122:.\CMSIS/core_cm0.h ****     #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+ 123:.\CMSIS/core_cm0.h ****   #endif
+ 124:.\CMSIS/core_cm0.h **** #endif
+ 125:.\CMSIS/core_cm0.h **** 
+ 126:.\CMSIS/core_cm0.h **** #include <stdint.h>                      /* standard types definitions                      */
+ 127:.\CMSIS/core_cm0.h **** #include <core_cmInstr.h>                /* Core Instruction Access                         */
+ 128:.\CMSIS/core_cm0.h **** #include <core_cmFunc.h>                 /* Core Function Access                            */
+ 129:.\CMSIS/core_cm0.h **** 
+ 130:.\CMSIS/core_cm0.h **** #endif /* __CORE_CM0_H_GENERIC */
+ 131:.\CMSIS/core_cm0.h **** 
+ 132:.\CMSIS/core_cm0.h **** #ifndef __CMSIS_GENERIC
+ 133:.\CMSIS/core_cm0.h **** 
+ 134:.\CMSIS/core_cm0.h **** #ifndef __CORE_CM0_H_DEPENDANT
+ 135:.\CMSIS/core_cm0.h **** #define __CORE_CM0_H_DEPENDANT
+ 136:.\CMSIS/core_cm0.h **** 
+ 137:.\CMSIS/core_cm0.h **** /* check device defines and use defaults */
+ 138:.\CMSIS/core_cm0.h **** #if defined __CHECK_DEVICE_DEFINES
+ 139:.\CMSIS/core_cm0.h ****   #ifndef __CM0_REV
+ 140:.\CMSIS/core_cm0.h ****     #define __CM0_REV               0x0000
+ 141:.\CMSIS/core_cm0.h ****     #warning "__CM0_REV not defined in device header file; using default!"
+ 142:.\CMSIS/core_cm0.h ****   #endif
+ 143:.\CMSIS/core_cm0.h **** 
+ 144:.\CMSIS/core_cm0.h ****   #ifndef __NVIC_PRIO_BITS
+ 145:.\CMSIS/core_cm0.h ****     #define __NVIC_PRIO_BITS          2
+ 146:.\CMSIS/core_cm0.h ****     #warning "__NVIC_PRIO_BITS not defined in device header file; using default!"
+ 147:.\CMSIS/core_cm0.h ****   #endif
+ 148:.\CMSIS/core_cm0.h **** 
+ 149:.\CMSIS/core_cm0.h ****   #ifndef __Vendor_SysTickConfig
+ 150:.\CMSIS/core_cm0.h ****     #define __Vendor_SysTickConfig    0
+ 151:.\CMSIS/core_cm0.h ****     #warning "__Vendor_SysTickConfig not defined in device header file; using default!"
+ 152:.\CMSIS/core_cm0.h ****   #endif
+ 153:.\CMSIS/core_cm0.h **** #endif
+ 154:.\CMSIS/core_cm0.h **** 
+ 155:.\CMSIS/core_cm0.h **** /* IO definitions (access restrictions to peripheral registers) */
+ 156:.\CMSIS/core_cm0.h **** /**
+ 157:.\CMSIS/core_cm0.h ****     \defgroup CMSIS_glob_defs CMSIS Global Defines
+ 158:.\CMSIS/core_cm0.h **** 
+ 159:.\CMSIS/core_cm0.h ****     <strong>IO Type Qualifiers</strong> are used
+ 160:.\CMSIS/core_cm0.h ****     \li to specify the access to peripheral variables.
+ 161:.\CMSIS/core_cm0.h ****     \li for automatic generation of peripheral register debug information.
+ 162:.\CMSIS/core_cm0.h **** */
+ 163:.\CMSIS/core_cm0.h **** #ifdef __cplusplus
+ 164:.\CMSIS/core_cm0.h ****   #define   __I     volatile             /*!< Defines 'read only' permissions                 */
+ 165:.\CMSIS/core_cm0.h **** #else
+ 166:.\CMSIS/core_cm0.h ****   #define   __I     volatile const       /*!< Defines 'read only' permissions                 */
+ 167:.\CMSIS/core_cm0.h **** #endif
+ 168:.\CMSIS/core_cm0.h **** #define     __O     volatile             /*!< Defines 'write only' permissions                */
+ 169:.\CMSIS/core_cm0.h **** #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
+ 170:.\CMSIS/core_cm0.h **** 
+ 171:.\CMSIS/core_cm0.h **** /*@} end of group Cortex_M0 */
+ 172:.\CMSIS/core_cm0.h **** 
+ 173:.\CMSIS/core_cm0.h **** 
+ 174:.\CMSIS/core_cm0.h **** 
+ 175:.\CMSIS/core_cm0.h **** /*******************************************************************************
+ 176:.\CMSIS/core_cm0.h ****  *                 Register Abstraction
+ 177:.\CMSIS/core_cm0.h ****   Core Register contain:
+ 178:.\CMSIS/core_cm0.h ****   - Core Register
+ 179:.\CMSIS/core_cm0.h ****   - Core NVIC Register
+ 180:.\CMSIS/core_cm0.h ****   - Core SCB Register
+ 181:.\CMSIS/core_cm0.h ****   - Core SysTick Register
+ 182:.\CMSIS/core_cm0.h ****  ******************************************************************************/
+ 183:.\CMSIS/core_cm0.h **** /** \defgroup CMSIS_core_register Defines and Type Definitions
+ 184:.\CMSIS/core_cm0.h ****     \brief Type definitions and defines for Cortex-M processor based devices.
+ 185:.\CMSIS/core_cm0.h **** */
+ 186:.\CMSIS/core_cm0.h **** 
+ 187:.\CMSIS/core_cm0.h **** /** \ingroup    CMSIS_core_register
+ 188:.\CMSIS/core_cm0.h ****     \defgroup   CMSIS_CORE  Status and Control Registers
+ 189:.\CMSIS/core_cm0.h ****     \brief  Core Register type definitions.
+ 190:.\CMSIS/core_cm0.h ****   @{
+ 191:.\CMSIS/core_cm0.h ****  */
+ 192:.\CMSIS/core_cm0.h **** 
+ 193:.\CMSIS/core_cm0.h **** /** \brief  Union type to access the Application Program Status Register (APSR).
+ 194:.\CMSIS/core_cm0.h ****  */
+ 195:.\CMSIS/core_cm0.h **** typedef union
+ 196:.\CMSIS/core_cm0.h **** {
+ 197:.\CMSIS/core_cm0.h ****   struct
+ 198:.\CMSIS/core_cm0.h ****   {
+ 199:.\CMSIS/core_cm0.h **** #if (__CORTEX_M != 0x04)
+ 200:.\CMSIS/core_cm0.h ****     uint32_t _reserved0:27;              /*!< bit:  0..26  Reserved                           */
+ 201:.\CMSIS/core_cm0.h **** #else
+ 202:.\CMSIS/core_cm0.h ****     uint32_t _reserved0:16;              /*!< bit:  0..15  Reserved                           */
+ 203:.\CMSIS/core_cm0.h ****     uint32_t GE:4;                       /*!< bit: 16..19  Greater than or Equal flags        */
+ 204:.\CMSIS/core_cm0.h ****     uint32_t _reserved1:7;               /*!< bit: 20..26  Reserved                           */
+ 205:.\CMSIS/core_cm0.h **** #endif
+ 206:.\CMSIS/core_cm0.h ****     uint32_t Q:1;                        /*!< bit:     27  Saturation condition flag          */
+ 207:.\CMSIS/core_cm0.h ****     uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag       */
+ 208:.\CMSIS/core_cm0.h ****     uint32_t C:1;                        /*!< bit:     29  Carry condition code flag          */
+ 209:.\CMSIS/core_cm0.h ****     uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag           */
+ 210:.\CMSIS/core_cm0.h ****     uint32_t N:1;                        /*!< bit:     31  Negative condition code flag       */
+ 211:.\CMSIS/core_cm0.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 212:.\CMSIS/core_cm0.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 213:.\CMSIS/core_cm0.h **** } APSR_Type;
+ 214:.\CMSIS/core_cm0.h **** 
+ 215:.\CMSIS/core_cm0.h **** 
+ 216:.\CMSIS/core_cm0.h **** /** \brief  Union type to access the Interrupt Program Status Register (IPSR).
+ 217:.\CMSIS/core_cm0.h ****  */
+ 218:.\CMSIS/core_cm0.h **** typedef union
+ 219:.\CMSIS/core_cm0.h **** {
+ 220:.\CMSIS/core_cm0.h ****   struct
+ 221:.\CMSIS/core_cm0.h ****   {
+ 222:.\CMSIS/core_cm0.h ****     uint32_t ISR:9;                      /*!< bit:  0.. 8  Exception number                   */
+ 223:.\CMSIS/core_cm0.h ****     uint32_t _reserved0:23;              /*!< bit:  9..31  Reserved                           */
+ 224:.\CMSIS/core_cm0.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 225:.\CMSIS/core_cm0.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 226:.\CMSIS/core_cm0.h **** } IPSR_Type;
+ 227:.\CMSIS/core_cm0.h **** 
+ 228:.\CMSIS/core_cm0.h **** 
+ 229:.\CMSIS/core_cm0.h **** /** \brief  Union type to access the Special-Purpose Program Status Registers (xPSR).
+ 230:.\CMSIS/core_cm0.h ****  */
+ 231:.\CMSIS/core_cm0.h **** typedef union
+ 232:.\CMSIS/core_cm0.h **** {
+ 233:.\CMSIS/core_cm0.h ****   struct
+ 234:.\CMSIS/core_cm0.h ****   {
+ 235:.\CMSIS/core_cm0.h ****     uint32_t ISR:9;                      /*!< bit:  0.. 8  Exception number                   */
+ 236:.\CMSIS/core_cm0.h **** #if (__CORTEX_M != 0x04)
+ 237:.\CMSIS/core_cm0.h ****     uint32_t _reserved0:15;              /*!< bit:  9..23  Reserved                           */
+ 238:.\CMSIS/core_cm0.h **** #else
+ 239:.\CMSIS/core_cm0.h ****     uint32_t _reserved0:7;               /*!< bit:  9..15  Reserved                           */
+ 240:.\CMSIS/core_cm0.h ****     uint32_t GE:4;                       /*!< bit: 16..19  Greater than or Equal flags        */
+ 241:.\CMSIS/core_cm0.h ****     uint32_t _reserved1:4;               /*!< bit: 20..23  Reserved                           */
+ 242:.\CMSIS/core_cm0.h **** #endif
+ 243:.\CMSIS/core_cm0.h ****     uint32_t T:1;                        /*!< bit:     24  Thumb bit        (read 0)          */
+ 244:.\CMSIS/core_cm0.h ****     uint32_t IT:2;                       /*!< bit: 25..26  saved IT state   (read 0)          */
+ 245:.\CMSIS/core_cm0.h ****     uint32_t Q:1;                        /*!< bit:     27  Saturation condition flag          */
+ 246:.\CMSIS/core_cm0.h ****     uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag       */
+ 247:.\CMSIS/core_cm0.h ****     uint32_t C:1;                        /*!< bit:     29  Carry condition code flag          */
+ 248:.\CMSIS/core_cm0.h ****     uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag           */
+ 249:.\CMSIS/core_cm0.h ****     uint32_t N:1;                        /*!< bit:     31  Negative condition code flag       */
+ 250:.\CMSIS/core_cm0.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 251:.\CMSIS/core_cm0.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 252:.\CMSIS/core_cm0.h **** } xPSR_Type;
+ 253:.\CMSIS/core_cm0.h **** 
+ 254:.\CMSIS/core_cm0.h **** 
+ 255:.\CMSIS/core_cm0.h **** /** \brief  Union type to access the Control Registers (CONTROL).
+ 256:.\CMSIS/core_cm0.h ****  */
+ 257:.\CMSIS/core_cm0.h **** typedef union
+ 258:.\CMSIS/core_cm0.h **** {
+ 259:.\CMSIS/core_cm0.h ****   struct
+ 260:.\CMSIS/core_cm0.h ****   {
+ 261:.\CMSIS/core_cm0.h ****     uint32_t nPRIV:1;                    /*!< bit:      0  Execution privilege in Thread mode */
+ 262:.\CMSIS/core_cm0.h ****     uint32_t SPSEL:1;                    /*!< bit:      1  Stack to be used                   */
+ 263:.\CMSIS/core_cm0.h ****     uint32_t FPCA:1;                     /*!< bit:      2  FP extension active flag           */
+ 264:.\CMSIS/core_cm0.h ****     uint32_t _reserved0:29;              /*!< bit:  3..31  Reserved                           */
+ 265:.\CMSIS/core_cm0.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 266:.\CMSIS/core_cm0.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 267:.\CMSIS/core_cm0.h **** } CONTROL_Type;
+ 268:.\CMSIS/core_cm0.h **** 
+ 269:.\CMSIS/core_cm0.h **** /*@} end of group CMSIS_CORE */
+ 270:.\CMSIS/core_cm0.h **** 
+ 271:.\CMSIS/core_cm0.h **** 
+ 272:.\CMSIS/core_cm0.h **** /** \ingroup    CMSIS_core_register
+ 273:.\CMSIS/core_cm0.h ****     \defgroup   CMSIS_NVIC  Nested Vectored Interrupt Controller (NVIC)
+ 274:.\CMSIS/core_cm0.h ****     \brief      Type definitions for the NVIC Registers
+ 275:.\CMSIS/core_cm0.h ****   @{
+ 276:.\CMSIS/core_cm0.h ****  */
+ 277:.\CMSIS/core_cm0.h **** 
+ 278:.\CMSIS/core_cm0.h **** /** \brief  Structure type to access the Nested Vectored Interrupt Controller (NVIC).
+ 279:.\CMSIS/core_cm0.h ****  */
+ 280:.\CMSIS/core_cm0.h **** typedef struct
+ 281:.\CMSIS/core_cm0.h **** {
+ 282:.\CMSIS/core_cm0.h ****   __IO uint32_t ISER[1];                 /*!< Offset: 0x000 (R/W)  Interrupt Set Enable Register   
+ 283:.\CMSIS/core_cm0.h ****        uint32_t RESERVED0[31];
+ 284:.\CMSIS/core_cm0.h ****   __IO uint32_t ICER[1];                 /*!< Offset: 0x080 (R/W)  Interrupt Clear Enable Register 
+ 285:.\CMSIS/core_cm0.h ****        uint32_t RSERVED1[31];
+ 286:.\CMSIS/core_cm0.h ****   __IO uint32_t ISPR[1];                 /*!< Offset: 0x100 (R/W)  Interrupt Set Pending Register  
+ 287:.\CMSIS/core_cm0.h ****        uint32_t RESERVED2[31];
+ 288:.\CMSIS/core_cm0.h ****   __IO uint32_t ICPR[1];                 /*!< Offset: 0x180 (R/W)  Interrupt Clear Pending Register
+ 289:.\CMSIS/core_cm0.h ****        uint32_t RESERVED3[31];
+ 290:.\CMSIS/core_cm0.h ****        uint32_t RESERVED4[64];
+ 291:.\CMSIS/core_cm0.h ****   __IO uint32_t IP[8];                   /*!< Offset: 0x300 (R/W)  Interrupt Priority Register     
+ 292:.\CMSIS/core_cm0.h **** }  NVIC_Type;
+ 293:.\CMSIS/core_cm0.h **** 
+ 294:.\CMSIS/core_cm0.h **** /*@} end of group CMSIS_NVIC */
+ 295:.\CMSIS/core_cm0.h **** 
+ 296:.\CMSIS/core_cm0.h **** 
+ 297:.\CMSIS/core_cm0.h **** /** \ingroup  CMSIS_core_register
+ 298:.\CMSIS/core_cm0.h ****     \defgroup CMSIS_SCB     System Control Block (SCB)
+ 299:.\CMSIS/core_cm0.h ****     \brief      Type definitions for the System Control Block Registers
+ 300:.\CMSIS/core_cm0.h ****   @{
+ 301:.\CMSIS/core_cm0.h ****  */
+ 302:.\CMSIS/core_cm0.h **** 
+ 303:.\CMSIS/core_cm0.h **** /** \brief  Structure type to access the System Control Block (SCB).
+ 304:.\CMSIS/core_cm0.h ****  */
+ 305:.\CMSIS/core_cm0.h **** typedef struct
+ 306:.\CMSIS/core_cm0.h **** {
+ 307:.\CMSIS/core_cm0.h ****   __I  uint32_t CPUID;                   /*!< Offset: 0x000 (R/ )  CPUID Base Register             
+ 308:.\CMSIS/core_cm0.h ****   __IO uint32_t ICSR;                    /*!< Offset: 0x004 (R/W)  Interrupt Control and State Regi
+ 309:.\CMSIS/core_cm0.h ****        uint32_t RESERVED0;
+ 310:.\CMSIS/core_cm0.h ****   __IO uint32_t AIRCR;                   /*!< Offset: 0x00C (R/W)  Application Interrupt and Reset 
+ 311:.\CMSIS/core_cm0.h ****   __IO uint32_t SCR;                     /*!< Offset: 0x010 (R/W)  System Control Register         
+ 312:.\CMSIS/core_cm0.h ****   __IO uint32_t CCR;                     /*!< Offset: 0x014 (R/W)  Configuration Control Register  
+ 313:.\CMSIS/core_cm0.h ****        uint32_t RESERVED1;
+ 314:.\CMSIS/core_cm0.h ****   __IO uint32_t SHP[2];                  /*!< Offset: 0x01C (R/W)  System Handlers Priority Registe
+ 315:.\CMSIS/core_cm0.h ****   __IO uint32_t SHCSR;                   /*!< Offset: 0x024 (R/W)  System Handler Control and State
+ 316:.\CMSIS/core_cm0.h **** } SCB_Type;
+ 317:.\CMSIS/core_cm0.h **** 
+ 318:.\CMSIS/core_cm0.h **** /* SCB CPUID Register Definitions */
+ 319:.\CMSIS/core_cm0.h **** #define SCB_CPUID_IMPLEMENTER_Pos          24                                             /*!< SCB 
+ 320:.\CMSIS/core_cm0.h **** #define SCB_CPUID_IMPLEMENTER_Msk          (0xFFUL << SCB_CPUID_IMPLEMENTER_Pos)          /*!< SCB 
+ 321:.\CMSIS/core_cm0.h **** 
+ 322:.\CMSIS/core_cm0.h **** #define SCB_CPUID_VARIANT_Pos              20                                             /*!< SCB 
+ 323:.\CMSIS/core_cm0.h **** #define SCB_CPUID_VARIANT_Msk              (0xFUL << SCB_CPUID_VARIANT_Pos)               /*!< SCB 
+ 324:.\CMSIS/core_cm0.h **** 
+ 325:.\CMSIS/core_cm0.h **** #define SCB_CPUID_ARCHITECTURE_Pos         16                                             /*!< SCB 
+ 326:.\CMSIS/core_cm0.h **** #define SCB_CPUID_ARCHITECTURE_Msk         (0xFUL << SCB_CPUID_ARCHITECTURE_Pos)          /*!< SCB 
+ 327:.\CMSIS/core_cm0.h **** 
+ 328:.\CMSIS/core_cm0.h **** #define SCB_CPUID_PARTNO_Pos                4                                             /*!< SCB 
+ 329:.\CMSIS/core_cm0.h **** #define SCB_CPUID_PARTNO_Msk               (0xFFFUL << SCB_CPUID_PARTNO_Pos)              /*!< SCB 
+ 330:.\CMSIS/core_cm0.h **** 
+ 331:.\CMSIS/core_cm0.h **** #define SCB_CPUID_REVISION_Pos              0                                             /*!< SCB 
+ 332:.\CMSIS/core_cm0.h **** #define SCB_CPUID_REVISION_Msk             (0xFUL << SCB_CPUID_REVISION_Pos)              /*!< SCB 
+ 333:.\CMSIS/core_cm0.h **** 
+ 334:.\CMSIS/core_cm0.h **** /* SCB Interrupt Control State Register Definitions */
+ 335:.\CMSIS/core_cm0.h **** #define SCB_ICSR_NMIPENDSET_Pos            31                                             /*!< SCB 
+ 336:.\CMSIS/core_cm0.h **** #define SCB_ICSR_NMIPENDSET_Msk            (1UL << SCB_ICSR_NMIPENDSET_Pos)               /*!< SCB 
+ 337:.\CMSIS/core_cm0.h **** 
+ 338:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSVSET_Pos             28                                             /*!< SCB 
+ 339:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSVSET_Msk             (1UL << SCB_ICSR_PENDSVSET_Pos)                /*!< SCB 
+ 340:.\CMSIS/core_cm0.h **** 
+ 341:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSVCLR_Pos             27                                             /*!< SCB 
+ 342:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSVCLR_Msk             (1UL << SCB_ICSR_PENDSVCLR_Pos)                /*!< SCB 
+ 343:.\CMSIS/core_cm0.h **** 
+ 344:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSTSET_Pos             26                                             /*!< SCB 
+ 345:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSTSET_Msk             (1UL << SCB_ICSR_PENDSTSET_Pos)                /*!< SCB 
+ 346:.\CMSIS/core_cm0.h **** 
+ 347:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSTCLR_Pos             25                                             /*!< SCB 
+ 348:.\CMSIS/core_cm0.h **** #define SCB_ICSR_PENDSTCLR_Msk             (1UL << SCB_ICSR_PENDSTCLR_Pos)                /*!< SCB 
+ 349:.\CMSIS/core_cm0.h **** 
+ 350:.\CMSIS/core_cm0.h **** #define SCB_ICSR_ISRPREEMPT_Pos            23                                             /*!< SCB 
+ 351:.\CMSIS/core_cm0.h **** #define SCB_ICSR_ISRPREEMPT_Msk            (1UL << SCB_ICSR_ISRPREEMPT_Pos)               /*!< SCB 
+ 352:.\CMSIS/core_cm0.h **** 
+ 353:.\CMSIS/core_cm0.h **** #define SCB_ICSR_ISRPENDING_Pos            22                                             /*!< SCB 
+ 354:.\CMSIS/core_cm0.h **** #define SCB_ICSR_ISRPENDING_Msk            (1UL << SCB_ICSR_ISRPENDING_Pos)               /*!< SCB 
+ 355:.\CMSIS/core_cm0.h **** 
+ 356:.\CMSIS/core_cm0.h **** #define SCB_ICSR_VECTPENDING_Pos           12                                             /*!< SCB 
+ 357:.\CMSIS/core_cm0.h **** #define SCB_ICSR_VECTPENDING_Msk           (0x1FFUL << SCB_ICSR_VECTPENDING_Pos)          /*!< SCB 
+ 358:.\CMSIS/core_cm0.h **** 
+ 359:.\CMSIS/core_cm0.h **** #define SCB_ICSR_VECTACTIVE_Pos             0                                             /*!< SCB 
+ 360:.\CMSIS/core_cm0.h **** #define SCB_ICSR_VECTACTIVE_Msk            (0x1FFUL << SCB_ICSR_VECTACTIVE_Pos)           /*!< SCB 
+ 361:.\CMSIS/core_cm0.h **** 
+ 362:.\CMSIS/core_cm0.h **** /* SCB Application Interrupt and Reset Control Register Definitions */
+ 363:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_VECTKEY_Pos              16                                             /*!< SCB 
+ 364:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFUL << SCB_AIRCR_VECTKEY_Pos)            /*!< SCB 
+ 365:.\CMSIS/core_cm0.h **** 
+ 366:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_VECTKEYSTAT_Pos          16                                             /*!< SCB 
+ 367:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_VECTKEYSTAT_Msk          (0xFFFFUL << SCB_AIRCR_VECTKEYSTAT_Pos)        /*!< SCB 
+ 368:.\CMSIS/core_cm0.h **** 
+ 369:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_ENDIANESS_Pos            15                                             /*!< SCB 
+ 370:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_ENDIANESS_Msk            (1UL << SCB_AIRCR_ENDIANESS_Pos)               /*!< SCB 
+ 371:.\CMSIS/core_cm0.h **** 
+ 372:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_SYSRESETREQ_Pos           2                                             /*!< SCB 
+ 373:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_SYSRESETREQ_Msk          (1UL << SCB_AIRCR_SYSRESETREQ_Pos)             /*!< SCB 
+ 374:.\CMSIS/core_cm0.h **** 
+ 375:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_VECTCLRACTIVE_Pos         1                                             /*!< SCB 
+ 376:.\CMSIS/core_cm0.h **** #define SCB_AIRCR_VECTCLRACTIVE_Msk        (1UL << SCB_AIRCR_VECTCLRACTIVE_Pos)           /*!< SCB 
+ 377:.\CMSIS/core_cm0.h **** 
+ 378:.\CMSIS/core_cm0.h **** /* SCB System Control Register Definitions */
+ 379:.\CMSIS/core_cm0.h **** #define SCB_SCR_SEVONPEND_Pos               4                                             /*!< SCB 
+ 380:.\CMSIS/core_cm0.h **** #define SCB_SCR_SEVONPEND_Msk              (1UL << SCB_SCR_SEVONPEND_Pos)                 /*!< SCB 
+ 381:.\CMSIS/core_cm0.h **** 
+ 382:.\CMSIS/core_cm0.h **** #define SCB_SCR_SLEEPDEEP_Pos               2                                             /*!< SCB 
+ 383:.\CMSIS/core_cm0.h **** #define SCB_SCR_SLEEPDEEP_Msk              (1UL << SCB_SCR_SLEEPDEEP_Pos)                 /*!< SCB 
+ 384:.\CMSIS/core_cm0.h **** 
+ 385:.\CMSIS/core_cm0.h **** #define SCB_SCR_SLEEPONEXIT_Pos             1                                             /*!< SCB 
+ 386:.\CMSIS/core_cm0.h **** #define SCB_SCR_SLEEPONEXIT_Msk            (1UL << SCB_SCR_SLEEPONEXIT_Pos)               /*!< SCB 
+ 387:.\CMSIS/core_cm0.h **** 
+ 388:.\CMSIS/core_cm0.h **** /* SCB Configuration Control Register Definitions */
+ 389:.\CMSIS/core_cm0.h **** #define SCB_CCR_STKALIGN_Pos                9                                             /*!< SCB 
+ 390:.\CMSIS/core_cm0.h **** #define SCB_CCR_STKALIGN_Msk               (1UL << SCB_CCR_STKALIGN_Pos)                  /*!< SCB 
+ 391:.\CMSIS/core_cm0.h **** 
+ 392:.\CMSIS/core_cm0.h **** #define SCB_CCR_UNALIGN_TRP_Pos             3                                             /*!< SCB 
+ 393:.\CMSIS/core_cm0.h **** #define SCB_CCR_UNALIGN_TRP_Msk            (1UL << SCB_CCR_UNALIGN_TRP_Pos)               /*!< SCB 
+ 394:.\CMSIS/core_cm0.h **** 
+ 395:.\CMSIS/core_cm0.h **** /* SCB System Handler Control and State Register Definitions */
+ 396:.\CMSIS/core_cm0.h **** #define SCB_SHCSR_SVCALLPENDED_Pos         15                                             /*!< SCB 
+ 397:.\CMSIS/core_cm0.h **** #define SCB_SHCSR_SVCALLPENDED_Msk         (1UL << SCB_SHCSR_SVCALLPENDED_Pos)            /*!< SCB 
+ 398:.\CMSIS/core_cm0.h **** 
+ 399:.\CMSIS/core_cm0.h **** /*@} end of group CMSIS_SCB */
+ 400:.\CMSIS/core_cm0.h **** 
+ 401:.\CMSIS/core_cm0.h **** 
+ 402:.\CMSIS/core_cm0.h **** /** \ingroup  CMSIS_core_register
+ 403:.\CMSIS/core_cm0.h ****     \defgroup CMSIS_SysTick     System Tick Timer (SysTick)
+ 404:.\CMSIS/core_cm0.h ****     \brief      Type definitions for the System Timer Registers.
+ 405:.\CMSIS/core_cm0.h ****   @{
+ 406:.\CMSIS/core_cm0.h ****  */
+ 407:.\CMSIS/core_cm0.h **** 
+ 408:.\CMSIS/core_cm0.h **** /** \brief  Structure type to access the System Timer (SysTick).
+ 409:.\CMSIS/core_cm0.h ****  */
+ 410:.\CMSIS/core_cm0.h **** typedef struct
+ 411:.\CMSIS/core_cm0.h **** {
+ 412:.\CMSIS/core_cm0.h ****   __IO uint32_t CTRL;                    /*!< Offset: 0x000 (R/W)  SysTick Control and Status Regis
+ 413:.\CMSIS/core_cm0.h ****   __IO uint32_t LOAD;                    /*!< Offset: 0x004 (R/W)  SysTick Reload Value Register   
+ 414:.\CMSIS/core_cm0.h ****   __IO uint32_t VAL;                     /*!< Offset: 0x008 (R/W)  SysTick Current Value Register  
+ 415:.\CMSIS/core_cm0.h ****   __I  uint32_t CALIB;                   /*!< Offset: 0x00C (R/ )  SysTick Calibration Register    
+ 416:.\CMSIS/core_cm0.h **** } SysTick_Type;
+ 417:.\CMSIS/core_cm0.h **** 
+ 418:.\CMSIS/core_cm0.h **** /* SysTick Control / Status Register Definitions */
+ 419:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_COUNTFLAG_Pos         16                                             /*!< SysT
+ 420:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_COUNTFLAG_Msk         (1UL << SysTick_CTRL_COUNTFLAG_Pos)            /*!< SysT
+ 421:.\CMSIS/core_cm0.h **** 
+ 422:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_CLKSOURCE_Pos          2                                             /*!< SysT
+ 423:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_CLKSOURCE_Msk         (1UL << SysTick_CTRL_CLKSOURCE_Pos)            /*!< SysT
+ 424:.\CMSIS/core_cm0.h **** 
+ 425:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_TICKINT_Pos            1                                             /*!< SysT
+ 426:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_TICKINT_Msk           (1UL << SysTick_CTRL_TICKINT_Pos)              /*!< SysT
+ 427:.\CMSIS/core_cm0.h **** 
+ 428:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_ENABLE_Pos             0                                             /*!< SysT
+ 429:.\CMSIS/core_cm0.h **** #define SysTick_CTRL_ENABLE_Msk            (1UL << SysTick_CTRL_ENABLE_Pos)               /*!< SysT
+ 430:.\CMSIS/core_cm0.h **** 
+ 431:.\CMSIS/core_cm0.h **** /* SysTick Reload Register Definitions */
+ 432:.\CMSIS/core_cm0.h **** #define SysTick_LOAD_RELOAD_Pos             0                                             /*!< SysT
+ 433:.\CMSIS/core_cm0.h **** #define SysTick_LOAD_RELOAD_Msk            (0xFFFFFFUL << SysTick_LOAD_RELOAD_Pos)        /*!< SysT
+ 434:.\CMSIS/core_cm0.h **** 
+ 435:.\CMSIS/core_cm0.h **** /* SysTick Current Register Definitions */
+ 436:.\CMSIS/core_cm0.h **** #define SysTick_VAL_CURRENT_Pos             0                                             /*!< SysT
+ 437:.\CMSIS/core_cm0.h **** #define SysTick_VAL_CURRENT_Msk            (0xFFFFFFUL << SysTick_VAL_CURRENT_Pos)        /*!< SysT
+ 438:.\CMSIS/core_cm0.h **** 
+ 439:.\CMSIS/core_cm0.h **** /* SysTick Calibration Register Definitions */
+ 440:.\CMSIS/core_cm0.h **** #define SysTick_CALIB_NOREF_Pos            31                                             /*!< SysT
+ 441:.\CMSIS/core_cm0.h **** #define SysTick_CALIB_NOREF_Msk            (1UL << SysTick_CALIB_NOREF_Pos)               /*!< SysT
+ 442:.\CMSIS/core_cm0.h **** 
+ 443:.\CMSIS/core_cm0.h **** #define SysTick_CALIB_SKEW_Pos             30                                             /*!< SysT
+ 444:.\CMSIS/core_cm0.h **** #define SysTick_CALIB_SKEW_Msk             (1UL << SysTick_CALIB_SKEW_Pos)                /*!< SysT
+ 445:.\CMSIS/core_cm0.h **** 
+ 446:.\CMSIS/core_cm0.h **** #define SysTick_CALIB_TENMS_Pos             0                                             /*!< SysT
+ 447:.\CMSIS/core_cm0.h **** #define SysTick_CALIB_TENMS_Msk            (0xFFFFFFUL << SysTick_VAL_CURRENT_Pos)        /*!< SysT
+ 448:.\CMSIS/core_cm0.h **** 
+ 449:.\CMSIS/core_cm0.h **** /*@} end of group CMSIS_SysTick */
+ 450:.\CMSIS/core_cm0.h **** 
+ 451:.\CMSIS/core_cm0.h **** 
+ 452:.\CMSIS/core_cm0.h **** /** \ingroup  CMSIS_core_register
+ 453:.\CMSIS/core_cm0.h ****     \defgroup CMSIS_CoreDebug       Core Debug Registers (CoreDebug)
+ 454:.\CMSIS/core_cm0.h ****     \brief      Cortex-M0 Core Debug Registers (DCB registers, SHCSR, and DFSR)
+ 455:.\CMSIS/core_cm0.h ****                 are only accessible over DAP and not via processor. Therefore
+ 456:.\CMSIS/core_cm0.h ****                 they are not covered by the Cortex-M0 header file.
+ 457:.\CMSIS/core_cm0.h ****   @{
+ 458:.\CMSIS/core_cm0.h ****  */
+ 459:.\CMSIS/core_cm0.h **** /*@} end of group CMSIS_CoreDebug */
+ 460:.\CMSIS/core_cm0.h **** 
+ 461:.\CMSIS/core_cm0.h **** 
+ 462:.\CMSIS/core_cm0.h **** /** \ingroup    CMSIS_core_register
+ 463:.\CMSIS/core_cm0.h ****     \defgroup   CMSIS_core_base     Core Definitions
+ 464:.\CMSIS/core_cm0.h ****     \brief      Definitions for base addresses, unions, and structures.
+ 465:.\CMSIS/core_cm0.h ****   @{
+ 466:.\CMSIS/core_cm0.h ****  */
+ 467:.\CMSIS/core_cm0.h **** 
+ 468:.\CMSIS/core_cm0.h **** /* Memory mapping of Cortex-M0 Hardware */
+ 469:.\CMSIS/core_cm0.h **** #define SCS_BASE            (0xE000E000UL)                            /*!< System Control Space Bas
+ 470:.\CMSIS/core_cm0.h **** #define SysTick_BASE        (SCS_BASE +  0x0010UL)                    /*!< SysTick Base Address    
+ 471:.\CMSIS/core_cm0.h **** #define NVIC_BASE           (SCS_BASE +  0x0100UL)                    /*!< NVIC Base Address       
+ 472:.\CMSIS/core_cm0.h **** #define SCB_BASE            (SCS_BASE +  0x0D00UL)                    /*!< System Control Block Bas
+ 473:.\CMSIS/core_cm0.h **** 
+ 474:.\CMSIS/core_cm0.h **** #define SCB                 ((SCB_Type       *)     SCB_BASE      )   /*!< SCB configuration struct
+ 475:.\CMSIS/core_cm0.h **** #define SysTick             ((SysTick_Type   *)     SysTick_BASE  )   /*!< SysTick configuration st
+ 476:.\CMSIS/core_cm0.h **** #define NVIC                ((NVIC_Type      *)     NVIC_BASE     )   /*!< NVIC configuration struc
+ 477:.\CMSIS/core_cm0.h **** 
+ 478:.\CMSIS/core_cm0.h **** 
+ 479:.\CMSIS/core_cm0.h **** /*@} */
+ 480:.\CMSIS/core_cm0.h **** 
+ 481:.\CMSIS/core_cm0.h **** 
+ 482:.\CMSIS/core_cm0.h **** 
+ 483:.\CMSIS/core_cm0.h **** /*******************************************************************************
+ 484:.\CMSIS/core_cm0.h ****  *                Hardware Abstraction Layer
+ 485:.\CMSIS/core_cm0.h ****   Core Function Interface contains:
+ 486:.\CMSIS/core_cm0.h ****   - Core NVIC Functions
+ 487:.\CMSIS/core_cm0.h ****   - Core SysTick Functions
+ 488:.\CMSIS/core_cm0.h ****   - Core Register Access Functions
+ 489:.\CMSIS/core_cm0.h ****  ******************************************************************************/
+ 490:.\CMSIS/core_cm0.h **** /** \defgroup CMSIS_Core_FunctionInterface Functions and Instructions Reference
+ 491:.\CMSIS/core_cm0.h **** */
+ 492:.\CMSIS/core_cm0.h **** 
+ 493:.\CMSIS/core_cm0.h **** 
+ 494:.\CMSIS/core_cm0.h **** 
+ 495:.\CMSIS/core_cm0.h **** /* ##########################   NVIC functions  #################################### */
+ 496:.\CMSIS/core_cm0.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 497:.\CMSIS/core_cm0.h ****     \defgroup CMSIS_Core_NVICFunctions NVIC Functions
+ 498:.\CMSIS/core_cm0.h ****     \brief      Functions that manage interrupts and exceptions via the NVIC.
+ 499:.\CMSIS/core_cm0.h ****     @{
+ 500:.\CMSIS/core_cm0.h ****  */
+ 501:.\CMSIS/core_cm0.h **** 
+ 502:.\CMSIS/core_cm0.h **** /* Interrupt Priorities are WORD accessible only under ARMv6M                   */
+ 503:.\CMSIS/core_cm0.h **** /* The following MACROS handle generation of the register offset and byte masks */
+ 504:.\CMSIS/core_cm0.h **** #define _BIT_SHIFT(IRQn)         (  (((uint32_t)(IRQn)       )    &  0x03) * 8 )
+ 505:.\CMSIS/core_cm0.h **** #define _SHP_IDX(IRQn)           ( ((((uint32_t)(IRQn) & 0x0F)-8) >>    2)     )
+ 506:.\CMSIS/core_cm0.h **** #define _IP_IDX(IRQn)            (   ((uint32_t)(IRQn)            >>    2)     )
+ 507:.\CMSIS/core_cm0.h **** 
+ 508:.\CMSIS/core_cm0.h **** 
+ 509:.\CMSIS/core_cm0.h **** /** \brief  Enable External Interrupt
+ 510:.\CMSIS/core_cm0.h **** 
+ 511:.\CMSIS/core_cm0.h ****     The function enables a device-specific interrupt in the NVIC interrupt controller.
+ 512:.\CMSIS/core_cm0.h **** 
+ 513:.\CMSIS/core_cm0.h ****     \param [in]      IRQn  External interrupt number. Value cannot be negative.
+ 514:.\CMSIS/core_cm0.h ****  */
+ 515:.\CMSIS/core_cm0.h **** __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
+ 516:.\CMSIS/core_cm0.h **** {
+ 517:.\CMSIS/core_cm0.h ****   NVIC->ISER[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
+ 518:.\CMSIS/core_cm0.h **** }
+ 519:.\CMSIS/core_cm0.h **** 
+ 520:.\CMSIS/core_cm0.h **** 
+ 521:.\CMSIS/core_cm0.h **** /** \brief  Disable External Interrupt
+ 522:.\CMSIS/core_cm0.h **** 
+ 523:.\CMSIS/core_cm0.h ****     The function disables a device-specific interrupt in the NVIC interrupt controller.
+ 524:.\CMSIS/core_cm0.h **** 
+ 525:.\CMSIS/core_cm0.h ****     \param [in]      IRQn  External interrupt number. Value cannot be negative.
+ 526:.\CMSIS/core_cm0.h ****  */
+ 527:.\CMSIS/core_cm0.h **** __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
+ 528:.\CMSIS/core_cm0.h **** {
+ 529:.\CMSIS/core_cm0.h ****   NVIC->ICER[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
+ 530:.\CMSIS/core_cm0.h **** }
+ 531:.\CMSIS/core_cm0.h **** 
+ 532:.\CMSIS/core_cm0.h **** 
+ 533:.\CMSIS/core_cm0.h **** /** \brief  Get Pending Interrupt
+ 534:.\CMSIS/core_cm0.h **** 
+ 535:.\CMSIS/core_cm0.h ****     The function reads the pending register in the NVIC and returns the pending bit
+ 536:.\CMSIS/core_cm0.h ****     for the specified interrupt.
+ 537:.\CMSIS/core_cm0.h **** 
+ 538:.\CMSIS/core_cm0.h ****     \param [in]      IRQn  Interrupt number.
+ 539:.\CMSIS/core_cm0.h **** 
+ 540:.\CMSIS/core_cm0.h ****     \return             0  Interrupt status is not pending.
+ 541:.\CMSIS/core_cm0.h ****     \return             1  Interrupt status is pending.
+ 542:.\CMSIS/core_cm0.h ****  */
+ 543:.\CMSIS/core_cm0.h **** __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
+ 544:.\CMSIS/core_cm0.h **** {
+ 545:.\CMSIS/core_cm0.h ****   return((uint32_t) ((NVIC->ISPR[0] & (1 << ((uint32_t)(IRQn) & 0x1F)))?1:0));
+ 546:.\CMSIS/core_cm0.h **** }
+ 547:.\CMSIS/core_cm0.h **** 
+ 548:.\CMSIS/core_cm0.h **** 
+ 549:.\CMSIS/core_cm0.h **** /** \brief  Set Pending Interrupt
+ 550:.\CMSIS/core_cm0.h **** 
+ 551:.\CMSIS/core_cm0.h ****     The function sets the pending bit of an external interrupt.
+ 552:.\CMSIS/core_cm0.h **** 
+ 553:.\CMSIS/core_cm0.h ****     \param [in]      IRQn  Interrupt number. Value cannot be negative.
+ 554:.\CMSIS/core_cm0.h ****  */
+ 555:.\CMSIS/core_cm0.h **** __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
+ 556:.\CMSIS/core_cm0.h **** {
+ 557:.\CMSIS/core_cm0.h ****   NVIC->ISPR[0] = (1 << ((uint32_t)(IRQn) & 0x1F));
+ 558:.\CMSIS/core_cm0.h **** }
+ 559:.\CMSIS/core_cm0.h **** 
+ 560:.\CMSIS/core_cm0.h **** 
+ 561:.\CMSIS/core_cm0.h **** /** \brief  Clear Pending Interrupt
+ 562:.\CMSIS/core_cm0.h **** 
+ 563:.\CMSIS/core_cm0.h ****     The function clears the pending bit of an external interrupt.
+ 564:.\CMSIS/core_cm0.h **** 
+ 565:.\CMSIS/core_cm0.h ****     \param [in]      IRQn  External interrupt number. Value cannot be negative.
+ 566:.\CMSIS/core_cm0.h ****  */
+ 567:.\CMSIS/core_cm0.h **** __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
+ 568:.\CMSIS/core_cm0.h **** {
+ 569:.\CMSIS/core_cm0.h ****   NVIC->ICPR[0] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrupt */
+ 570:.\CMSIS/core_cm0.h **** }
+ 571:.\CMSIS/core_cm0.h **** 
+ 572:.\CMSIS/core_cm0.h **** 
+ 573:.\CMSIS/core_cm0.h **** /** \brief  Set Interrupt Priority
+ 574:.\CMSIS/core_cm0.h **** 
+ 575:.\CMSIS/core_cm0.h ****     The function sets the priority of an interrupt.
+ 576:.\CMSIS/core_cm0.h **** 
+ 577:.\CMSIS/core_cm0.h ****     \note The priority cannot be set for every core interrupt.
+ 578:.\CMSIS/core_cm0.h **** 
+ 579:.\CMSIS/core_cm0.h ****     \param [in]      IRQn  Interrupt number.
+ 580:.\CMSIS/core_cm0.h ****     \param [in]  priority  Priority to set.
+ 581:.\CMSIS/core_cm0.h ****  */
+ 582:.\CMSIS/core_cm0.h **** __STATIC_INLINE void NVIC_SetPriority(IRQn_Type IRQn, uint32_t priority)
+ 583:.\CMSIS/core_cm0.h **** {
+ 584:.\CMSIS/core_cm0.h ****   if(IRQn < 0) {
+ 585:.\CMSIS/core_cm0.h ****     SCB->SHP[_SHP_IDX(IRQn)] = (SCB->SHP[_SHP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
+ 586:.\CMSIS/core_cm0.h ****         (((priority << (8 - __NVIC_PRIO_BITS)) & 0xFF) << _BIT_SHIFT(IRQn)); }
+ 587:.\CMSIS/core_cm0.h ****   else {
+ 588:.\CMSIS/core_cm0.h ****     NVIC->IP[_IP_IDX(IRQn)] = (NVIC->IP[_IP_IDX(IRQn)] & ~(0xFF << _BIT_SHIFT(IRQn))) |
+ 589:.\CMSIS/core_cm0.h ****         (((priority << (8 - __NVIC_PRIO_BITS)) & 0xFF) << _BIT_SHIFT(IRQn)); }
+ 590:.\CMSIS/core_cm0.h **** }
+ 591:.\CMSIS/core_cm0.h **** 
+ 592:.\CMSIS/core_cm0.h **** 
+ 593:.\CMSIS/core_cm0.h **** /** \brief  Get Interrupt Priority
+ 594:.\CMSIS/core_cm0.h **** 
+ 595:.\CMSIS/core_cm0.h ****     The function reads the priority of an interrupt. The interrupt
+ 596:.\CMSIS/core_cm0.h ****     number can be positive to specify an external (device specific)
+ 597:.\CMSIS/core_cm0.h ****     interrupt, or negative to specify an internal (core) interrupt.
+ 598:.\CMSIS/core_cm0.h **** 
+ 599:.\CMSIS/core_cm0.h **** 
+ 600:.\CMSIS/core_cm0.h ****     \param [in]   IRQn  Interrupt number.
+ 601:.\CMSIS/core_cm0.h ****     \return             Interrupt Priority. Value is aligned automatically to the implemented
+ 602:.\CMSIS/core_cm0.h ****                         priority bits of the microcontroller.
+ 603:.\CMSIS/core_cm0.h ****  */
+ 604:.\CMSIS/core_cm0.h **** __STATIC_INLINE uint32_t NVIC_GetPriority(IRQn_Type IRQn)
+ 605:.\CMSIS/core_cm0.h **** {
+ 606:.\CMSIS/core_cm0.h **** 
+ 607:.\CMSIS/core_cm0.h ****   if(IRQn < 0) {
+ 608:.\CMSIS/core_cm0.h ****     return((uint32_t)(((SCB->SHP[_SHP_IDX(IRQn)] >> _BIT_SHIFT(IRQn) ) & 0xFF) >> (8 - __NVIC_PRIO_
+ 609:.\CMSIS/core_cm0.h ****   else {
+ 610:.\CMSIS/core_cm0.h ****     return((uint32_t)(((NVIC->IP[ _IP_IDX(IRQn)] >> _BIT_SHIFT(IRQn) ) & 0xFF) >> (8 - __NVIC_PRIO_
+ 611:.\CMSIS/core_cm0.h **** }
+ 612:.\CMSIS/core_cm0.h **** 
+ 613:.\CMSIS/core_cm0.h **** 
+ 614:.\CMSIS/core_cm0.h **** /** \brief  System Reset
+ 615:.\CMSIS/core_cm0.h **** 
+ 616:.\CMSIS/core_cm0.h ****     The function initiates a system reset request to reset the MCU.
+ 617:.\CMSIS/core_cm0.h ****  */
+ 618:.\CMSIS/core_cm0.h **** __STATIC_INLINE void NVIC_SystemReset(void)
+ 619:.\CMSIS/core_cm0.h **** {
+ 620:.\CMSIS/core_cm0.h ****   __DSB();                                                     /* Ensure all outstanding memory acc
+ 621:.\CMSIS/core_cm0.h ****                                                                   buffered write are completed befo
+ 622:.\CMSIS/core_cm0.h ****   SCB->AIRCR  = ((0x5FA << SCB_AIRCR_VECTKEY_Pos)      |
+ 623:.\CMSIS/core_cm0.h ****                  SCB_AIRCR_SYSRESETREQ_Msk);
+ 624:.\CMSIS/core_cm0.h ****   __DSB();                                                     /* Ensure completion of memory acces
+ 625:.\CMSIS/core_cm0.h ****   while(1);                                                    /* wait until reset */
+ 626:.\CMSIS/core_cm0.h **** }
+ 627:.\CMSIS/core_cm0.h **** 
+ 628:.\CMSIS/core_cm0.h **** /*@} end of CMSIS_Core_NVICFunctions */
+ 629:.\CMSIS/core_cm0.h **** 
+ 630:.\CMSIS/core_cm0.h **** 
+ 631:.\CMSIS/core_cm0.h **** 
+ 632:.\CMSIS/core_cm0.h **** /* ##################################    SysTick function  ########################################
+ 633:.\CMSIS/core_cm0.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 634:.\CMSIS/core_cm0.h ****     \defgroup CMSIS_Core_SysTickFunctions SysTick Functions
+ 635:.\CMSIS/core_cm0.h ****     \brief      Functions that configure the System.
+ 636:.\CMSIS/core_cm0.h ****   @{
+ 637:.\CMSIS/core_cm0.h ****  */
+ 638:.\CMSIS/core_cm0.h **** 
+ 639:.\CMSIS/core_cm0.h **** #if (__Vendor_SysTickConfig == 0)
+ 640:.\CMSIS/core_cm0.h **** 
+ 641:.\CMSIS/core_cm0.h **** /** \brief  System Tick Configuration
+ 642:.\CMSIS/core_cm0.h **** 
+ 643:.\CMSIS/core_cm0.h ****     The function initializes the System Timer and its interrupt, and starts the System Tick Timer.
+ 644:.\CMSIS/core_cm0.h ****     Counter is in free running mode to generate periodic interrupts.
+ 645:.\CMSIS/core_cm0.h **** 
+ 646:.\CMSIS/core_cm0.h ****     \param [in]  ticks  Number of ticks between two interrupts.
+ 647:.\CMSIS/core_cm0.h **** 
+ 648:.\CMSIS/core_cm0.h ****     \return          0  Function succeeded.
+ 649:.\CMSIS/core_cm0.h ****     \return          1  Function failed.
+ 650:.\CMSIS/core_cm0.h **** 
+ 651:.\CMSIS/core_cm0.h ****     \note     When the variable <b>__Vendor_SysTickConfig</b> is set to 1, then the
+ 652:.\CMSIS/core_cm0.h ****     function <b>SysTick_Config</b> is not included. In this case, the file <b><i>device</i>.h</b>
+ 653:.\CMSIS/core_cm0.h ****     must contain a vendor-specific implementation of this function.
+ 654:.\CMSIS/core_cm0.h **** 
+ 655:.\CMSIS/core_cm0.h ****  */
+ 656:.\CMSIS/core_cm0.h **** __STATIC_INLINE uint32_t SysTick_Config(uint32_t ticks)
+ 657:.\CMSIS/core_cm0.h **** {
+ 658:.\CMSIS/core_cm0.h ****   if ((ticks - 1) > SysTick_LOAD_RELOAD_Msk)  return (1);      /* Reload value impossible */
+  52              		.loc 2 658 0
+  53 0012 0138     		sub	r0, r0, #1
+  54 0014 2C4B     		ldr	r3, .L4+4
+  55 0016 9842     		cmp	r0, r3
+  56 0018 0DD8     		bhi	.L2
+ 659:.\CMSIS/core_cm0.h **** 
+ 660:.\CMSIS/core_cm0.h ****   SysTick->LOAD  = ticks - 1;                                  /* set reload register */
+  57              		.loc 2 660 0
+  58 001a 2C4A     		ldr	r2, .L4+8
+  59 001c 5060     		str	r0, [r2, #4]
+  60              	.LVL3:
+  61              	.LBB8:
+  62              	.LBB9:
+ 585:.\CMSIS/core_cm0.h ****         (((priority << (8 - __NVIC_PRIO_BITS)) & 0xFF) << _BIT_SHIFT(IRQn)); }
+  63              		.loc 2 585 0
+  64 001e 2C49     		ldr	r1, .L4+12
+  65 0020 0B6A     		ldr	r3, [r1, #32]
+  66 0022 1B02     		lsl	r3, r3, #8
+  67 0024 1B0A     		lsr	r3, r3, #8
+  68 0026 C020     		mov	r0, #192
+  69 0028 0006     		lsl	r0, r0, #24
+  70 002a 0343     		orr	r3, r0
+  71 002c 0B62     		str	r3, [r1, #32]
+  72              	.LBE9:
+  73              	.LBE8:
+ 661:.\CMSIS/core_cm0.h ****   NVIC_SetPriority (SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);  /* set Priority for Systick Interrup
+ 662:.\CMSIS/core_cm0.h ****   SysTick->VAL   = 0;                                          /* Load the SysTick Counter Value */
+  74              		.loc 2 662 0
+  75 002e 0023     		mov	r3, #0
+  76 0030 9360     		str	r3, [r2, #8]
+ 663:.\CMSIS/core_cm0.h ****   SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk |
+  77              		.loc 2 663 0
+  78 0032 0733     		add	r3, r3, #7
+  79 0034 1360     		str	r3, [r2]
+  80              	.LVL4:
+  81              	.L2:
+  82              	.LBE7:
+  83              	.LBE6:
+  13:.\user-code\src/main.c **** 
+  14:.\user-code\src/main.c **** // comment  ww
+  15:.\user-code\src/main.c **** 
+  16:.\user-code\src/main.c **** 
+  17:.\user-code\src/main.c ****   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+  84              		.loc 1 17 0
+  85 0036 8020     		mov	r0, #128
+  86 0038 C002     		lsl	r0, r0, #11
+  87 003a 0121     		mov	r1, #1
+  88 003c FFF7FEFF 		bl	RCC_AHBPeriphClockCmd
+  89              	.LVL5:
+  18:.\user-code\src/main.c **** 
+  19:.\user-code\src/main.c ****   /* Configure PC10 and PC11 in output pushpull mode */
+  20:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+  90              		.loc 1 20 0
+  91 0040 244C     		ldr	r4, .L4+16
+  92 0042 0223     		mov	r3, #2
+  93 0044 2360     		str	r3, [r4]
+  21:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  94              		.loc 1 21 0
+  95 0046 0127     		mov	r7, #1
+  96 0048 2771     		strb	r7, [r4, #4]
+  22:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  97              		.loc 1 22 0
+  98 004a 0025     		mov	r5, #0
+  99 004c A571     		strb	r5, [r4, #6]
+  23:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 100              		.loc 1 23 0
+ 101 004e 0326     		mov	r6, #3
+ 102 0050 6671     		strb	r6, [r4, #5]
+  24:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 103              		.loc 1 24 0
+ 104 0052 E571     		strb	r5, [r4, #7]
+  25:.\user-code\src/main.c ****   GPIO_Init(GPIOB, &GPIO_InitStructure);
+ 105              		.loc 1 25 0
+ 106 0054 2048     		ldr	r0, .L4+20
+ 107 0056 211C     		mov	r1, r4
+ 108 0058 FFF7FEFF 		bl	GPIO_Init
+ 109              	.LVL6:
+  26:.\user-code\src/main.c **** 
+  27:.\user-code\src/main.c **** 
+  28:.\user-code\src/main.c ****  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+ 110              		.loc 1 28 0
+ 111 005c 8020     		mov	r0, #128
+ 112 005e 8002     		lsl	r0, r0, #10
+ 113 0060 0121     		mov	r1, #1
+ 114 0062 FFF7FEFF 		bl	RCC_AHBPeriphClockCmd
+ 115              	.LVL7:
+  29:.\user-code\src/main.c **** 
+  30:.\user-code\src/main.c ****   /* Configure PC10 and PC11 in output pushpull mode */
+  31:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+ 116              		.loc 1 31 0
+ 117 0066 1023     		mov	r3, #16
+ 118 0068 2360     		str	r3, [r4]
+  32:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 119              		.loc 1 32 0
+ 120 006a 2771     		strb	r7, [r4, #4]
+  33:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 121              		.loc 1 33 0
+ 122 006c A571     		strb	r5, [r4, #6]
+  34:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 123              		.loc 1 34 0
+ 124 006e 6671     		strb	r6, [r4, #5]
+  35:.\user-code\src/main.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 125              		.loc 1 35 0
+ 126 0070 E571     		strb	r5, [r4, #7]
+  36:.\user-code\src/main.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 127              		.loc 1 36 0
+ 128 0072 9025     		mov	r5, #144
+ 129 0074 ED05     		lsl	r5, r5, #23
+ 130 0076 281C     		mov	r0, r5
+ 131 0078 211C     		mov	r1, r4
+ 132 007a FFF7FEFF 		bl	GPIO_Init
+ 133              	.LVL8:
+  37:.\user-code\src/main.c **** 
+  38:.\user-code\src/main.c ****   GPIO_ResetBits(GPIOA,GPIO_Pin_4);\
+ 134              		.loc 1 38 0
+ 135 007e 281C     		mov	r0, r5
+ 136 0080 1021     		mov	r1, #16
+ 137 0082 FFF7FEFF 		bl	GPIO_ResetBits
+ 138              	.LVL9:
+  39:.\user-code\src/main.c ****   delay_ms(500);
+ 139              		.loc 1 39 0
+ 140 0086 FA20     		mov	r0, #250
+ 141 0088 4000     		lsl	r0, r0, #1
+ 142 008a FFF7FEFF 		bl	delay_ms
+ 143              	.LVL10:
+  40:.\user-code\src/main.c **** 	
+  41:.\user-code\src/main.c **** 
+  42:.\user-code\src/main.c **** 	while(1)
+  43:.\user-code\src/main.c **** 	{
+  44:.\user-code\src/main.c **** 	
+  45:.\user-code\src/main.c **** 	delay_ms(500);
+ 144              		.loc 1 45 0
+ 145 008e F236     		add	r6, r6, #242
+ 146 0090 FF36     		add	r6, r6, #255
+  46:.\user-code\src/main.c **** 	GPIO_SetBits(GPIOA,GPIO_Pin_4);
+  47:.\user-code\src/main.c **** 	GPIO_ResetBits(GPIOB,GPIO_Pin_1);
+ 147              		.loc 1 47 0
+ 148 0092 114C     		ldr	r4, .L4+20
+ 149              	.L3:
+  45:.\user-code\src/main.c **** 	GPIO_SetBits(GPIOA,GPIO_Pin_4);
+ 150              		.loc 1 45 0 discriminator 1
+ 151 0094 301C     		mov	r0, r6
+ 152 0096 FFF7FEFF 		bl	delay_ms
+ 153              	.LVL11:
+  46:.\user-code\src/main.c **** 	GPIO_SetBits(GPIOA,GPIO_Pin_4);
+ 154              		.loc 1 46 0 discriminator 1
+ 155 009a 281C     		mov	r0, r5
+ 156 009c 1021     		mov	r1, #16
+ 157 009e FFF7FEFF 		bl	GPIO_SetBits
+ 158              	.LVL12:
+ 159              		.loc 1 47 0 discriminator 1
+ 160 00a2 201C     		mov	r0, r4
+ 161 00a4 0221     		mov	r1, #2
+ 162 00a6 FFF7FEFF 		bl	GPIO_ResetBits
+ 163              	.LVL13:
+  48:.\user-code\src/main.c **** 	delay_ms(500);
+ 164              		.loc 1 48 0 discriminator 1
+ 165 00aa 301C     		mov	r0, r6
+ 166 00ac FFF7FEFF 		bl	delay_ms
+ 167              	.LVL14:
+  49:.\user-code\src/main.c **** 	GPIO_SetBits(GPIOB,GPIO_Pin_1);
+ 168              		.loc 1 49 0 discriminator 1
+ 169 00b0 201C     		mov	r0, r4
+ 170 00b2 0221     		mov	r1, #2
+ 171 00b4 FFF7FEFF 		bl	GPIO_SetBits
+ 172              	.LVL15:
+  50:.\user-code\src/main.c ****     GPIO_ResetBits(GPIOA,GPIO_Pin_4);
+ 173              		.loc 1 50 0 discriminator 1
+ 174 00b8 281C     		mov	r0, r5
+ 175 00ba 1021     		mov	r1, #16
+ 176 00bc FFF7FEFF 		bl	GPIO_ResetBits
+ 177              	.LVL16:
+  51:.\user-code\src/main.c **** 	
+  52:.\user-code\src/main.c ****     
+  53:.\user-code\src/main.c **** 	}	
+ 178              		.loc 1 53 0 discriminator 1
+ 179 00c0 E8E7     		b	.L3
+ 180              	.L5:
+ 181 00c2 C046     		.align	2
+ 182              	.L4:
+ 183 00c4 00000000 		.word	SystemCoreClock
+ 184 00c8 FFFFFF00 		.word	16777215
+ 185 00cc 10E000E0 		.word	-536813552
+ 186 00d0 00ED00E0 		.word	-536810240
+ 187 00d4 00000000 		.word	GPIO_InitStructure
+ 188 00d8 00040048 		.word	1207960576
+ 189              		.cfi_endproc
+ 190              	.LFE33:
+ 192              		.comm	GPIO_InitStructure,8,4
+ 193              		.text
+ 194              	.Letext0:
+ 195              		.file 3 ".\\CMSIS/stm32f0xx.h"
+ 196              		.file 4 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 197              		.file 5 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 198              		.file 6 ".\\StdPeriphLib\\inc/stm32f0xx_gpio.h"
+ 199              		.file 7 ".\\CMSIS/system_stm32f0xx.h"
+ 200              		.file 8 ".\\StdPeriphLib\\inc/stm32f0xx_rcc.h"
+ 201              		.file 9 ".\\user-code\\inc/main.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\Dima\AppData\Local\Temp\ccmdln4Y.s:19     .text.main:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccmdln4Y.s:24     .text.main:00000000 main
+C:\Users\Dima\AppData\Local\Temp\ccmdln4Y.s:183    .text.main:000000c4 $d
+                            *COM*:00000008 GPIO_InitStructure
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
+SystemCoreClockUpdate
+RCC_AHBPeriphClockCmd
+GPIO_Init
+GPIO_ResetBits
+delay_ms
+GPIO_SetBits
+SystemCoreClock

@@ -1,0 +1,76 @@
+{
+	"build_systems":
+	[
+		{
+			"cmd": ["make"],
+			"name": "ARM build",
+			"working_dir": "${project_path}",
+			"file_regex": "^(.*):(\\d+):(\\d+):\\s*(.*)$",
+			"variants":
+			[
+					{
+				"name":"rebuild",
+				"cmd":["make","rebuild" ]
+				},
+					{
+				"name":"program",
+				"cmd":["make","program" ]
+				},
+					{
+				"name":"debug",
+				"cmd":["make","debug" ]
+				}
+				,
+					{
+				"name":"OZONE debug",
+				"cmd":["make","ozone" ]
+				}
+			]
+		}
+	],
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		}
+	],
+
+	// Настройки линтеров
+	"SublimeLinter":
+	{
+		"linters":
+		{
+			"clang":
+			{
+				// Папки, в которых находятся файлы, анализируемые линтером
+				"include_dirs":
+				[
+					"${project}/CMSIS",
+					"${project}/StdPeriphLib",
+					"${project}/StdPeriphLib/inc",
+					"${project}/StdPeriphLib/src",
+					"${project}/user-code/inc",
+					"${project}/user-code/src",
+					"${project}/FatFs",
+					"${project}/Startup"
+				],
+				// Дополнительные флаги Clang
+				// По уомлчанию Clang использует С++98 стандарт
+				// -std=c++0x
+				// -std=c++11
+				// -std=c++1y
+				// -std=c++14
+				// -std=c++1z
+				// -DSTM32F10X_MD_VL
+				// -DSTM32F40_41xxx
+				"extra_flags":"-DSTM32F030F4Px_FLASH"
+			}
+		}
+	},
+	"settings":
+	{
+		"sublimegdb_workingdir": "${project_path:out/hex/}",
+		"sublimegdb_commandline": "arm-none-eabi-gdb --interpreter=mi *.elf"
+	}
+}

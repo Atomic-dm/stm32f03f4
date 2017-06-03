@@ -1,0 +1,352 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"stm32f0xx_misc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.NVIC_Init,"ax",%progbits
+  18              		.align	2
+  19              		.global	NVIC_Init
+  20              		.code	16
+  21              		.thumb_func
+  23              	NVIC_Init:
+  24              	.LFB33:
+  25              		.file 1 ".\\StdPeriphLib\\src/stm32f0xx_misc.c"
+   1:.\StdPeriphLib\src/stm32f0xx_misc.c **** /**
+   2:.\StdPeriphLib\src/stm32f0xx_misc.c ****   ******************************************************************************
+   3:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @file    stm32f0xx_misc.c
+   4:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @author  MCD Application Team
+   5:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @version V1.5.0
+   6:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @date    05-December-2014
+   7:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @brief   This file provides all the miscellaneous firmware functions (add-on
+   8:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *          to CMSIS functions).
+   9:.\StdPeriphLib\src/stm32f0xx_misc.c ****   ******************************************************************************
+  10:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @attention
+  11:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *
+  12:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  13:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *
+  14:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  15:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * You may not use this file except in compliance with the License.
+  16:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * You may obtain a copy of the License at:
+  17:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *
+  18:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+  19:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *
+  20:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * Unless required by applicable law or agreed to in writing, software 
+  21:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+  22:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  23:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * See the License for the specific language governing permissions and
+  24:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * limitations under the License.
+  25:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *
+  26:.\StdPeriphLib\src/stm32f0xx_misc.c ****   ******************************************************************************
+  27:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+  28:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  29:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Includes ------------------------------------------------------------------*/
+  30:.\StdPeriphLib\src/stm32f0xx_misc.c **** #include "stm32f0xx_misc.h"
+  31:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  32:.\StdPeriphLib\src/stm32f0xx_misc.c **** /** @addtogroup STM32F0xx_StdPeriph_Driver
+  33:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @{
+  34:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+  35:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  36:.\StdPeriphLib\src/stm32f0xx_misc.c **** /** @defgroup MISC 
+  37:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @brief MISC driver modules
+  38:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @{
+  39:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+  40:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  41:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Private typedef -----------------------------------------------------------*/
+  42:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Private define ------------------------------------------------------------*/
+  43:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Private macro -------------------------------------------------------------*/
+  44:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Private variables ---------------------------------------------------------*/
+  45:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Private function prototypes -----------------------------------------------*/
+  46:.\StdPeriphLib\src/stm32f0xx_misc.c **** /* Private functions ---------------------------------------------------------*/
+  47:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  48:.\StdPeriphLib\src/stm32f0xx_misc.c **** /** @defgroup MISC_Private_Functions
+  49:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @{
+  50:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+  51:.\StdPeriphLib\src/stm32f0xx_misc.c **** /**
+  52:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *
+  53:.\StdPeriphLib\src/stm32f0xx_misc.c **** @verbatim
+  54:.\StdPeriphLib\src/stm32f0xx_misc.c ****  *******************************************************************************
+  55:.\StdPeriphLib\src/stm32f0xx_misc.c ****                    ##### Interrupts configuration functions #####
+  56:.\StdPeriphLib\src/stm32f0xx_misc.c ****  *******************************************************************************
+  57:.\StdPeriphLib\src/stm32f0xx_misc.c ****     [..] This section provide functions allowing to configure the NVIC interrupts
+  58:.\StdPeriphLib\src/stm32f0xx_misc.c ****         (IRQ). The Cortex-M0 exceptions are managed by CMSIS functions.
+  59:.\StdPeriphLib\src/stm32f0xx_misc.c ****          (#) Enable and Configure the priority of the selected IRQ Channels. 
+  60:.\StdPeriphLib\src/stm32f0xx_misc.c ****              The priority can be 0..3. 
+  61:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  62:.\StdPeriphLib\src/stm32f0xx_misc.c ****         -@- Lower priority values gives higher priority.
+  63:.\StdPeriphLib\src/stm32f0xx_misc.c ****         -@- Priority Order:
+  64:.\StdPeriphLib\src/stm32f0xx_misc.c ****             (#@) Lowest priority.
+  65:.\StdPeriphLib\src/stm32f0xx_misc.c ****             (#@) Lowest hardware priority (IRQn position).  
+  66:.\StdPeriphLib\src/stm32f0xx_misc.c ****   
+  67:.\StdPeriphLib\src/stm32f0xx_misc.c **** @endverbatim
+  68:.\StdPeriphLib\src/stm32f0xx_misc.c **** */
+  69:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+  70:.\StdPeriphLib\src/stm32f0xx_misc.c **** /**
+  71:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @brief  Initializes the NVIC peripheral according to the specified
+  72:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *         parameters in the NVIC_InitStruct.
+  73:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @param  NVIC_InitStruct: pointer to a NVIC_InitTypeDef structure that contains
+  74:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *         the configuration information for the specified NVIC peripheral.
+  75:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @retval None
+  76:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+  77:.\StdPeriphLib\src/stm32f0xx_misc.c **** void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
+  78:.\StdPeriphLib\src/stm32f0xx_misc.c **** {
+  26              		.loc 1 78 0
+  27              		.cfi_startproc
+  28              	.LVL0:
+  29 0000 70B5     		push	{r4, r5, r6, lr}
+  30              	.LCFI0:
+  31              		.cfi_def_cfa_offset 16
+  32              		.cfi_offset 4, -16
+  33              		.cfi_offset 5, -12
+  34              		.cfi_offset 6, -8
+  35              		.cfi_offset 14, -4
+  36              	.LVL1:
+  79:.\StdPeriphLib\src/stm32f0xx_misc.c ****   uint32_t tmppriority = 0x00;
+  80:.\StdPeriphLib\src/stm32f0xx_misc.c ****   
+  81:.\StdPeriphLib\src/stm32f0xx_misc.c ****   /* Check the parameters */
+  82:.\StdPeriphLib\src/stm32f0xx_misc.c ****   assert_param(IS_FUNCTIONAL_STATE(NVIC_InitStruct->NVIC_IRQChannelCmd));
+  83:.\StdPeriphLib\src/stm32f0xx_misc.c ****   assert_param(IS_NVIC_PRIORITY(NVIC_InitStruct->NVIC_IRQChannelPriority));  
+  84:.\StdPeriphLib\src/stm32f0xx_misc.c ****     
+  85:.\StdPeriphLib\src/stm32f0xx_misc.c ****   if (NVIC_InitStruct->NVIC_IRQChannelCmd != DISABLE)
+  37              		.loc 1 85 0
+  38 0002 8378     		ldrb	r3, [r0, #2]
+  39 0004 002B     		cmp	r3, #0
+  40 0006 1ED0     		beq	.L2
+  86:.\StdPeriphLib\src/stm32f0xx_misc.c ****   {
+  87:.\StdPeriphLib\src/stm32f0xx_misc.c ****     /* Compute the Corresponding IRQ Priority --------------------------------*/    
+  88:.\StdPeriphLib\src/stm32f0xx_misc.c ****     tmppriority = NVIC->IP[NVIC_InitStruct->NVIC_IRQChannel >> 0x02];
+  41              		.loc 1 88 0
+  42 0008 0278     		ldrb	r2, [r0]
+  43 000a 9508     		lsr	r5, r2, #2
+  44 000c AD00     		lsl	r5, r5, #2
+  45 000e 134B     		ldr	r3, .L4
+  46 0010 9C46     		mov	ip, r3
+  47 0012 6544     		add	r5, r5, ip
+  48 0014 C026     		mov	r6, #192
+  49 0016 B600     		lsl	r6, r6, #2
+  50 0018 AB59     		ldr	r3, [r5, r6]
+  51              	.LVL2:
+  89:.\StdPeriphLib\src/stm32f0xx_misc.c ****     tmppriority &= (uint32_t)(~(((uint32_t)0xFF) << ((NVIC_InitStruct->NVIC_IRQChannel & 0x03) * 8)
+  52              		.loc 1 89 0
+  53 001a 0324     		mov	r4, #3
+  54 001c 2240     		and	r2, r4
+  55 001e D400     		lsl	r4, r2, #3
+  56 0020 FF22     		mov	r2, #255
+  57 0022 111C     		mov	r1, r2
+  58 0024 A140     		lsl	r1, r1, r4
+  59 0026 8B43     		bic	r3, r1
+  60              	.LVL3:
+  90:.\StdPeriphLib\src/stm32f0xx_misc.c ****     tmppriority |= (uint32_t)((((uint32_t)NVIC_InitStruct->NVIC_IRQChannelPriority << 6) & 0xFF) <<
+  61              		.loc 1 90 0
+  62 0028 4178     		ldrb	r1, [r0, #1]
+  63 002a 8901     		lsl	r1, r1, #6
+  64 002c 0A40     		and	r2, r1
+  65 002e A240     		lsl	r2, r2, r4
+  66 0030 1343     		orr	r3, r2
+  67              	.LVL4:
+  91:.\StdPeriphLib\src/stm32f0xx_misc.c ****     
+  92:.\StdPeriphLib\src/stm32f0xx_misc.c ****     NVIC->IP[NVIC_InitStruct->NVIC_IRQChannel >> 0x02] = tmppriority;
+  68              		.loc 1 92 0
+  69 0032 AB51     		str	r3, [r5, r6]
+  93:.\StdPeriphLib\src/stm32f0xx_misc.c ****     
+  94:.\StdPeriphLib\src/stm32f0xx_misc.c ****     /* Enable the Selected IRQ Channels --------------------------------------*/
+  95:.\StdPeriphLib\src/stm32f0xx_misc.c ****     NVIC->ISER[0] = (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+  70              		.loc 1 95 0
+  71 0034 0378     		ldrb	r3, [r0]
+  72              	.LVL5:
+  73 0036 1F22     		mov	r2, #31
+  74 0038 1340     		and	r3, r2
+  75 003a 1E3A     		sub	r2, r2, #30
+  76 003c 9A40     		lsl	r2, r2, r3
+  77 003e 131C     		mov	r3, r2
+  78 0040 6246     		mov	r2, ip
+  79 0042 1360     		str	r3, [r2]
+  80              	.LVL6:
+  81 0044 08E0     		b	.L1
+  82              	.LVL7:
+  83              	.L2:
+  96:.\StdPeriphLib\src/stm32f0xx_misc.c ****   }
+  97:.\StdPeriphLib\src/stm32f0xx_misc.c ****   else
+  98:.\StdPeriphLib\src/stm32f0xx_misc.c ****   {
+  99:.\StdPeriphLib\src/stm32f0xx_misc.c ****     /* Disable the Selected IRQ Channels -------------------------------------*/
+ 100:.\StdPeriphLib\src/stm32f0xx_misc.c ****     NVIC->ICER[0] = (uint32_t)0x01 << (NVIC_InitStruct->NVIC_IRQChannel & (uint8_t)0x1F);
+  84              		.loc 1 100 0
+  85 0046 0378     		ldrb	r3, [r0]
+  86 0048 1F22     		mov	r2, #31
+  87 004a 1340     		and	r3, r2
+  88 004c 1E3A     		sub	r2, r2, #30
+  89 004e 9A40     		lsl	r2, r2, r3
+  90 0050 131C     		mov	r3, r2
+  91 0052 8022     		mov	r2, #128
+  92 0054 0149     		ldr	r1, .L4
+  93 0056 8B50     		str	r3, [r1, r2]
+  94              	.LVL8:
+  95              	.L1:
+ 101:.\StdPeriphLib\src/stm32f0xx_misc.c ****   }
+ 102:.\StdPeriphLib\src/stm32f0xx_misc.c **** }
+  96              		.loc 1 102 0
+  97              		@ sp needed
+  98 0058 70BD     		pop	{r4, r5, r6, pc}
+  99              	.L5:
+ 100 005a C046     		.align	2
+ 101              	.L4:
+ 102 005c 00E100E0 		.word	-536813312
+ 103              		.cfi_endproc
+ 104              	.LFE33:
+ 106              		.section	.text.NVIC_SystemLPConfig,"ax",%progbits
+ 107              		.align	2
+ 108              		.global	NVIC_SystemLPConfig
+ 109              		.code	16
+ 110              		.thumb_func
+ 112              	NVIC_SystemLPConfig:
+ 113              	.LFB34:
+ 103:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+ 104:.\StdPeriphLib\src/stm32f0xx_misc.c **** /**
+ 105:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @brief  Selects the condition for the system to enter low power mode.
+ 106:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @param  LowPowerMode: Specifies the new mode for the system to enter low power mode.
+ 107:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *          This parameter can be one of the following values:
+ 108:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *            @arg NVIC_LP_SEVONPEND: Low Power SEV on Pend.
+ 109:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *            @arg NVIC_LP_SLEEPDEEP: Low Power DEEPSLEEP request.
+ 110:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *            @arg NVIC_LP_SLEEPONEXIT: Low Power Sleep on Exit.
+ 111:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @param  NewState: new state of LP condition. 
+ 112:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 113:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @retval None
+ 114:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+ 115:.\StdPeriphLib\src/stm32f0xx_misc.c **** void NVIC_SystemLPConfig(uint8_t LowPowerMode, FunctionalState NewState)
+ 116:.\StdPeriphLib\src/stm32f0xx_misc.c **** {
+ 114              		.loc 1 116 0
+ 115              		.cfi_startproc
+ 116              	.LVL9:
+ 117:.\StdPeriphLib\src/stm32f0xx_misc.c ****   /* Check the parameters */
+ 118:.\StdPeriphLib\src/stm32f0xx_misc.c ****   assert_param(IS_NVIC_LP(LowPowerMode));
+ 119:.\StdPeriphLib\src/stm32f0xx_misc.c ****   
+ 120:.\StdPeriphLib\src/stm32f0xx_misc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));  
+ 121:.\StdPeriphLib\src/stm32f0xx_misc.c ****   
+ 122:.\StdPeriphLib\src/stm32f0xx_misc.c ****   if (NewState != DISABLE)
+ 117              		.loc 1 122 0
+ 118 0000 0029     		cmp	r1, #0
+ 119 0002 04D0     		beq	.L7
+ 123:.\StdPeriphLib\src/stm32f0xx_misc.c ****   {
+ 124:.\StdPeriphLib\src/stm32f0xx_misc.c ****     SCB->SCR |= LowPowerMode;
+ 120              		.loc 1 124 0
+ 121 0004 044A     		ldr	r2, .L9
+ 122 0006 1369     		ldr	r3, [r2, #16]
+ 123 0008 1843     		orr	r0, r3
+ 124              	.LVL10:
+ 125 000a 1061     		str	r0, [r2, #16]
+ 126 000c 03E0     		b	.L6
+ 127              	.LVL11:
+ 128              	.L7:
+ 125:.\StdPeriphLib\src/stm32f0xx_misc.c ****   }
+ 126:.\StdPeriphLib\src/stm32f0xx_misc.c ****   else
+ 127:.\StdPeriphLib\src/stm32f0xx_misc.c ****   {
+ 128:.\StdPeriphLib\src/stm32f0xx_misc.c ****     SCB->SCR &= (uint32_t)(~(uint32_t)LowPowerMode);
+ 129              		.loc 1 128 0
+ 130 000e 024A     		ldr	r2, .L9
+ 131 0010 1369     		ldr	r3, [r2, #16]
+ 132 0012 8343     		bic	r3, r0
+ 133 0014 1361     		str	r3, [r2, #16]
+ 134              	.LVL12:
+ 135              	.L6:
+ 129:.\StdPeriphLib\src/stm32f0xx_misc.c ****   }
+ 130:.\StdPeriphLib\src/stm32f0xx_misc.c **** }
+ 136              		.loc 1 130 0
+ 137              		@ sp needed
+ 138 0016 7047     		bx	lr
+ 139              	.L10:
+ 140              		.align	2
+ 141              	.L9:
+ 142 0018 00ED00E0 		.word	-536810240
+ 143              		.cfi_endproc
+ 144              	.LFE34:
+ 146              		.section	.text.SysTick_CLKSourceConfig,"ax",%progbits
+ 147              		.align	2
+ 148              		.global	SysTick_CLKSourceConfig
+ 149              		.code	16
+ 150              		.thumb_func
+ 152              	SysTick_CLKSourceConfig:
+ 153              	.LFB35:
+ 131:.\StdPeriphLib\src/stm32f0xx_misc.c **** 
+ 132:.\StdPeriphLib\src/stm32f0xx_misc.c **** /**
+ 133:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @brief  Configures the SysTick clock source.
+ 134:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @param  SysTick_CLKSource: specifies the SysTick clock source.
+ 135:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *          This parameter can be one of the following values:
+ 136:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *            @arg SysTick_CLKSource_HCLK_Div8: AHB clock divided by 8 selected as SysTick clock s
+ 137:.\StdPeriphLib\src/stm32f0xx_misc.c ****   *            @arg SysTick_CLKSource_HCLK: AHB clock selected as SysTick clock source.
+ 138:.\StdPeriphLib\src/stm32f0xx_misc.c ****   * @retval None
+ 139:.\StdPeriphLib\src/stm32f0xx_misc.c ****   */
+ 140:.\StdPeriphLib\src/stm32f0xx_misc.c **** void SysTick_CLKSourceConfig(uint32_t SysTick_CLKSource)
+ 141:.\StdPeriphLib\src/stm32f0xx_misc.c **** {
+ 154              		.loc 1 141 0
+ 155              		.cfi_startproc
+ 156              	.LVL13:
+ 142:.\StdPeriphLib\src/stm32f0xx_misc.c ****   /* Check the parameters */
+ 143:.\StdPeriphLib\src/stm32f0xx_misc.c ****   assert_param(IS_SYSTICK_CLK_SOURCE(SysTick_CLKSource));
+ 144:.\StdPeriphLib\src/stm32f0xx_misc.c ****   
+ 145:.\StdPeriphLib\src/stm32f0xx_misc.c ****   if (SysTick_CLKSource == SysTick_CLKSource_HCLK)
+ 157              		.loc 1 145 0
+ 158 0000 0428     		cmp	r0, #4
+ 159 0002 05D1     		bne	.L12
+ 146:.\StdPeriphLib\src/stm32f0xx_misc.c ****   {
+ 147:.\StdPeriphLib\src/stm32f0xx_misc.c ****     SysTick->CTRL |= SysTick_CLKSource_HCLK;
+ 160              		.loc 1 147 0
+ 161 0004 054A     		ldr	r2, .L14
+ 162 0006 1168     		ldr	r1, [r2]
+ 163 0008 0423     		mov	r3, #4
+ 164 000a 0B43     		orr	r3, r1
+ 165 000c 1360     		str	r3, [r2]
+ 166 000e 04E0     		b	.L11
+ 167              	.L12:
+ 148:.\StdPeriphLib\src/stm32f0xx_misc.c ****   }
+ 149:.\StdPeriphLib\src/stm32f0xx_misc.c ****   else
+ 150:.\StdPeriphLib\src/stm32f0xx_misc.c ****   {
+ 151:.\StdPeriphLib\src/stm32f0xx_misc.c ****     SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;
+ 168              		.loc 1 151 0
+ 169 0010 024A     		ldr	r2, .L14
+ 170 0012 1368     		ldr	r3, [r2]
+ 171 0014 0421     		mov	r1, #4
+ 172 0016 8B43     		bic	r3, r1
+ 173 0018 1360     		str	r3, [r2]
+ 174              	.L11:
+ 152:.\StdPeriphLib\src/stm32f0xx_misc.c ****   }
+ 153:.\StdPeriphLib\src/stm32f0xx_misc.c **** }
+ 175              		.loc 1 153 0
+ 176              		@ sp needed
+ 177 001a 7047     		bx	lr
+ 178              	.L15:
+ 179              		.align	2
+ 180              	.L14:
+ 181 001c 10E000E0 		.word	-536813552
+ 182              		.cfi_endproc
+ 183              	.LFE35:
+ 185              		.text
+ 186              	.Letext0:
+ 187              		.file 2 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 188              		.file 3 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+ 189              		.file 4 ".\\CMSIS/core_cm0.h"
+ 190              		.file 5 ".\\CMSIS/stm32f0xx.h"
+ 191              		.file 6 ".\\StdPeriphLib\\inc/stm32f0xx_misc.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f0xx_misc.c
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:18     .text.NVIC_Init:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:23     .text.NVIC_Init:00000000 NVIC_Init
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:102    .text.NVIC_Init:0000005c $d
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:107    .text.NVIC_SystemLPConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:112    .text.NVIC_SystemLPConfig:00000000 NVIC_SystemLPConfig
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:142    .text.NVIC_SystemLPConfig:00000018 $d
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:147    .text.SysTick_CLKSourceConfig:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:152    .text.SysTick_CLKSourceConfig:00000000 SysTick_CLKSourceConfig
+C:\Users\Dima\AppData\Local\Temp\cc3YQC2s.s:181    .text.SysTick_CLKSourceConfig:0000001c $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

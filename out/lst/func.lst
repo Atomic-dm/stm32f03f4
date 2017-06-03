@@ -1,0 +1,117 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"func.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SysTick_Handler,"ax",%progbits
+  18              		.align	2
+  19              		.global	SysTick_Handler
+  20              		.code	16
+  21              		.thumb_func
+  23              	SysTick_Handler:
+  24              	.LFB33:
+  25              		.file 1 ".\\user-code\\src/func.c"
+   1:.\user-code\src/func.c **** #include "main.h"
+   2:.\user-code\src/func.c **** 
+   3:.\user-code\src/func.c **** 
+   4:.\user-code\src/func.c **** __IO uint16_t delay_count;
+   5:.\user-code\src/func.c **** 
+   6:.\user-code\src/func.c **** void SysTick_Handler(void) //1ms
+   7:.\user-code\src/func.c **** {
+  26              		.loc 1 7 0
+  27              		.cfi_startproc
+   8:.\user-code\src/func.c **** 	
+   9:.\user-code\src/func.c **** 	
+  10:.\user-code\src/func.c **** 
+  11:.\user-code\src/func.c **** 	if (delay_count>0)
+  28              		.loc 1 11 0
+  29 0000 054B     		ldr	r3, .L3
+  30 0002 1B88     		ldrh	r3, [r3]
+  31 0004 9BB2     		uxth	r3, r3
+  32 0006 002B     		cmp	r3, #0
+  33 0008 04D0     		beq	.L1
+  12:.\user-code\src/func.c **** 	{		delay_count--;	}	
+  34              		.loc 1 12 0
+  35 000a 034A     		ldr	r2, .L3
+  36 000c 1388     		ldrh	r3, [r2]
+  37 000e 013B     		sub	r3, r3, #1
+  38 0010 9BB2     		uxth	r3, r3
+  39 0012 1380     		strh	r3, [r2]
+  40              	.L1:
+  13:.\user-code\src/func.c **** 	
+  14:.\user-code\src/func.c **** }
+  41              		.loc 1 14 0
+  42              		@ sp needed
+  43 0014 7047     		bx	lr
+  44              	.L4:
+  45 0016 C046     		.align	2
+  46              	.L3:
+  47 0018 00000000 		.word	delay_count
+  48              		.cfi_endproc
+  49              	.LFE33:
+  51              		.section	.text.delay_ms,"ax",%progbits
+  52              		.align	2
+  53              		.global	delay_ms
+  54              		.code	16
+  55              		.thumb_func
+  57              	delay_ms:
+  58              	.LFB34:
+  15:.\user-code\src/func.c **** 
+  16:.\user-code\src/func.c **** void delay_ms(uint16_t delay_temp)
+  17:.\user-code\src/func.c **** {
+  59              		.loc 1 17 0
+  60              		.cfi_startproc
+  61              	.LVL0:
+  18:.\user-code\src/func.c **** //	disk_timerproc();   // Disk timer process 
+  19:.\user-code\src/func.c **** 	delay_count=delay_temp;
+  62              		.loc 1 19 0
+  63 0000 034B     		ldr	r3, .L8
+  64 0002 1880     		strh	r0, [r3]
+  20:.\user-code\src/func.c **** 	while (delay_count) {}
+  65              		.loc 1 20 0
+  66 0004 1A1C     		mov	r2, r3
+  67              	.L6:
+  68              		.loc 1 20 0 is_stmt 0 discriminator 1
+  69 0006 1388     		ldrh	r3, [r2]
+  70 0008 9BB2     		uxth	r3, r3
+  71 000a 002B     		cmp	r3, #0
+  72 000c FBD1     		bne	.L6
+  21:.\user-code\src/func.c **** 	
+  22:.\user-code\src/func.c **** }
+  73              		.loc 1 22 0 is_stmt 1
+  74              		@ sp needed
+  75 000e 7047     		bx	lr
+  76              	.L9:
+  77              		.align	2
+  78              	.L8:
+  79 0010 00000000 		.word	delay_count
+  80              		.cfi_endproc
+  81              	.LFE34:
+  83              		.comm	delay_count,2,2
+  84              		.text
+  85              	.Letext0:
+  86              		.file 2 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+  87              		.file 3 "c:\\myprograms\\sublime text build 3126\\gnu tools arm embedded\\arm-none-eabi\\include\\
+DEFINED SYMBOLS
+                            *ABS*:00000000 func.c
+C:\Users\Dima\AppData\Local\Temp\ccyl58RR.s:18     .text.SysTick_Handler:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccyl58RR.s:23     .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\Dima\AppData\Local\Temp\ccyl58RR.s:47     .text.SysTick_Handler:00000018 $d
+                            *COM*:00000002 delay_count
+C:\Users\Dima\AppData\Local\Temp\ccyl58RR.s:52     .text.delay_ms:00000000 $t
+C:\Users\Dima\AppData\Local\Temp\ccyl58RR.s:57     .text.delay_ms:00000000 delay_ms
+C:\Users\Dima\AppData\Local\Temp\ccyl58RR.s:79     .text.delay_ms:00000010 $d
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS
